@@ -1,7 +1,6 @@
 # Trigger examples: <skill-name>
 
-Prompts that must load this skill, and near-misses that must not. A manual rehearsal
-today. They become `claude plugin eval` cases when that command leaves early access.
+Prompts that must load this skill, and near-misses that must not.
 
 Write real prompts, in the words you would actually type. A near-miss is only useful if
 it is genuinely close: something a reasonable agent might load this skill for, but

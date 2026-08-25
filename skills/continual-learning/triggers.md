@@ -1,7 +1,6 @@
 # Trigger examples: continual-learning
 
-Prompts that must load this skill, and near-misses that must not. A manual rehearsal
-today. They become `claude plugin eval` cases when that command leaves early access.
+Prompts that must load this skill, and near-misses that must not.
 
 This skill sets `disable-model-invocation`, so the prompts below describe when you should
 type `/continual-learning`, not when the agent picks it up on its own.
