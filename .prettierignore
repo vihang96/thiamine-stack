@@ -1,0 +1,11 @@
+node_modules/
+package-lock.json
+
+# Vendored upstream. Keep it byte-comparable against the source it came from.
+lint/typescript/index.ts
+lint/typescript/rules/
+lint/typescript/shared/
+
+# Markdown is governed by the technical-writing and unslop-prose skills, not by a
+# formatter. Prettier reflows prose and would fight the sentence-level rules.
+**/*.md

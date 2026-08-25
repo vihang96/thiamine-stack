@@ -1,0 +1,21 @@
+{
+	"name": "thiamine-lint-typescript",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"description": "TypeScript lint rules for Oxlint and ESLint. Copy this directory into the repo that uses it.",
+	"license": "MIT",
+	"exports": "./index.ts",
+	"scripts": {
+		"test": "for f in rules/*.test.ts; do tsx \"$f\" || exit 1; done",
+		"lint": "oxlint ."
+	},
+	"peerDependencies": {
+		"@oxlint/plugins": "1.80.0"
+	},
+	"devDependencies": {
+		"@oxlint/plugins": "1.80.0",
+		"oxlint": "1.80.0",
+		"tsx": "4.23.12"
+	}
+}

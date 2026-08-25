@@ -503,6 +503,50 @@ for (const [kind, names] of [
 	}
 }
 
+// ---------------------------------------------------------------- lint rule claims
+// A skill that names a lint rule in an Enforceable-by column is claiming that something
+// mechanical backs that criterion. If the rule is not in lint/<language>/rules/, the claim
+// is false and the criterion is review-only without saying so.
+const LINT_RULE_REF = /`((?:no|require|prefer)-[a-z0-9-]+)`/g
+
+const lintRules = new Map() // language -> Set of rule names
+for (const language of listdir('lint')) {
+	if (!isDir(ROOT, 'lint', language, 'rules')) continue
+	lintRules.set(
+		language,
+		new Set(
+			listdir(`lint/${language}/rules`)
+				.filter((f) => f.endsWith('.ts') && !f.endsWith('.test.ts'))
+				.map((f) => f.replace(/\.ts$/, '')),
+		),
+	)
+}
+
+if (lintRules.size) {
+	for (const name of skillNames) {
+		const rel = `skills/${name}/SKILL.md`
+		if (!exists(ROOT, rel)) continue
+
+		// A skill named for a language is held to that language's rule set, so a TypeScript
+		// skill cannot satisfy a claim with a rule that lives under another language.
+		const language = [...lintRules.keys()].find((l) => name.endsWith(`-${l}`) || name === l)
+		const have = language
+			? lintRules.get(language)
+			: new Set([...lintRules.values()].flatMap((set) => [...set]))
+		const where = language ? `lint/${language}/rules/` : 'any lint/<language>/rules/'
+
+		for (const ref of captures(read(rel), LINT_RULE_REF)) {
+			if (!have.has(ref)) {
+				err(
+					rel,
+					`claims lint rule \`${ref}\`, which is not in ${where}`,
+					`add ${language ? `lint/${language}/rules/${ref}.ts` : 'the rule'}, or change the Enforceable-by entry to review`,
+				)
+			}
+		}
+	}
+}
+
 // ---------------------------------------------------------------- hooks
 // A hooks.json that names a handler which is not there fails at runtime, inside a hook,
 // where the error is easy to miss. Check the paths instead.

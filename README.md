@@ -22,6 +22,7 @@ rules/<id>.md           the rationale behind one rule, read on demand
 skills/<name>/          SKILL.md, plus triggers.md recording when it should load
 agents/<name>.md        delegated work whose output is small and whose input is not
 hooks/                  Claude Code hooks, plus their handlers
+lint/<language>/        lint rules that run in more than one linter
 templates/              scaffolds for adding rules, skills, agents, and commands
 scripts/new.mjs         scaffolds an artifact, links it, validates it
 scripts/validate.mjs    validates every artifact, with no dependencies
@@ -79,6 +80,34 @@ silently.
 
 ```sh
 npx prettier --check scripts/    # or --write
+```
+
+### The lint layer
+
+`lint/<language>/` holds the mechanically enforced half of a language standard. Today that
+is `lint/typescript/`, 15 rules vendored from
+[anti-slop](https://github.com/dmmulroy/anti-slop) under MIT, with their tests.
+
+One plugin serves both Oxlint and ESLint. Rules are written with Oxlint's `createOnce`
+API, and `eslintCompatPlugin` adds the ESLint-shaped `create` that delegates to it. The
+same plugin file produces identical findings under both linters. Remove the wrapper and
+ESLint throws while Oxlint keeps working, so it earns its place.
+
+Every rule is syntactic, reading type annotations off the AST rather than resolved types.
+Oxlint has no type-aware linting, so that constraint is what keeps one plugin portable.
+The cost is real: a rule catches a written `: unknown` and misses a return only inferred
+as unknown.
+
+`skills/unslop-<language>/` names each rule in an Enforceable-by column, and the validator
+fails if a skill claims a rule that is not in that language's directory. See
+[lint/README.md](lint/README.md) to wire it into a repo.
+
+Each language directory carries its own `package.json`, because the lint layer is the
+only part of this repo with dependencies. The validator and the hooks import `node:`
+builtins alone, so the core needs no install.
+
+```sh
+cd lint/typescript && npm install && npm test
 ```
 
 ### What the hooks do
