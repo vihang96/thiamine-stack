@@ -12,13 +12,22 @@ everywhere immediately, with no sync step.
 Do not create copies of `rules/` or `skills/` anywhere. If you find copies from an
 earlier install, replace them with symlinks and say so.
 
-## Step 1 — Locate the repo
+## Step 1 — Pick the source
 
-Find the thiamine-stack checkout. Ask the user if it is not obvious from the working
-directory. Store the absolute path; every step below needs it. Call it `$THIAMINE`.
+Ask which the user wants, unless it is obvious:
 
-Confirm `$THIAMINE/rules/RULES.md` and `$THIAMINE/.claude-plugin/plugin.json` exist
-before continuing. If not, you are in the wrong directory — stop and ask.
+- **From GitHub** (`vihang96/thiamine-stack`) for a machine that only consumes the
+  standards. No clone, nothing to keep in sync.
+- **From a local checkout** when the user edits the stack, so changes take effect
+  without a push and a marketplace update.
+
+For a local checkout, find it, store the absolute path as `$THIAMINE`, and confirm
+`$THIAMINE/rules/RULES.md` and `$THIAMINE/.claude-plugin/plugin.json` exist before
+continuing. If they do not, you are in the wrong directory. Stop and ask.
+
+Codex and Cursor always need a clone, since neither installs a plugin from GitHub. If
+the user picked GitHub and also runs one of those, clone to `~/.thiamine-stack` and use
+it as `$THIAMINE` for those harnesses.
 
 ## Step 2 — Detect which harnesses to wire up
 
@@ -43,12 +52,22 @@ than guess — a bad write here can be silently clobbered on the harness's next 
 Claude Code has native plugin support, so use it rather than symlinking skills
 individually.
 
-Register the repo as a local marketplace and install the plugin:
+Register the marketplace and install the plugin. From GitHub:
+
+```
+/plugin marketplace add vihang96/thiamine-stack
+/plugin install thiamine@thiamine-stack
+```
+
+From a local checkout, substitute the path:
 
 ```
 /plugin marketplace add <absolute path to $THIAMINE>
 /plugin install thiamine@thiamine-stack
 ```
+
+Do not add both. Two marketplaces offering the same plugin name is ambiguous; remove one
+with `claude plugin marketplace remove thiamine-stack` before adding the other.
 
 These are interactive slash commands — the user must run them. Print them and ask the
 user to run them, then verify by checking that `thiamine` appears under
@@ -76,12 +95,23 @@ resolving into `$THIAMINE`.
 
 `rules/RULES.md` must reach every harness as always-on instructions.
 
-**Claude Code** supports imports, so append a line to `~/.claude/CLAUDE.md`
-(create it if absent) rather than replacing the file:
+**Claude Code** supports imports, so append a line to `~/.claude/CLAUDE.md`, creating it
+if absent rather than replacing it.
+
+With a local checkout, point at the checkout:
 
 ```
 @$THIAMINE/rules/RULES.md
 ```
+
+With a GitHub install and no checkout, the marketplace clone holds the rules:
+
+```
+@$HOME/.claude/plugins/marketplaces/thiamine-stack/rules/RULES.md
+```
+
+Tell the user that second path is Claude Code's own layout rather than a documented
+interface, so it could move on an update. Offer the clone as the durable alternative.
 
 **Codex and Cursor** read `AGENTS.md` and have no import mechanism. Symlink instead:
 

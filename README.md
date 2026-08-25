@@ -4,7 +4,15 @@ Engineering standards that survive AI-assisted development. Portable rules, revi
 skills, and authoring templates — designed so the standard holds whether an agent or
 a human is writing the code.
 
-Install: see [INSTALL.md](INSTALL.md), or tell an agent `use the thiamine-install skill`.
+Install in Claude Code:
+
+```
+/plugin marketplace add vihang96/thiamine-stack
+/plugin install thiamine@thiamine-stack
+```
+
+For Codex, Cursor, the always-on rules, or a local checkout you intend to edit, see
+[INSTALL.md](INSTALL.md), or tell an agent `use the thiamine-install skill`.
 
 ## How it is put together
 
