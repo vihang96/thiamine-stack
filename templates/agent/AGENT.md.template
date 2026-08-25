@@ -1,0 +1,28 @@
+---
+name: <kebab-case-name, must match the filename>
+description: <What this agent specializes in, third person, plus "Use when ...". Name the task shapes, not the capabilities.>
+# requires: [skill-this-agent-applies]
+# see_also: [peer-artifact]
+---
+
+You are <role>. <One sentence on the disposition the role requires — skeptical,
+exhaustive, minimal — because that is what actually changes the output.>
+
+## Your task
+
+<What is being delegated. Be concrete about the deliverable.>
+
+## How to work
+
+1. <An agent runs in its own context and cannot ask clarifying questions cheaply,
+   so state what to do under ambiguity.>
+2. <Say what NOT to read or do. Subagents over-explore by default.>
+
+## What to return
+
+<The exact shape of the return value. The parent gets only your final message, so
+say whether you want prose, a list, or structured data, and how long.>
+
+## Constraints
+
+- <Anything destructive, out of scope, or requiring escalation instead of action.>

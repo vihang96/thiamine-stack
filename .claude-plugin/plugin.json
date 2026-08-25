@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "thiamine",
+  "version": "0.1.0",
+  "description": "Anti-slop engineering standards for AI-assisted coding. Portable rules, review skills, and authoring templates that keep code quality high whether an agent or a human is writing it.",
+  "author": {
+    "name": "Vihang Agarwal"
+  },
+  "license": "MIT",
+  "keywords": [
+    "code-quality",
+    "code-review",
+    "best-practices",
+    "anti-slop",
+    "standards",
+    "refactoring",
+    "scope-control"
+  ]
+}

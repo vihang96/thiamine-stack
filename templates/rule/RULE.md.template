@@ -1,0 +1,33 @@
+---
+id: <kebab-case-id, must match the filename>
+summary: <One line. This gets quoted in reviews, so make it standalone.>
+enforced_by: <a named linter rule | a git hook | review | human judgment>
+# owns: <the territory this rule is authoritative for>
+# requires: [skill-this-rule-cannot-work-without]
+# see_also: [peer-artifact]
+---
+
+# <Rule name>
+
+## The failure it prevents
+
+<The concrete bad outcome, with a realistic example. A rule whose cost is abstract
+gets rationalized away the first time it is inconvenient. Name what breaks downstream,
+not just what looks wrong.>
+
+## The rule
+
+<As few words as possible. Imperative.>
+
+## What counts
+
+<Draw the line explicitly: in scope / out of scope, or allowed / not allowed.>
+
+## When to override
+
+<Every real rule has exceptions. Name them, or the rule gets ignored wholesale
+instead of overridden deliberately.>
+
+## Signals you have violated it
+
+- <Observable symptoms, so violations are detectable after the fact.>

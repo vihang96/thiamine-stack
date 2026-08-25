@@ -1,0 +1,10 @@
+{
+  "name": "thiamine",
+  "version": "0.1.0",
+  "description": "Anti-slop engineering standards for AI-assisted coding.",
+  "author": {
+    "name": "Vihang Agarwal"
+  },
+  "license": "MIT",
+  "skills": "skills"
+}

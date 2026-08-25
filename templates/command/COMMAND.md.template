@@ -1,0 +1,19 @@
+---
+description: <One line shown in the slash-command menu. Say what it does and what argument it takes.>
+# requires: [skill-or-rule-this-command-applies]
+---
+
+# <Title>
+
+<What this command does.>
+
+Argument: `$ARGUMENTS` — <what it means, and the default when empty.>
+
+## Procedure
+
+1. <Steps, imperative.>
+2. <Stop conditions: when to abort rather than proceed.>
+
+## Do not
+
+- <The failure modes specific to this command.>
