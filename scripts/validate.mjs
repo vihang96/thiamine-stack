@@ -75,7 +75,7 @@ const DEP_PATTERNS = [
 	/[`*_]{1,2}([a-z][a-z0-9-]{2,})[`*_]{1,2}\s+(?:skill|agent|command)\b/g,
 ]
 const POSSESSIVE = /`([a-z][a-z0-9-]{2,})`'s\s+\w+\s+(?:rule|skill|section|catalog)/g
-const SLASH_REF = /(?<![\w/])\/([a-z][a-z0-9-]{2,})\b/g
+const SLASH_REF = /(?<=^|[\s`("'])\/([a-z][a-z0-9-]{2,})\b/gm
 const PATH_REF = /`([\w./-]*[\w-]+\/[\w./-]+\.(?:md|sh|py|mjs|json|ya?ml))`/g
 
 const SLASH_ALLOW = new Set([
@@ -110,6 +110,16 @@ kind type name shape thing artifact skill agent command rule detail payload trig
 		.trim()
 		.split(/\s+/),
 )
+
+// Top-level directories of this repo, plus the conventional subdirectories of a skill.
+// A referenced path outside both is a runtime path, not a broken repo pointer.
+const REPO_DIRS = new Set(
+	fs
+		.readdirSync(ROOT, { withFileTypes: true })
+		.filter((e) => e.isDirectory())
+		.map((e) => e.name),
+)
+const SKILL_LOCAL_DIRS = new Set(['references', 'scripts', 'assets'])
 
 const CODEISH = /[/._(){}<>=]|^--|^\\$/
 
@@ -301,7 +311,13 @@ function checkDeps(where, body, declared, skillDir, soft = []) {
 	for (const rel of captures(body, PATH_REF)) {
 		if (rel.startsWith('http') || rel.startsWith('~') || rel.includes('<')) continue
 		const bases = skillDir ? [skillDir, ROOT] : [ROOT]
-		if (!bases.some((b) => exists(b, rel))) {
+		if (bases.some((b) => exists(b, rel))) continue
+		// A path only has to exist when it names something in this repo. An artifact may
+		// also name a runtime path it creates elsewhere, such as a harness memory store,
+		// and those are not this validator's business.
+		const first = rel.split('/')[0]
+		if (!REPO_DIRS.has(first) && !SKILL_LOCAL_DIRS.has(first)) continue
+		{
 			err(
 				where,
 				`points at file \`${rel}\`, which does not exist`,
@@ -363,7 +379,10 @@ for (const name of skillNames) {
 			'add "Use when ..." naming situations the agent can recognize',
 		)
 	}
-	if (!invocable && triggerish) {
+	// "Use when asked to X" is accurate for a slash-only skill, because the user asks.
+	// Only a description implying the agent decides contradicts the flag.
+	const manual = /\basked\b|\bon request\b|\byou (?:type|invoke|run)\b/i.test(desc)
+	if (!invocable && triggerish && !manual) {
 		warn(
 			rel,
 			'disable-model-invocation is set, but the description promises automatic triggering',

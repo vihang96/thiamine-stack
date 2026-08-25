@@ -20,6 +20,7 @@ read [INSTALL.md](INSTALL.md), or tell an agent `use the thiamine-install skill`
 rules/RULES.md          the always-on standard, terse and harness-agnostic
 rules/<id>.md           the rationale behind one rule, read on demand
 skills/<name>/          SKILL.md, plus triggers.md recording when it should load
+agents/<name>.md        delegated work whose output is small and whose input is not
 templates/              scaffolds for adding rules, skills, agents, and commands
 scripts/new.mjs         scaffolds an artifact, links it, validates it
 scripts/validate.mjs    validates every artifact, with no dependencies

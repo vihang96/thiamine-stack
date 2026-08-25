@@ -1,16 +1,16 @@
 {
-  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "thiamine-stack",
-  "description": "Personal engineering standards: anti-slop rules, review skills, and authoring templates for AI-assisted development.",
-  "owner": {
-    "name": "Vihang Agarwal"
-  },
-  "plugins": [
-    {
-      "name": "thiamine",
-      "source": "./",
-      "description": "Anti-slop engineering standards for AI-assisted coding.",
-      "version": "0.1.0"
-    }
-  ]
+	"$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+	"name": "thiamine-stack",
+	"description": "Personal engineering standards: anti-slop rules, review skills, and authoring templates for coding agents.",
+	"owner": {
+		"name": "Vihang Agarwal"
+	},
+	"plugins": [
+		{
+			"name": "thiamine",
+			"source": "./",
+			"description": "Anti-slop engineering standards for AI-assisted coding.",
+			"version": "0.1.0"
+		}
+	]
 }
