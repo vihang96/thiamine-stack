@@ -21,6 +21,7 @@ rules/RULES.md          the always-on standard, terse and harness-agnostic
 rules/<id>.md           the rationale behind one rule, read on demand
 skills/<name>/          SKILL.md, plus triggers.md recording when it should load
 agents/<name>.md        delegated work whose output is small and whose input is not
+hooks/                  Claude Code hooks, plus their handlers
 templates/              scaffolds for adding rules, skills, agents, and commands
 scripts/new.mjs         scaffolds an artifact, links it, validates it
 scripts/validate.mjs    validates every artifact, with no dependencies
@@ -79,6 +80,24 @@ silently.
 ```sh
 npx prettier --check scripts/    # or --write
 ```
+
+### What the hooks do
+
+Two hooks support the continual-learning loop, and neither one acts on its own.
+
+The `Stop` hook counts completed turns and notes whether the transcript moved. It writes
+nothing else and prints nothing, because a hook that talks during a task is the reason
+people stop reading hooks. It returns immediately while `stop_hook_active` is set, which
+is what Claude Code asks of a Stop hook.
+
+The `SessionStart` hook reads that state. Once the turn count and the elapsed time both
+pass their thresholds, it prints one line suggesting `/continual-learning`. It suggests
+and nothing more. Override the thresholds with `THIAMINE_CL_MIN_TURNS` and
+`THIAMINE_CL_MIN_MINUTES`, which default to 10 turns and 120 minutes.
+
+State lives next to the memory it describes, in
+`~/.claude/projects/<slug>/memory/.continual-learning.json`, so nothing is written into
+your repo.
 
 ### Two checks static analysis cannot make
 

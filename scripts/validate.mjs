@@ -503,6 +503,51 @@ for (const [kind, names] of [
 	}
 }
 
+// ---------------------------------------------------------------- hooks
+// A hooks.json that names a handler which is not there fails at runtime, inside a hook,
+// where the error is easy to miss. Check the paths instead.
+if (exists(ROOT, 'hooks/hooks.json')) {
+	try {
+		const cfg = JSON.parse(read('hooks/hooks.json'))
+		const events = Object.entries(cfg.hooks ?? {})
+		if (!events.length) {
+			warn('hooks/hooks.json', 'declares no hooks', 'delete the file or add an event')
+		}
+		for (const [event, matchers] of events) {
+			for (const m of matchers) {
+				for (const h of m.hooks ?? []) {
+					const cmd = h.command ?? ''
+					for (const rel of cmd.matchAll(/\$\{CLAUDE_PLUGIN_ROOT\}\/([\w./-]+)/g)) {
+						if (!exists(ROOT, rel[1])) {
+							err(
+								'hooks/hooks.json',
+								`${event} hook runs \`${rel[1]}\`, which does not exist`,
+								'create the handler or remove the hook',
+							)
+						}
+					}
+					if (cmd.startsWith('bun ')) {
+						warn(
+							'hooks/hooks.json',
+							`${event} hook runs bun, which users may not have`,
+							'use node, which this repo already depends on',
+						)
+					}
+					if (!h.timeout) {
+						warn(
+							'hooks/hooks.json',
+							`${event} hook has no timeout`,
+							'a hook without a timeout can hang a session',
+						)
+					}
+				}
+			}
+		}
+	} catch (e) {
+		err('hooks/hooks.json', `invalid JSON: ${e.message}`, 'a broken hooks file disables every hook')
+	}
+}
+
 // ---------------------------------------------------------------- manifests
 function loadJson(rel) {
 	if (!exists(ROOT, rel)) return null

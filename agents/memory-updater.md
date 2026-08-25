@@ -99,11 +99,17 @@ wrong.
 Then add one line to `MEMORY.md`, in the form `- [Title](file.md) — hook`. `MEMORY.md` is
 an index. Never put the content of a memory in it.
 
-## Step 6. Refresh the index, then report
+## Step 6. Refresh the index and the run marker, then report
 
 Record the modification time of every transcript you processed. Drop index entries whose
 files no longer exist. Refresh the index even when no memory changed, so the next run does
 not re-read the same transcripts.
+
+Then reset the nudge state in `.continual-learning.json`, in the same directory. Set
+`lastRunAtMs` to the current epoch milliseconds and `turnsSinceLastRun` to `0`. Leave
+`version` and `lastTranscriptMtimeMs` alone. Skip this only when the file is absent, which
+means the hooks are not installed. Without the reset, the session-start hook keeps
+suggesting a run that already happened.
 
 Report the files you created, updated, and deleted, one line each. If you found nothing
 durable, reply with exactly `No durable memory updates.` and still refresh the index.
