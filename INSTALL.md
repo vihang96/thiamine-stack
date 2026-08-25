@@ -2,7 +2,7 @@
 
 Two paths. Use the first unless you are editing the stack itself.
 
-## From GitHub
+## Install from GitHub
 
 ### Claude Code
 
@@ -13,15 +13,18 @@ Run these inside Claude Code:
 /plugin install thiamine@thiamine-stack
 ```
 
-No clone, nothing to keep in sync, and it works the same on any machine. This delivers
-the skills, agents, and commands. It does not make `rules/RULES.md` always-on, which is
-the Rules section below.
+This needs no clone and works the same on any machine. It delivers the skills, agents,
+and commands. It does not make `rules/RULES.md` always-on, which is the next section.
 
-Update later with `/plugin marketplace update thiamine-stack`.
+To update later, run `/plugin marketplace update thiamine-stack`.
 
 ### Codex and Cursor
 
-Neither installs a plugin from GitHub, so clone once and link the skills in:
+Neither installs a plugin from GitHub, so clone once and link the skills in.
+
+`~/.cursor/skills-cursor/` and `~/.codex/skills/.system/` are **harness-managed**. If you
+write into them, the harness overwrites your links on its next update. Use the
+user-owned `skills` directory instead, which is what the commands below do.
 
 ```sh
 git clone https://github.com/vihang96/thiamine-stack.git ~/.thiamine-stack
@@ -36,39 +39,45 @@ for dir in ~/.codex/skills ~/.cursor/skills; do
 done
 ```
 
-`~/.cursor/skills-cursor/` and `~/.codex/skills/.system/` are **harness-managed**. Do not
-write into them; they are overwritten on update.
-
-## Rules
+## Wire up the always-on rules
 
 `rules/RULES.md` is the always-on standard. Each harness needs it wired in once.
 
-**Claude Code** supports imports, so append a line to `~/.claude/CLAUDE.md`, creating the
-file if it does not exist. If you installed from GitHub, the marketplace clone holds the
-rules:
+Claude Code supports imports. To add one, append a line to `~/.claude/CLAUDE.md`, and
+create that file if it does not exist. If you installed from GitHub, the marketplace
+clone holds the rules:
 
 ```sh
 echo "@$HOME/.claude/plugins/marketplaces/thiamine-stack/rules/RULES.md" >> ~/.claude/CLAUDE.md
 ```
 
-That path is Claude Code's own layout rather than a documented interface, so it could
-move. If you would rather not depend on it, clone the repo as above and point the import
-at your own checkout instead.
+That path is Claude Code's own layout rather than a documented interface, so it can move
+on an update. If you would rather not depend on it, clone the repo as above and point the
+import at your own checkout.
 
-**Codex and Cursor** read `AGENTS.md` and have no import syntax, so symlink from a clone:
+Codex and Cursor read `AGENTS.md` and have no import syntax, so symlink from a clone:
 
 ```sh
 ln -sfn "$THIAMINE/rules/RULES.md" ~/.codex/AGENTS.md
 ln -sfn "$THIAMINE/rules/RULES.md" ~/.cursor/AGENTS.md
 ```
 
-If the target already exists as a real file with content, do not overwrite it. Merge that
+If a target already exists as a real file with content, do not overwrite it. Merge that
 content into `rules/RULES.md` first.
 
-## From a local checkout
+## Install from a local checkout
 
-Use this when you are editing the stack, so your changes take effect without a push and
-a marketplace update.
+Use this when you are editing the stack, because your changes take effect without a push
+and a marketplace update.
+
+Two marketplaces offering the same plugin name is ambiguous. If you already added the
+GitHub one, remove it first:
+
+```sh
+claude plugin marketplace remove thiamine-stack
+```
+
+Then point the marketplace at your checkout:
 
 ```
 /plugin marketplace add /absolute/path/to/thiamine-stack
@@ -76,20 +85,14 @@ a marketplace update.
 ```
 
 Everything else matches the sections above, with `$THIAMINE` set to your checkout.
-Remove the GitHub marketplace first if you have both, since two marketplaces offering the
-same plugin name is ambiguous:
 
-```sh
-claude plugin marketplace remove thiamine-stack
-```
+## Add any other harness
 
-## Any other harness
+Every harness reads some always-on instruction file. Point it at `rules/RULES.md`, and
+symlink where there is no import syntax. That is the whole integration, because the rules
+are plain markdown with no harness-specific syntax.
 
-Every harness reads some always-on instruction file. Point it at `rules/RULES.md`, by
-symlink where there is no import syntax. That is the whole integration. The rules are
-plain markdown with no harness-specific syntax.
-
-## Verify
+## Verify the install
 
 ```sh
 claude plugin list | grep thiamine

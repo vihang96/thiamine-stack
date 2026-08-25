@@ -1,8 +1,8 @@
 # Engineering standards
 
 These apply to every change in this repo, whether written by a human or an agent.
-They are terse on purpose. Each has a longer rationale in `rules/<id>.md` — read it
-when the rule seems wrong for the situation at hand.
+They are terse on purpose. Each has a longer rationale in `rules/<id>.md`. Read that
+file when the rule seems wrong for the situation in front of you.
 
 ## Scope
 
@@ -39,7 +39,7 @@ when the rule seems wrong for the situation at hand.
 ## Tests
 
 - A test that asserts on a mock's return value tests the mock.
-- Write the failing test first when fixing a bug; it is the only proof the fix works.
+- Write the failing test first when fixing a bug. It is the only proof the fix works.
 - No tests added purely to move a coverage number.
 
 ## Claims
