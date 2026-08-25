@@ -16,7 +16,7 @@ today. They become `claude plugin eval` cases when that command leaves early acc
 ## Should not fire
 
 - clean up this PR description. That is prose, so unslop-prose owns it.
-- rename this TypeScript type. Not Rust, so unslop-typescript owns it.
+- rename a type in the web frontend. Not Rust.
 - why is cargo failing to resolve a dependency. A build failure with no Rust in it.
 - restructure the docs for this crate. Document-level work, owned by technical-writing.
 - should this be a rule or a skill. That is thiamine-author.

@@ -1,17 +1,15 @@
 # Lint layer
 
-One directory per language. Each holds a plugin that works in more than one linter, so a
-target repo can adopt the rules without switching tools.
+One directory per language, holding whatever form enforcement takes in that language.
 
 ```
-lint/typescript/    Oxlint and ESLint, from one plugin
+lint/typescript/    a plugin, authored, running in Oxlint and ESLint
 lint/rust/          clippy configuration and project prohibitions
 ```
 
-How a language enforces a rule differs, and the layout follows that rather than forcing
-one shape. TypeScript has no built-in linter, so the rules are authored code. Rust has
-clippy with hundreds of lints and no stable plugin API, so the rules are configuration.
-Read the README in a language directory before assuming it looks like its sibling.
+The shapes differ because the languages do, and the layout follows that rather than
+forcing one template. Read the README in a language directory rather than assuming it
+looks like the one next to it.
 
 The criteria these rules enforce live in the matching skill, such as
 `skills/unslop-typescript/`. The skill names each rule in its Enforceable-by column, and

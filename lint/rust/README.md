@@ -1,8 +1,7 @@
 # Rust lint layer
 
-Rust inverts the TypeScript problem. There is no plugin to write, because clippy has no
-stable plugin API, and there is no need for one, because clippy already ships hundreds of
-lints. Authoring a Rust rule set means curation and configuration.
+clippy already ships hundreds of lints and has no stable plugin API. Authoring a Rust rule
+set therefore means curation and configuration rather than writing lint code.
 
 ```
 lints.toml     the lint table to merge into Cargo.toml
