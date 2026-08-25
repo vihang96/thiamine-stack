@@ -5,7 +5,13 @@ target repo can adopt the rules without switching tools.
 
 ```
 lint/typescript/    Oxlint and ESLint, from one plugin
+lint/rust/          clippy configuration and project prohibitions
 ```
+
+How a language enforces a rule differs, and the layout follows that rather than forcing
+one shape. TypeScript has no built-in linter, so the rules are authored code. Rust has
+clippy with hundreds of lints and no stable plugin API, so the rules are configuration.
+Read the README in a language directory before assuming it looks like its sibling.
 
 The criteria these rules enforce live in the matching skill, such as
 `skills/unslop-typescript/`. The skill names each rule in its Enforceable-by column, and
@@ -77,10 +83,19 @@ directory when you copy it into a target repo. Nothing else in this repo needs n
 
 ## Adding a language
 
-Create `lint/<language>/`, and name rules so the matching skill can claim them. The
-validator holds a skill named for a language to that language's rules, so
-`unslop-typescript` cannot satisfy a claim with a rule under `lint/python/`.
+Create `lint/<language>/`, then decide how the skill will cite a rule. The validator
+supports two shapes:
 
-Keep rules syntactic where the linter has no type information. Oxlint has none, so a rule
-needing the TypeScript checker would work under ESLint alone and break the promise that
-one plugin serves both.
+- **Authored rules.** One file per rule under `rules/`, cited by filename. The validator
+  reads the directory.
+- **Configured lints.** An existing linter's names, listed in a generated
+  `lints-available.txt`, cited with a namespace such as `clippy::map_err_ignore`. The
+  validator reads the snapshot, and a citation added after the snapshot fails until it is
+  regenerated.
+
+Either way the validator holds a skill named for a language to that language's lints, so
+`unslop-rust` cannot satisfy a claim with a rule under `lint/typescript/`.
+
+Where you author rules and the linter has no type information, keep them syntactic. Oxlint
+has none, so a rule needing the TypeScript checker would work under ESLint alone and break
+the promise that one plugin serves both.

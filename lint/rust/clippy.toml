@@ -1,0 +1,25 @@
+# Project-specific prohibitions. This is the only place in Rust where a custom rule can
+# be authored without a nightly toolchain, so it carries the rules clippy has no lint for.
+#
+# Every entry states a reason. Clippy prints it as a `note:` at the point of failure,
+# which is the whole value: the prohibition teaches rather than just blocks.
+#
+# The three enabling lints live in lints.toml as disallowed_methods, disallowed_types,
+# and disallowed_macros. Without those set to warn, this file does nothing.
+
+disallowed-methods = [
+	{ path = "std::option::Option::unwrap", reason = "unwrap discards the reason it failed. Use expect with a message that names the invariant, or handle None." },
+	{ path = "std::result::Result::unwrap", reason = "unwrap discards the error. Propagate it with ?, or expect with a message naming the invariant." },
+]
+
+disallowed-types = [
+	# Add types this project must not use, each with a reason.
+]
+
+disallowed-macros = [
+	{ path = "std::print", reason = "no print in shipped code. Use a structured logging event." },
+	{ path = "std::println", reason = "no println in shipped code. Use a structured logging event." },
+	{ path = "std::eprint", reason = "no eprint in shipped code. Use a structured logging event." },
+	{ path = "std::eprintln", reason = "no eprintln in shipped code. Use a structured logging event." },
+	{ path = "std::dbg", reason = "dbg is a debugging leftover. Delete it." },
+]

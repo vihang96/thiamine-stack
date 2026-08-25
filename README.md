@@ -22,7 +22,7 @@ rules/<id>.md           the rationale behind one rule, read on demand
 skills/<name>/          SKILL.md, plus triggers.md recording when it should load
 agents/<name>.md        delegated work whose output is small and whose input is not
 hooks/                  Claude Code hooks, plus their handlers
-lint/<language>/        lint rules that run in more than one linter
+lint/<language>/        the mechanically enforced half of a language standard
 templates/              scaffolds for adding rules, skills, agents, and commands
 scripts/new.mjs         scaffolds an artifact, links it, validates it
 scripts/validate.mjs    validates every artifact, with no dependencies
@@ -84,9 +84,18 @@ npx prettier --check scripts/    # or --write
 
 ### The lint layer
 
-`lint/<language>/` holds the mechanically enforced half of a language standard. Today that
-is `lint/typescript/`, 15 rules vendored from
-[anti-slop](https://github.com/dmmulroy/anti-slop) under MIT, with their tests.
+`lint/<language>/` holds the mechanically enforced half of a language standard. The shape
+follows the language rather than one template.
+
+**`lint/rust/`** is configuration. clippy already ships hundreds of lints and has no stable
+plugin API, so authoring a Rust rule set means curating a lint table. `lints.toml` carries
+the set prescribed by the source guidelines, and `clippy.toml` carries project
+prohibitions, which is the one place a custom Rust rule can be written without a nightly
+toolchain. Each prohibition states a reason, and clippy prints it where the code fails.
+
+**`lint/typescript/`** is code, because TypeScript has no built-in linter. 15 rules
+vendored from [anti-slop](https://github.com/dmmulroy/anti-slop) under MIT, with their
+tests.
 
 One plugin serves both Oxlint and ESLint. Rules are written with Oxlint's `createOnce`
 API, and `eslintCompatPlugin` adds the ESLint-shaped `create` that delegates to it. The
@@ -99,8 +108,13 @@ The cost is real: a rule catches a written `: unknown` and misses a return only 
 as unknown.
 
 `skills/unslop-<language>/` names each rule in an Enforceable-by column, and the validator
-fails if a skill claims a rule that is not in that language's directory. See
-[lint/README.md](lint/README.md) to wire it into a repo.
+fails if a skill claims a rule that language does not have. For Rust it checks against a
+dated snapshot of the installed toolchain's lints, so a citation cannot be a typo or a
+lint that never existed. See [lint/README.md](lint/README.md) to wire either into a repo.
+
+```sh
+cd lint/rust/fixture && cargo clippy    # must report six warnings
+```
 
 Each language directory carries its own `package.json`, because the lint layer is the
 only part of this repo with dependencies. The validator and the hooks import `node:`

@@ -1,0 +1,20 @@
+# A crate that must produce warnings. If `cargo clippy` here is quiet, the lint layer is
+# not loaded, which looks exactly like clean code.
+[package]
+name = "thiamine-lint-fixture"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lints.rust]
+missing_debug_implementations = "warn"
+unsafe_op_in_unsafe_fn = "warn"
+
+[lints.clippy]
+correctness = { level = "warn", priority = -1 }
+style = { level = "warn", priority = -1 }
+map_err_ignore = "warn"
+clone_on_ref_ptr = "warn"
+undocumented_unsafe_blocks = "warn"
+disallowed_macros = "warn"
+disallowed_methods = "warn"

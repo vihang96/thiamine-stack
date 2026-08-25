@@ -158,6 +158,19 @@ const templateStubs = (() => {
  */
 const isProse = (token) => !CODEISH.test(token)
 
+/**
+ * Keep tokens distinctive enough that sharing one means something.
+ *
+ * Two standards both having an Enforceable-by column makes them share the word "review",
+ * and both naming a sibling makes them share its name. Neither is evidence that their
+ * guidance has merged, so drop fragments, artifact names, and short single words.
+ */
+function isDistinctive(token) {
+	if (!/^[a-z]/.test(token)) return false
+	if (known.has(token)) return false
+	return token.includes(' ') || token.length >= 7
+}
+
 const captures = (body, re) => new Set([...body.matchAll(re)].map((m) => m[1]))
 
 /**
@@ -429,7 +442,11 @@ for (const name of skillNames) {
 	const quoted = new RegExp(`"([^"\\n]{${MIN_EXAMPLE_LEN},80})"`, 'g')
 	const coded = new RegExp('`([^`\\n]{' + MIN_EXAMPLE_LEN + ',80})`', 'g')
 	const ex = new Set([...captures(body, quoted), ...captures(body, coded)])
-	examplesBySkill.set(name, new Set([...ex].map((e) => e.trim().toLowerCase()).filter(isProse)))
+	const cleaned = [...ex]
+		.map((e) => e.trim().toLowerCase())
+		.filter(isProse)
+		.filter(isDistinctive)
+	examplesBySkill.set(name, new Set(cleaned))
 	skillMeta.set(name, { owns: fm.owns, body, links: [...declared, ...soft] })
 }
 
@@ -504,46 +521,65 @@ for (const [kind, names] of [
 }
 
 // ---------------------------------------------------------------- lint rule claims
-// A skill that names a lint rule in an Enforceable-by column is claiming that something
-// mechanical backs that criterion. If the rule is not in lint/<language>/rules/, the claim
-// is false and the criterion is review-only without saying so.
-const LINT_RULE_REF = /`((?:no|require|prefer)-[a-z0-9-]+)`/g
+// A skill that names a lint in an Enforceable-by column claims something mechanical backs
+// that criterion. If the lint is not there, the claim is false and the criterion is
+// review-only without saying so. How a language declares its lints differs, so each
+// contributes both the names it has and the shape of a citation.
+const lintLanguages = new Map()
 
-const lintRules = new Map() // language -> Set of rule names
 for (const language of listdir('lint')) {
-	if (!isDir(ROOT, 'lint', language, 'rules')) continue
-	lintRules.set(
-		language,
-		new Set(
-			listdir(`lint/${language}/rules`)
-				.filter((f) => f.endsWith('.ts') && !f.endsWith('.test.ts'))
-				.map((f) => f.replace(/\.ts$/, '')),
-		),
-	)
+	if (!isDir(ROOT, 'lint', language)) continue
+
+	// Authored rules, one file per rule.
+	if (isDir(ROOT, 'lint', language, 'rules')) {
+		lintLanguages.set(language, {
+			names: new Set(
+				listdir(`lint/${language}/rules`)
+					.filter((f) => f.endsWith('.ts') && !f.endsWith('.test.ts'))
+					.map((f) => f.replace(/\.ts$/, '')),
+			),
+			ref: /`((?:no|require|prefer)-[a-z0-9-]+)`/g,
+			where: `lint/${language}/rules/`,
+		})
+		continue
+	}
+
+	// Configured lints from an existing linter, listed in a generated snapshot.
+	const snapshot = `lint/${language}/lints-available.txt`
+	if (exists(ROOT, snapshot)) {
+		lintLanguages.set(language, {
+			names: new Set(
+				read(snapshot)
+					.split('\n')
+					.filter((l) => l && !l.startsWith('#'))
+					.map((l) => l.trim()),
+			),
+			ref: /`((?:clippy|rustc)::[a-z0-9_]+)`/g,
+			where: snapshot,
+			stale: true,
+		})
+	}
 }
 
-if (lintRules.size) {
-	for (const name of skillNames) {
-		const rel = `skills/${name}/SKILL.md`
-		if (!exists(ROOT, rel)) continue
+for (const name of skillNames) {
+	const rel = `skills/${name}/SKILL.md`
+	if (!exists(ROOT, rel)) continue
 
-		// A skill named for a language is held to that language's rule set, so a TypeScript
-		// skill cannot satisfy a claim with a rule that lives under another language.
-		const language = [...lintRules.keys()].find((l) => name.endsWith(`-${l}`) || name === l)
-		const have = language
-			? lintRules.get(language)
-			: new Set([...lintRules.values()].flatMap((set) => [...set]))
-		const where = language ? `lint/${language}/rules/` : 'any lint/<language>/rules/'
+	// A skill named for a language is held to that language's lints, so a Rust skill
+	// cannot satisfy a claim with a TypeScript rule.
+	const language = [...lintLanguages.keys()].find((l) => name.endsWith(`-${l}`) || name === l)
+	if (!language) continue
+	const { names, ref, where, stale } = lintLanguages.get(language)
 
-		for (const ref of captures(read(rel), LINT_RULE_REF)) {
-			if (!have.has(ref)) {
-				err(
-					rel,
-					`claims lint rule \`${ref}\`, which is not in ${where}`,
-					`add ${language ? `lint/${language}/rules/${ref}.ts` : 'the rule'}, or change the Enforceable-by entry to review`,
-				)
-			}
-		}
+	for (const cited of captures(read(rel), ref)) {
+		if (names.has(cited)) continue
+		err(
+			rel,
+			`claims lint \`${cited}\`, which is not in ${where}`,
+			stale
+				? 'either the lint does not exist, or the snapshot predates it. Run scripts/regen-rust-lints.sh.'
+				: `add lint/${language}/rules/${cited}.ts, or change the Enforceable-by entry to review`,
+		)
 	}
 }
 
