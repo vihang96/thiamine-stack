@@ -1,7 +1,7 @@
 # Trigger examples: unslop-typescript
 
 Prompts that must load this skill, and near-misses that must not. A manual rehearsal
-today; these become `claude plugin eval` cases when that command leaves early access.
+today. They become `claude plugin eval` cases when that command leaves early access.
 
 ## Should fire
 

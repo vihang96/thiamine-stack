@@ -13,10 +13,10 @@ Prompts that must load this skill, and near-misses that must not.
 
 ## Should not fire
 
-- rename this function to something clearer — naming in code, not a document
-- why is this test failing — debugging, no prose involved
-- make this paragraph sound less like a robot — that is unslop-prose alone; no
-  document-level decision is in play
+- rename this function to something clearer. Naming in code, not a document.
+- why is this test failing. Debugging, with no prose involved.
+- make this paragraph sound less like a robot. That is unslop-prose alone. No
+  document-level decision is in play.
 
 ## Fires alongside unslop-prose
 

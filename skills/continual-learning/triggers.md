@@ -1,7 +1,7 @@
 # Trigger examples: continual-learning
 
 Prompts that must load this skill, and near-misses that must not. A manual rehearsal
-today; these become `claude plugin eval` cases when that command leaves early access.
+today. They become `claude plugin eval` cases when that command leaves early access.
 
 This skill sets `disable-model-invocation`, so the prompts below describe when you should
 type `/continual-learning`, not when the agent picks it up on its own.
@@ -16,10 +16,10 @@ type `/continual-learning`, not when the agent picks it up on its own.
 
 ## Should not fire
 
-- remember that I prefer tabs over spaces — a single fact stated right now, so write it
-  directly rather than mining transcripts for it
-- add a rule about swallowing exceptions — that is thiamine-author, because a rule is a
-  portable standard rather than a fact about this project
-- what did I ask you to do earlier in this session — already in context, so no mining
-  is needed
-- summarize this conversation — a summary is not a durable memory
+- remember that I prefer tabs over spaces. A single fact stated right now, so write it
+  directly rather than mining transcripts for it.
+- add a rule about swallowing exceptions. That is thiamine-author, because a rule is a
+  portable standard rather than a fact about this project.
+- what did I ask you to do earlier in this session. Already in context, so no mining is
+  needed.
+- summarize this conversation. A summary is not a durable memory.

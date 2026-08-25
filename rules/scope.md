@@ -40,7 +40,7 @@ Two legitimate cases:
 
 - The requested change is **impossible** without the adjacent one. Say why, then do both.
 - The adjacent change is **smaller than describing it**. A typo in a string you are
-  already editing. Use this sparingly; it is the loophole that eats the rule.
+  already editing. Use this sparingly. It is the loophole that eats the rule.
 
 ## Signals you have violated it
 

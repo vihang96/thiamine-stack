@@ -12,6 +12,6 @@ Prompts that must load this skill, and near-misses that must not.
 
 ## Should not fire
 
-- set thiamine up on my other laptop — that is thiamine-install
-- review this diff against the rules — applying the standard, not authoring it
-- write a python script that renames these files — ordinary work with no artifact to add
+- set thiamine up on my other laptop. That is thiamine-install.
+- review this diff against the rules. Applying the standard, not authoring it.
+- write a python script that renames these files. Ordinary work, with no artifact to add.

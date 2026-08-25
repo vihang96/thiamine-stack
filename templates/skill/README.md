@@ -5,11 +5,11 @@ Copy one of the two shapes into `skills/<your-name>/SKILL.md`, then run
 
 ## Pick a shape
 
-**`procedure.SKILL.md`** — the skill *does* something. Steps, in order, with a
-verification step at the end. Installing, migrating, debugging, releasing.
+**`procedure.SKILL.md`** does something. Ordered steps, ending in verification.
+Installing, migrating, debugging, releasing.
 
-**`standard.SKILL.md`** — the skill *judges* something. Criteria, a worked example,
-and a review checklist. Writing style, code review, API design.
+**`standard.SKILL.md`** judges something. Criteria that all apply at once, a worked
+example, and a review checklist. Writing style, code review, API design.
 
 The tell: if the sections would naturally be numbered and time-ordered, it is a
 procedure. If they are groups of criteria that all apply at once, it is a standard.
@@ -22,11 +22,11 @@ an empty heading is worse than a missing one.
 ## The description is the whole game
 
 The agent sees only `name` + `description` when deciding whether to load the skill.
-A description that says what the skill *is* gets ignored; one that says when to *use*
-it gets invoked. Third person, and name the words a user would actually type.
+A description that says what the skill is gets ignored. One that says when to use it
+gets invoked. Third person, and name the words a user would actually type.
 
 Weak: `Cut AI tells from any writing. Must always apply.`
-Strong: `Cuts AI tells from prose — filler, hedging, puffery, formatting artifacts.
+Strong: `Cuts AI tells from prose: filler, hedging, puffery, and formatting artifacts.
 Use when writing or editing docs, PR descriptions, commit messages, or any prose
 that will be read by a person.`
 
@@ -39,12 +39,12 @@ recognize, and "must always apply" describes a rule, not a skill.
 | --- | --- | --- |
 | The agent loads it when relevant | *(default)* | agent's judgment, from `description` |
 | Only you invoke it | `disable-model-invocation: true` | you typing `/skill-name` |
-| It always applies | not a skill — see below | always in context |
+| It always applies | not a skill, see below | always in context |
 
 There is no skill setting that means "always." Skill invocation is discretionary by
 construction. If something must always apply, put a one-line entry in
 `rules/RULES.md` and let that line route to the skill for the detail. The rule is the
-trigger; the skill is the payload.
+trigger. The skill is the payload.
 
 Setting `disable-model-invocation: true` while writing a description full of
 "use when..." triggers promises behavior that cannot happen. Pick one.
@@ -63,9 +63,8 @@ see_also: [technical-writing] # a peer boundary; this skill still works alone
 ```
 
 Reach for `requires` only when the skill genuinely breaks without the other. A
-lower-level skill naming a higher-level one is almost always `see_also` — otherwise
-you have coupled the general thing to the specific thing, and it can no longer ship
-on its own.
+lower-level skill naming a higher-level one is almost always `see_also`. Otherwise you
+have coupled the general thing to the specific thing, and it can no longer ship alone.
 
 `scripts/validate.mjs` also catches undeclared references heuristically, so declaring
 is optional and belongs to you rather than the harness. Harnesses ignore keys they
@@ -84,7 +83,7 @@ not by deleting one of them.
 ## Three habits worth copying
 
 - **Cite sources with a fetch date.** `Source: diataxis.fr, fetched 2026-07-18.`
-  Standards go stale silently; a date makes the staleness visible.
+  Standards go stale silently. A date makes the staleness visible.
 - **Include a worked example, before and after,** annotated with which criterion did
   what. It teaches the criteria interacting, which a list cannot.
 - **End a standard with a review checklist.** It turns authoring guidance into
@@ -96,8 +95,8 @@ Every skill gets a `triggers.md` next to its `SKILL.md`, recording prompts that 
 load it and near-misses that must not. `scripts/new.mjs` scaffolds it for you.
 
 This is the only record of what the description is *supposed* to match. Static checks
-can confirm a description names triggers; they cannot confirm the agent loads the skill
-when you type one. Until `claude plugin eval` is available, read the file and try the
+can confirm that a description names triggers. They cannot confirm that the agent loads
+the skill when you type one. Until `claude plugin eval` is available, read the file and try the
 prompts by hand.
 
 Near-misses are the half people skip and the half that matters. A skill with no recorded

@@ -34,4 +34,4 @@ verification step produces confident, unchecked claims.>
 
 Read these only when the situation calls for them.
 
-- `references/<topic>.md` — <the condition that makes it worth reading>
+- `references/<topic>.md`. <The condition that makes it worth reading.>

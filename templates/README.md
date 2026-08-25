@@ -20,7 +20,7 @@ not four:
 
 | Artifact | Who invokes it | Context cost |
 | --- | --- | --- |
-| **Rule** (`rules/RULES.md`) | nobody — always loaded | every request, forever |
+| **Rule** (`rules/RULES.md`) | nobody, always loaded | every request, forever |
 | **Rule detail** (`rules/<id>.md`) | agent, on demand | only when read |
 | **Skill** | the agent, from the description | only when it fires |
 | **Skill**, `disable-model-invocation: true` | you, by typing `/name` | only when you ask |
@@ -28,11 +28,11 @@ not four:
 
 Two questions resolve most cases:
 
-- Does it apply to a *subset* of work — a language, a file type, a phase? Then it is a
-  skill, not a rule, even if it feels fundamental.
+- Does it apply to a subset of work, such as one language, one file type, or one phase?
+  Then it is a skill rather than a rule, even if it feels fundamental.
 - Would you be annoyed if it fired unprompted? Then either a command, or a skill with
   `disable-model-invocation: true`. Prefer the skill when the content is long or has
-  references; prefer the command when it is a short procedure you trigger by name.
+  references. Prefer the command when it is a short procedure you trigger by name.
 
 ## The thing that has no artifact type
 
@@ -41,7 +41,7 @@ construction, so a skill whose description says "always" will fire unpredictably
 
 Long always-on content splits in two: a one-line entry in `rules/RULES.md` that is
 cheap enough to keep loaded forever, and a skill holding the detail that the line
-routes to. The rule is the trigger; the skill is the payload.
+routes to. The rule is the trigger. The skill is the payload.
 
 ## Two artifacts, one territory
 
@@ -59,7 +59,7 @@ Link peers with `see_also:`, not `requires:`. `requires:` means the artifact doe
 work without the other one. That is rarely true of a boundary between equals, and it
 makes the more general artifact unusable on its own.
 
-Scoping beats deleting. A standard that says "applies to prose; `reference` mode
+Scoping beats deleting. A standard that says "applies to prose, and `reference` mode
 overrides the voice rules here" is more useful than either artifact alone.
 
 ## Adding one

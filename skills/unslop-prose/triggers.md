@@ -13,9 +13,9 @@ Prompts that must load this skill, and near-misses that must not.
 
 ## Should not fire
 
-- rename this variable — code, not prose
-- why is the build failing — debugging, no prose involved
-- restructure these docs, they mix a tutorial and reference — document-level work,
-  which technical-writing owns
-- write the API reference for this module — authoring a document with a mode; this
-  skill applies to its sentences afterwards, not to the decision of what to write
+- rename this variable. Code, not prose.
+- why is the build failing. Debugging, with no prose involved.
+- restructure these docs, they mix a tutorial and reference. Document-level work, which
+  technical-writing owns.
+- write the API reference for this module. Authoring a document with a mode. This skill
+  applies to its sentences afterwards, not to the decision of what to write.
