@@ -10,7 +10,7 @@ underneath. Read that file when the rule seems wrong for the situation in front 
 - Out-of-scope work needs agreement first. Never fold a refactor into a feature diff.
 - Leave a discovered problem as a stated observation, not an unrequested fix.
 
-Rationale: `rules/scope.md`.
+Rationale: `rules/why/scope.md`.
 
 ## Abstraction
 
@@ -20,7 +20,7 @@ Rationale: `rules/scope.md`.
 - A wrapper with one caller is a rename. Inline it, with any adapter or layer earning nothing.
 - Count both budgets: hops from question to answer, and state that can change the answer.
 
-Rationale: `rules/reader-load.md`.
+Rationale: `rules/why/reader-load.md`.
 
 ## Reuse
 
@@ -44,14 +44,14 @@ Rationale: `rules/reader-load.md`.
 - Assume every step is retried. Leave the same state the second time as the first.
 - Name the key that makes repeating it safe, in the code rather than in your head.
 
-Rationale: `rules/idempotence.md`.
+Rationale: `rules/why/idempotence.md`.
 
 ## Debugging
 
 - Reproduce it before changing anything. A fix you cannot trigger is a guess.
 - Trace the symptom to its cause. A fix at the surface leaves the cause to break elsewhere.
 
-Rationale: `rules/root-causes.md`.
+Rationale: `rules/why/root-causes.md`.
 
 ## Comments and docs
 
@@ -81,4 +81,4 @@ Rationale: `rules/root-causes.md`.
 - Keep the subject short and imperative. Put the why in the body, and only when needed.
 - Deleting code is a valid deliverable. Prefer it to adding.
 
-Rationale: `rules/commit-messages.md`.
+Rationale: `rules/why/commit-messages.md`.

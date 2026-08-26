@@ -14,7 +14,7 @@ the most common defect in a standards repo.
 | Artifact | Who invokes it | Right when |
 | --- | --- | --- |
 | Rule (`rules/RULES.md`) | nobody, always loaded | it applies to essentially all work |
-| Rule detail (`rules/<id>.md`) | agent, on demand | the rationale is long but the rule is one line |
+| Rule detail (`rules/why/<id>.md`) | agent, on demand | the rationale is long but the rule is one line |
 | Skill | agent, from the description | "when X happens, do Y", X being recognizable |
 | Skill + `disable-model-invocation: true` | you, typing `/name` | long content you want on demand only |
 | Command | you, typing `/name` | a short procedure you trigger by name |

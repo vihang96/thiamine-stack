@@ -14,7 +14,7 @@ PR", and at the end of any change that is ready for review.
    sequence of independent pull requests. See `playbooks/stacked-prs.md`.
 
 3. Title each one in the repo's commit convention, since squash-merge turns the title into
-   the commit message and release tooling reads it. `rules/commit-messages.md` covers the
+   the commit message and release tooling reads it. `rules/why/commit-messages.md` covers the
    format and how the type maps to a version bump. Name a real symbol in the subject when
    one carries the change.
 

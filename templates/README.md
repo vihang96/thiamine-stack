@@ -12,7 +12,7 @@ which.
 | Give the agent criteria for judging or reviewing something | `skill/standard.SKILL.md` | `skills/<name>/` |
 | Delegate read-heavy work to an isolated context | `agent/` | `agents/<name>.md` |
 | Give yourself a `/shortcut` you invoke deliberately | `command/` | `commands/<name>.md` |
-| Add a standard that applies to all code, always | `rule/` | `rules/<id>.md` + a line in `rules/RULES.md` |
+| Add a standard that applies to all code, always | `rule/` | `rules/why/<id>.md` + a line in `rules/RULES.md` |
 
 Scaffold with `node scripts/new.mjs <type> <name>` rather than copying by hand, and run
 `node scripts/validate.mjs` before calling it done.
@@ -25,7 +25,7 @@ not four:
 | Artifact | Who invokes it | Context cost |
 | --- | --- | --- |
 | **Rule** (`rules/RULES.md`) | nobody, always loaded | every request, forever |
-| **Rule detail** (`rules/<id>.md`) | agent, on demand | only when read |
+| **Rule detail** (`rules/why/<id>.md`) | agent, on demand | only when read |
 | **Skill** | the agent, from the description | only when it fires |
 | **Skill**, `disable-model-invocation: true` | you, by typing `/name` | only when you ask |
 | **Command** | you, by typing `/name` | only when you ask |

@@ -58,8 +58,9 @@ const asList = (v) => (Array.isArray(v) ? v : v ? [v] : [])
 
 // ---------------------------------------------------------------- inventory
 const skillNames = listdir('skills').filter((d) => isDir(ROOT, 'skills', d))
-const ruleIds = listdir('rules')
-	.filter((f) => f.endsWith('.md') && f !== 'RULES.md')
+// Rationales live in rules/why/ so the always-on index is not buried among them.
+const ruleIds = listdir('rules/why')
+	.filter((f) => f.endsWith('.md'))
 	.map((f) => f.slice(0, -3))
 const commandNames = listdir('commands')
 	.filter((f) => f.endsWith('.md'))
@@ -479,22 +480,26 @@ for (let i = 0; i < skillNames.length; i++) {
 // ---------------------------------------------------------------- rules
 if (exists(ROOT, 'rules/RULES.md')) {
 	for (const rid of ruleIds) {
-		const [fm, body] = frontmatter(read(`rules/${rid}.md`))
+		const [fm, body] = frontmatter(read(`rules/why/${rid}.md`))
 		if (fm === null) {
-			warn(`rules/${rid}.md`, 'no frontmatter', 'add id, summary, and enforced_by')
+			warn(`rules/why/${rid}.md`, 'no frontmatter', 'add id, summary, and enforced_by')
 			continue
 		}
 		if (fm.id !== rid) {
-			err(`rules/${rid}.md`, `id '${fm.id}' does not match filename '${rid}'`, `set  id: ${rid}`)
+			err(
+				`rules/why/${rid}.md`,
+				`id '${fm.id}' does not match filename '${rid}'`,
+				`set  id: ${rid}`,
+			)
 		}
 		if (!fm.enforced_by) {
 			warn(
-				`rules/${rid}.md`,
+				`rules/why/${rid}.md`,
 				'no enforced_by',
 				'name the linter, hook, or review step that catches violations',
 			)
 		}
-		checkDeps(`rules/${rid}.md`, body, asList(fm.requires), null, asList(fm.see_also))
+		checkDeps(`rules/why/${rid}.md`, body, asList(fm.requires), null, asList(fm.see_also))
 	}
 } else {
 	err('rules/RULES.md', 'missing', 'this file is the always-on standard every harness points at')
@@ -595,7 +600,7 @@ if (exists(ROOT, 'rules/RULES.md')) {
 	for (const rid of ruleIds) {
 		if (!index.includes(`${rid}.md`)) {
 			warn(
-				`rules/${rid}.md`,
+				`rules/why/${rid}.md`,
 				'not named from rules/RULES.md',
 				'point at it from the section it explains, or nobody reading the rule will find it',
 			)

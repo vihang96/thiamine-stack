@@ -18,7 +18,7 @@ read [INSTALL.md](INSTALL.md), or tell an agent `use the thiamine-install skill`
 
 ```
 rules/RULES.md          the always-on standard, terse and harness-agnostic
-rules/<id>.md           the rationale behind one rule, read on demand
+rules/why/<id>.md           the rationale behind one rule, read on demand
 skills/<name>/          SKILL.md, plus triggers.md recording when it should load
 agents/<name>.md        delegated work whose output is small and whose input is not
 hooks/                  Claude Code hooks, plus their handlers
@@ -199,7 +199,7 @@ why. Copying one by hand still works, because nothing here requires the scripts.
 ## Status
 
 Early. The install path, templates, authoring flow, and validator are in place. The rule
-corpus in `rules/RULES.md` is seeded but not complete. `rules/scope.md` is the exemplar
+corpus in `rules/RULES.md` is seeded but not complete. `rules/why/scope.md` is the exemplar
 for what an expanded rule looks like.
 
 `node scripts/validate.mjs --strict` reports 0 errors and 0 warnings at this commit.
