@@ -2,6 +2,10 @@
 
 Pick by what you are trying to change about the agent's behavior:
 
+A skill can carry `references/` for detail, `playbooks/` for procedures with a reply
+contract, and `scripts/` for the mechanical steps. See `skill/README.md` for which is
+which.
+
 | You want to... | Use | Lives in |
 | --- | --- | --- |
 | Give the agent a repeatable procedure for when a situation arises | `skill/procedure.SKILL.md` | `skills/<name>/` |

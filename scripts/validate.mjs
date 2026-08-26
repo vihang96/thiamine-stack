@@ -119,7 +119,7 @@ const REPO_DIRS = new Set(
 		.filter((e) => e.isDirectory())
 		.map((e) => e.name),
 )
-const SKILL_LOCAL_DIRS = new Set(['references', 'scripts', 'assets'])
+const SKILL_LOCAL_DIRS = new Set(['references', 'playbooks', 'scripts', 'assets'])
 
 const CODEISH = /[/._(){}<>=]|^--|^\\$/
 

@@ -89,6 +89,29 @@ not by deleting one of them.
 - **End a standard with a review checklist.** It turns authoring guidance into
   something that can audit work that already exists.
 
+## What goes in a subdirectory
+
+A `SKILL.md` loads in full every time the skill fires, so anything situational lives
+beside it and gets read on demand. Three directories, and the distinction is what the
+reader does with the file:
+
+| Directory | Holds | The reader |
+| --- | --- | --- |
+| `references/` | detail, options, worked examples | looks something up |
+| `playbooks/` | a procedure with its own reply contract | executes it and reports |
+| `scripts/` | a deterministic step | runs it |
+
+A playbook is not a long reference. It has a trigger sentence saying when it applies,
+numbered steps, and a closing line stating what to report. If it has no reply contract it
+is a reference, and if it has no judgement in it at all it should be a script.
+
+Reach for `scripts/` whenever a step is mechanical. Prompting an agent to walk sixty
+directories and compare branch states is slower and less reliable than fifty lines of
+shell, and the script is the artifact someone can rerun.
+
+`scripts/validate.mjs` checks that a file named in `SKILL.md` exists in all three, so a
+pointer cannot go stale.
+
 ## Trigger examples
 
 Every skill gets a `triggers.md` next to its `SKILL.md`, recording prompts that must
