@@ -102,18 +102,13 @@ Read [templates/README.md](templates/README.md) before adding anything, and
 
 Six skills and three rules derive from `pstack` in
 [cursor/plugins](https://github.com/cursor/plugins), mostly its `poteto-mode` playbooks.
-Those originals assume a stacking tool, a single repo, and an agent that merges. None of
-that holds here, so they were reworked rather than copied.
 
 | What | Source | License |
 | --- | --- | --- |
 | Structure and most playbooks | [cursor/plugins](https://github.com/cursor/plugins) | none stated |
 | TypeScript rules, vendored under `lint/typescript/` | [dmmulroy/anti-slop](https://github.com/dmmulroy/anti-slop) | MIT |
 | Rust criteria and the clippy set | [Microsoft Pragmatic Rust Guidelines](https://microsoft.github.io/rust-guidelines/) | MIT |
-| Python criteria | [affaan-m/ECC](https://github.com/affaan-m/ECC) | MIT |
 | Writing standards | [Diátaxis](https://diataxis.fr), Google developer style, ASD-STE100, Global English | various |
-
-cursor/plugins states no license, so its row is credit rather than a license claim.
 
 ## Status
 

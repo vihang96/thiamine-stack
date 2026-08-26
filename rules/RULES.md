@@ -13,6 +13,7 @@ import line names the path.
 
 - Build what was asked. Nothing adjacent, nothing anticipatory.
 - Out-of-scope work needs agreement first. Never fold a refactor into a feature diff.
+- Ambiguous scope takes the narrowest reading. Name the wider one you did not take.
 - Leave a discovered problem as a stated observation, not an unrequested fix.
 
 Rationale: `why/scope.md`.
