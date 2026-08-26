@@ -18,6 +18,10 @@ file, where it exists, when the rule seems wrong for the situation in front of y
   that needs them.
 - Prefer editing an existing file over adding a new one. A new module needs a reason
   that survives being said out loud.
+- A wrapper with one caller is a rename. Inline it, along with the adapter that has no
+  second implementation and the layer added for a future that did not arrive.
+- Count what a reader has to carry: the hops between the question and the answer, and the
+  state that can change the answer. Both are budgets, and they are independent.
 
 ## Reuse
 
