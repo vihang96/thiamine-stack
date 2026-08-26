@@ -10,6 +10,9 @@ PR", and at the end of any change that is ready for review.
    contract PR goes first and its number goes in the consumer's description. A reviewer
    who cannot tell which lands first has to work it out from the diff.
 
+   Within one repo, a change too large to review in one piece is a stack rather than a
+   sequence of independent pull requests. See `playbooks/stacked-prs.md`.
+
 3. Title each one in the repo's commit convention, since squash-merge turns the title into
    the commit message and release tooling reads it. `rules/commit-messages.md` covers the
    format and how the type maps to a version bump. Name a real symbol in the subject when
@@ -31,8 +34,10 @@ PR", and at the end of any change that is ready for review.
    `technical-writing` skills to the title and body, because both are prose a person reads
    under time pressure.
 
-5. Open ready, not draft. Some tools default to draft, so check after creating and run the
-   host's ready command if it opened as one. A draft does not request review, so it sits.
+5. Open ready, not draft. Several tools default to draft, including `gh stack submit`
+   unless you pass `--open`. Check with `gh pr view` after creating rather than assuming,
+   and run the host's ready command if one opened as a draft. A draft requests review from
+   nobody, so it sits until someone notices.
 
 6. Do not start watching checks yet. Post the URLs and finish the other repos first.
    Driving one PR to green while another is unopened spends checks on a state that is
