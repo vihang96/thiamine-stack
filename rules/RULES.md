@@ -63,4 +63,9 @@ file, where it exists, when the rule seems wrong for the situation in front of y
 ## Diffs
 
 - One concern per commit. Refactor and behavior change do not travel together.
+- Write the commit message in the repo's own convention, and check the repo for what that
+  is before guessing. Where release tooling reads commits, the message is an input to a
+  build rather than a note to a reader.
+- Keep the subject short and imperative, under the limit the repo enforces. Put the why in
+  the body, and only when it is not obvious from the diff.
 - Deleting code is a valid deliverable. Prefer it to adding.

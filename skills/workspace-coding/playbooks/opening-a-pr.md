@@ -10,9 +10,13 @@ PR", and at the end of any change that is ready for review.
    contract PR goes first and its number goes in the consumer's description. A reviewer
    who cannot tell which lands first has to work it out from the diff.
 
-3. Title each one as `type(scope): subject`. Use `feat`, `fix`, `docs`, `refactor`,
-   `test`, `chore`, or `perf`, with the changed area as the scope. Keep the subject short
-   and imperative, and name a real symbol when one carries the change. No trailing period.
+3. Title each one in the repo's commit convention, since squash-merge turns the title into
+   the commit message and release tooling reads it. `rules/commit-messages.md` covers the
+   format and how the type maps to a version bump. Name a real symbol in the subject when
+   one carries the change.
+
+   Check whether the repo squash-merges before assuming the title matters more than the
+   commits. Where it merges commits as they are, the individual messages are what ship.
 
 4. Write the description in these sections, dropping any that would be empty:
 
