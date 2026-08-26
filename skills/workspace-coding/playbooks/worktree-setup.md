@@ -8,9 +8,9 @@ a change that spans services, and for adding a repo to a change already in progr
    `feat/guide-success-rate` lands at `tree/feat-guide-success-rate`.
 
 2. Decide which repos are in. Ask what the change actually edits rather than adding every
-   repo that might be related. A service and its proto repo usually move together, since
-   the proto has to land first. A worktree in a repo you never edit is noise in every
-   future audit.
+   repo that might be related. A service and the repo holding its published contract
+   usually move together, and the contract has to land first, since the service depends on
+   what it declares. A worktree in a repo you never edit is noise in every future audit.
 
 3. For each repo, fetch and branch from the remote default rather than from whatever the
    local checkout happens to be on:

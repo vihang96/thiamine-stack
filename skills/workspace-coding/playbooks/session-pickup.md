@@ -29,7 +29,7 @@ left off", "what was I working on", and starting on a change someone else paused
    git -C "$path" log --oneline HEAD..origin/HEAD | head
    ```
 
-   A proto change that landed is the common case, and it means the service worktree is now
+   A landed contract change is the common case, and it means the service worktree is now
    building against something older than the remote.
 
 5. Re-verify before continuing. Build or test each worktree once. The note says what was

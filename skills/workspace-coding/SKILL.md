@@ -1,11 +1,11 @@
 ---
-name: workspace
+name: workspace-coding
 description: "Works across a multi-repo workspace using one git worktree per repo per change. Use when starting work that touches more than one service, when creating or cleaning up worktrees, when pausing work to resume later, or when picking up a session someone else left."
 owns: "the multi-repo workspace layout, worktree lifecycle, and handing work between sessions"
 see_also: [thiamine-author]
 ---
 
-# Workspace
+# Workspace coding
 
 A workspace is a directory of sibling repositories, one per service. A change usually
 touches more than one of them, so the unit of work is a set of worktrees on the same
@@ -13,21 +13,21 @@ branch name rather than a single checkout.
 
 ```
 <workspace>/
-  astral/                              the main checkout, always on the default branch
+  orders/                          the main checkout, always on the default branch
     tree/
-      feat-guide-success-rate          a worktree, one per change
+      feat-partial-refunds         a worktree, one per change
       fix-retry-backoff
-  astral-proto/
+  orders-schema/                   the contract the service publishes
     tree/
-      feat-guide-success-rate          same branch name, paired change
-  agora/
+      feat-partial-refunds         same branch name, paired change
+  inventory/
 ```
 
 ## Conventions
 
 **One branch name across every repo a change touches.** A feature spanning a service and
-its proto repo uses the same branch in both. That is what makes the set findable later,
-and it is what `scripts/audit.sh` groups by.
+the repo holding its published contract uses the same branch in both. That is what makes
+the set findable later, and it is what `scripts/audit.sh` groups by.
 
 **Worktrees live at `<repo>/tree/<branch-with-dashes>`.** Slashes in the branch become
 dashes, so `feat/guide-success-rate` becomes `tree/feat-guide-success-rate`. One directory

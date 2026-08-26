@@ -1,14 +1,14 @@
-# Trigger examples: workspace
+# Trigger examples: workspace-coding
 
 Prompts that must load this skill, and near-misses that must not.
 
 ## Should fire
 
-- set up worktrees for a change that touches astral and its proto
+- set up worktrees for a change that spans a service and its schema repo
 - clean up the worktrees, there are too many
 - what was I working on before the weekend
 - I need to stop here, leave things so I can pick them up tomorrow
-- add the agora repo to the branch I am already working on
+- add another repo to the branch I am already working on
 - which worktrees have uncommitted work
 
 ## Should not fire
