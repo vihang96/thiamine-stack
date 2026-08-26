@@ -84,8 +84,9 @@ enforce in your repos.
 | Skill | Why |
 | --- | --- |
 | `thiamine-install` | Wires the stack into whichever harnesses are on the machine. |
-| `thiamine-author` | Adds a rule, skill, agent, or command without creating a second answer to something. |
+| `thiamine-author` | Adds or revises a rule, skill, agent, or command without creating a second answer to something. |
 | `continual-learning` | Turns what a session learned about you into memory that outlives it. |
+| `drift-audit` | Guidance goes stale silently. A periodic pass over what agents are told, against what the code now does. |
 
 ## Extending it
 
@@ -98,7 +99,8 @@ Or hand it over: `use the thiamine-author skill to add a rule about swallowed ex
 
 The validator is the part worth knowing about. It catches what prompting does not: a skill
 naming a helper that does not exist, a description promising a trigger that cannot fire,
-two skills that have quietly merged, an enforcement claim for a lint rule nobody wrote.
+two skills that have quietly merged, an enforcement claim for a lint rule nobody wrote. It
+also checks the README against the repo, so this page cannot quietly stop describing it.
 Read [templates/README.md](templates/README.md) before adding anything, and
 [lint/README.md](lint/README.md) to wire the lint layer into a repo.
 
@@ -116,6 +118,6 @@ Six skills and three rules derive from `pstack` in
 
 ## Status
 
-Early, and in use. Thirteen skills, eleven always-on rule sections, and a lint layer for
+Early, and in use. Fourteen skills, eleven always-on rule sections, and a lint layer for
 TypeScript, Rust, and Python. The rule corpus stays small on purpose, since every line is
 paid on every request.

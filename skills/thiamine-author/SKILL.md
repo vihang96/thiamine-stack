@@ -1,10 +1,38 @@
 ---
 name: thiamine-author
-description: Authors a new thiamine skill, agent, command, or rule from the repo templates, picking the right artifact type and shape and validating it before finishing. Use when adding to the thiamine stack, when asked to "add a skill, rule, or command" for engineering standards, or when a recurring correction should become a permanent standard.
+description: Authors or revises a thiamine skill, agent, command, or rule from the repo templates, picking the right artifact type and shape and validating it before finishing. Use when adding to or changing the thiamine stack, when asked to "add a skill, rule, or command" for engineering standards, when a recurring correction should become a permanent standard, or when an audit or a session has produced an edit to land.
 requires: [thiamine-install]
+see_also: [drift-audit]
 ---
 
 # Author a thiamine artifact
+
+## Changing one that exists
+
+Most requests that arrive here are edits, not new artifacts. `drift-audit` routes findings
+to this skill, and `continual-learning` stops at the boundary and hands the promotion over.
+Take the edit path when the artifact exists, and skip to Step 7 to validate.
+
+**Check the evidence before the file.** One incident is a preference; the same correction
+twice is a standard. If you cannot name the second occurrence, say so and stop. A corpus
+grows by one artifact per anecdote and then nobody reads it.
+
+Then edit in place, under three constraints:
+
+- **Preserve what nothing contradicts.** Revise the parts with new evidence. Leave the
+  rest, including phrasing you would have written differently.
+- **Prefer the edit to the sibling.** A second artifact next to an almost-right one is the
+  near-duplicate Step 2 exists to prevent. Extending the existing one is nearly always
+  right.
+- **Re-read the description after changing the body.** This is the miss that matters. A
+  skill whose body grew keeps its old triggers, so it stops loading for the work it now
+  handles, and the failure is silent: the skill is never wrong, just never invoked. If the
+  body does something the description does not name, the description is now a defect.
+
+Then re-check what the change reaches: `owns:` and `see_also:` if the artifact annexed
+ground a sibling held, and `triggers.md` for a "should fire" line covering the new
+capability. Deleting is also an outcome. An artifact whose situation stopped occurring is
+removed, not maintained.
 
 ## Step 1. Pick the artifact type
 

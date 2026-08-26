@@ -781,6 +781,107 @@ for (const rel of ['.cursor-plugin/plugin.json']) {
 	}
 }
 
+// ---------------------------------------------------------------- drift
+// The checks above ask whether an artifact is well formed. These ask whether what the
+// repo says about itself is still true. Both counts and inventories go stale silently:
+// nothing breaks, the README just starts describing a repo that no longer exists.
+// Index is the value, so a word that is not a number lands on -1 and is skipped.
+const NUM_WORDS =
+	'zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty'.split(
+		' ',
+	)
+const SNAPSHOT_STALE_DAYS = 180
+
+if (exists(ROOT, 'README.md')) {
+	const readme = read('README.md')
+
+	// The skill tables are the feature map. A skill missing from them ships invisible; a
+	// row with no directory behind it survives a rename and points at nothing.
+	const listed = new Set([...readme.matchAll(/^\| `([a-z][a-z0-9-]*)` *\|/gm)].map((m) => m[1]))
+	for (const name of skillNames) {
+		if (!listed.has(name)) {
+			warn(
+				'README.md',
+				`skill \`${name}\` is not in any skill table`,
+				'add a row with its "why", or a reader of the README never learns it exists',
+			)
+		}
+	}
+	for (const name of listed) {
+		if (!skillNames.includes(name)) {
+			err(
+				'README.md',
+				`skill table lists \`${name}\`, which is not in skills/`,
+				'rename the row to match the directory, or drop it',
+			)
+		}
+	}
+
+	// Spelled-out totals, checked only inside ## Status. Elsewhere "two skills never
+	// quietly disagree" and "six skills derive from pstack" are subset claims, not counts
+	// of the repo, and reading them as totals is how a check earns a reputation for noise.
+	const status = readme.split(/^## /m).find((s) => s.startsWith('Status')) ?? ''
+	const claims = [
+		[/\b(\w+) skills\b/gi, skillNames.length, 'skills'],
+		[/\b(\w+) (?:always-on )?rule sections\b/gi, countRuleSections(), 'rule sections'],
+	]
+	for (const [re, actual, label] of claims) {
+		if (actual === null) continue
+		for (const m of status.matchAll(re)) {
+			const word = NUM_WORDS.indexOf(m[1].toLowerCase())
+			const claimed = word >= 0 ? word : Number(m[1])
+			if (claimed !== actual) {
+				if (!Number.isFinite(claimed)) continue // "the skills", "these skills"
+				warn(
+					'README.md',
+					`## Status claims ${claimed} ${label}, but the repo has ${actual}`,
+					`update the sentence containing "${m[0]}"`,
+				)
+			}
+		}
+	}
+
+	// The lint layer is claimed by language name. A new lint/<lang>/ that nobody added to
+	// the sentence is a feature the README hides.
+	for (const lang of listdir('lint').filter((d) => isDir(ROOT, 'lint', d))) {
+		if (!new RegExp(`\\b${lang}\\b`, 'i').test(readme)) {
+			warn(
+				'README.md',
+				`lint/${lang}/ exists but ${lang} is never named`,
+				'name it where the other languages are listed',
+			)
+		}
+	}
+}
+
+function countRuleSections() {
+	if (!exists(ROOT, 'rules/RULES.md')) return null
+	return (read('rules/RULES.md').match(/^## /gm) ?? []).length
+}
+
+// A generated snapshot is a claim about a toolchain at a moment. It does not rot loudly,
+// so date it and check the date rather than trusting that someone refreshed it.
+for (const lang of listdir('lint').filter((d) => isDir(ROOT, 'lint', d))) {
+	const rel = `lint/${lang}/lints-available.txt`
+	if (!exists(ROOT, rel)) continue
+	const m = read(rel).match(/Generated (\d{4})-(\d{2})-(\d{2})/)
+	if (!m) {
+		warn(
+			rel,
+			'no "Generated <date>" line',
+			'a snapshot with no date cannot be told from a current one',
+		)
+		continue
+	}
+	const age = Math.floor((Date.now() - Date.UTC(+m[1], +m[2] - 1, +m[3])) / 86400000)
+	if (age > SNAPSHOT_STALE_DAYS) {
+		warn(
+			rel,
+			`snapshot is ${age} days old`,
+			'run scripts/regen-lints.sh and re-check the claims that cite it',
+		)
+	}
+}
 // ---------------------------------------------------------------- report
 const show = (label, items) => {
 	for (const { where, msg, fix } of items) {
