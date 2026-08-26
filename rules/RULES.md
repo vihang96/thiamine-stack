@@ -1,8 +1,8 @@
 # Engineering standards
 
 These apply to every change in this repo, whether written by a human or an agent.
-They are terse on purpose. Some carry a longer rationale in `rules/<id>.md`. Read that
-file, where it exists, when the rule seems wrong for the situation in front of you.
+They are terse on purpose. A section with a rationale names it underneath. Read that file
+when the rule seems wrong for the situation in front of you.
 
 ## Scope
 
@@ -10,6 +10,8 @@ file, where it exists, when the rule seems wrong for the situation in front of y
 - If a change requires touching something out of scope, say so and get agreement
   before doing it. Do not fold an unrequested refactor into a feature diff.
 - Leave discovered problems as a stated observation, not an unrequested fix.
+
+Rationale: `rules/scope.md`.
 
 ## Abstraction
 
@@ -22,6 +24,8 @@ file, where it exists, when the rule seems wrong for the situation in front of y
   second implementation and the layer added for a future that did not arrive.
 - Count what a reader has to carry: the hops between the question and the answer, and the
   state that can change the answer. Both are budgets, and they are independent.
+
+Rationale: `rules/reader-load.md`.
 
 ## Reuse
 
@@ -52,12 +56,16 @@ file, where it exists, when the rule seems wrong for the situation in front of y
 - Name the key that makes repeating it safe, in the code rather than in your head. Without
   one, the version that looks safe is the one that has not been retried yet.
 
+Rationale: `rules/idempotence.md`.
+
 ## Debugging
 
 - Reproduce it before changing anything. A fix for a failure you cannot trigger is a guess
   you have no way to check.
 - Trace the symptom to its cause before fixing. Where a failure surfaces is rarely where it
   starts, and a fix at the surface leaves the cause to break something else later.
+
+Rationale: `rules/root-causes.md`.
 
 ## Comments and docs
 
@@ -92,3 +100,5 @@ file, where it exists, when the rule seems wrong for the situation in front of y
 - Keep the subject short and imperative, under the limit the repo enforces. Put the why in
   the body, and only when it is not obvious from the diff.
 - Deleting code is a valid deliverable. Prefer it to adding.
+
+Rationale: `rules/commit-messages.md`.

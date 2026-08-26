@@ -520,6 +520,54 @@ for (const [kind, names] of [
 	}
 }
 
+// ---------------------------------------------------------------- routing and contracts
+// A file nobody routes to is unreachable. An agent with no stated return contract hands
+// back whatever it likes. A rule whose rationale is not named from the index is a file only
+// someone listing the directory will find. All three are structural, so they are checked
+// here rather than left to review.
+for (const name of skillNames) {
+	const rel = `skills/${name}/SKILL.md`
+	if (!exists(ROOT, rel)) continue
+	const body = read(rel)
+	for (const sub of ['playbooks', 'references']) {
+		for (const file of listdir(`skills/${name}/${sub}`)) {
+			if (!file.endsWith('.md')) continue
+			if (!body.includes(`${sub}/${file}`)) {
+				warn(
+					`skills/${name}/${sub}/${file}`,
+					'nothing in SKILL.md routes to this file',
+					`name it from SKILL.md, or delete it. An unrouted ${sub.slice(0, -1)} is read by nobody.`,
+				)
+			}
+		}
+	}
+}
+
+for (const n of agentNames) {
+	const rel = `agents/${n}.md`
+	const [, body] = frontmatter(read(rel))
+	if (!/^#{1,3} .*(return|output|reply|hand back)/im.test(body)) {
+		warn(
+			rel,
+			'no section stating what the agent returns',
+			'the parent receives only the final message, so say its shape and length',
+		)
+	}
+}
+
+if (exists(ROOT, 'rules/RULES.md')) {
+	const index = read('rules/RULES.md')
+	for (const rid of ruleIds) {
+		if (!index.includes(`${rid}.md`)) {
+			warn(
+				`rules/${rid}.md`,
+				'not named from rules/RULES.md',
+				'point at it from the section it explains, or nobody reading the rule will find it',
+			)
+		}
+	}
+}
+
 // ---------------------------------------------------------------- lint rule claims
 // A skill that names a lint in an Enforceable-by column claims something mechanical backs
 // that criterion. If the lint is not there, the claim is false and the criterion is
