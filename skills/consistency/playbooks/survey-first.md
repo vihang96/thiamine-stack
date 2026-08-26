@@ -11,8 +11,23 @@ Ten minutes here saves a migration. The search is cheap and the fork is not.
 
 2. Search widely, not in this repo alone. In a workspace the precedent usually lives in a
    sibling service, and the one you are working in is the newest and least representative.
-   Look at the manifests as well as the code, since a dependency list answers "which library"
-   faster than reading call sites.
+
+   ```sh
+   # which manifests declare it, recursively, since the answer is often in a shared
+   # internal package rather than at a service's root
+   grep -rl -i "<the library>" "$WORKSPACE" \
+     --include=pyproject.toml --include=package.json --include=Cargo.toml \
+     --exclude-dir=node_modules --exclude-dir=.venv --exclude-dir=target --exclude-dir=tree
+
+   # then the call sites, to see how it is used rather than only that it is present
+   grep -rl "<the pattern>" "$WORKSPACE" --include="*.py" --include="*.ts" --include="*.rs" \
+     --exclude-dir=node_modules --exclude-dir=.venv --exclude-dir=target --exclude-dir=tree
+   ```
+
+   Search recursively rather than with a fixed depth. A shared answer frequently lives in an
+   internal package nested inside one service, so a glob over repository roots reports that
+   nobody uses the thing everybody uses. Exclude the worktree directories too, or every
+   result appears once per open branch.
 
 3. Count the answers you find, and which is most recent and most used. Three call sites in
    the newest service beats forty in the oldest if the direction of travel is clear, so read

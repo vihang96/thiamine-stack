@@ -2,7 +2,7 @@
 name: consistency
 description: "Finds the answer a codebase already has for a concern before adding another one, and records the decision when there is none. Use when introducing a pattern, choosing a library or a store, starting a new service, styling a new surface, or when a codebase has grown several answers to one question."
 owns: "how many answers a concern is allowed, and where that decision is written down"
-see_also: [pre-implementation]
+see_also: [pre-implementation, workspace-coding]
 ---
 
 # Consistency
@@ -27,6 +27,11 @@ line of code that depends on the answer.
 Consistency has value independent of which option is better. A worse pattern used
 everywhere is usually cheaper than a better pattern used once, because the reader learns
 one thing rather than two and the tooling has one shape to support.
+
+Converge the structure, not every line. Types and data models are what should agree, since
+a second shape for one concept forces every reader to learn both and every function to
+handle either. Three similar statements are fine and usually better than the abstraction
+that would unify them. This rule is about the model, not about repetition.
 
 ## Scope
 
@@ -71,6 +76,28 @@ parts of the system to answer the question the same way. If yes, it belongs here
 | No existing answer, or a deliberate departure from one | `playbooks/record-the-decision.md` |
 | Found several answers to one question | `playbooks/converge.md` |
 
+## Across a workspace
+
+A workspace of sibling services is where divergence is cheapest to create and most
+expensive to live with. Nothing stops one service picking a different store, a different
+error shape, or a different spacing scale, and no compiler ever notices.
+
+`workspace-coding` establishes that one change spans several repos on one branch. This skill
+adds what those pieces owe each other: the two sides of a change answer a shared question the
+same way, or the difference is deliberate and written down. A service change and its contract
+change that disagree about how an error is represented have shipped the fork rather than the
+feature.
+
+Frontend services share a design system or they do not have one. Two applications with their
+own spacing scales and their own button are two design systems, whatever the shared package
+is called, and users see the seam before any engineer does.
+
+The record for a decision every service inherits cannot live in one service's repo, because
+nobody reads a sibling's docs before making a local choice. Put it where all of them can see
+it, whether that is a shared repository, the workspace root, or the standards this stack is
+installed from. A cross-service decision recorded in one service is a decision the other nine
+will each make again.
+
 ## A new service is the hard case
 
 A new service has no existing answers of its own and inherits every question at once. Do
@@ -86,6 +113,9 @@ precedent the next service will inherit.
 
 - Add the better pattern beside the worse one and leave both. That is the fork, and it is
   the most common way this rule gets broken by someone trying to improve things.
+- Spread a new capability across callers as special cases. Each site handles its own corner,
+  the concept lives nowhere, and the shape only becomes visible once it is expensive to
+  change. An increment should land one coherent thing or deepen one that exists.
 - Start a migration you were not asked for because you found an inconsistency. Record it,
   say what converging would cost, and carry on with the work you have.
 - Write a decision record for something nobody would ask twice. A record that answers a

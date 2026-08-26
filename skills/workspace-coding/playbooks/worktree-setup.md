@@ -29,7 +29,12 @@ a change that spans services, and for adding a repo to a change already in progr
    reads as a problem with your change. Check the repo's own notes before assuming the
    worktree is ready.
 
-5. Verify before starting work. Build or run the tests once in each new worktree, so a
+5. Check that the pieces will agree. A change spanning repos has to answer any shared
+   question the same way on both sides, such as how an error is shaped or what a field is
+   called. Use the `consistency` skill before writing either half, because a disagreement
+   found after both are written is a rewrite of one of them.
+
+6. Verify before starting work. Build or run the tests once in each new worktree, so a
    failure later belongs to your change rather than to the setup.
 
 **Reply:** the branch name, each repo and its worktree path, what you copied in, and the

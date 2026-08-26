@@ -12,24 +12,30 @@ large to land in one pull request.
    passes, a command that prints the right thing, or a behavior you can exercise. A step
    ending in "and then the next part will use it" is not a step, it is half of one.
 
-3. Order by dependency, not by interest. Where one repo publishes a contract another
+3. Put the scaffolding first. Ask of each candidate step whether every later step benefits
+   from it already existing. Shared types, a test harness, a migration runner, or the lint
+   rule that stops the old pattern coming back all pay for themselves across every step
+   after them, and retrofitting them means touching everything twice. Remove dead weight
+   before laying foundations, so the scaffolding is built on the simpler base.
+
+4. Order by dependency, not by interest. Where one repo publishes a contract another
    consumes, the contract lands first. Where a migration adds a column and then backfills
    it, those are separate steps with a deploy between them. Write the order down, because
    in a workspace the order is most of the plan.
 
-4. Make each step landable alone. Ask what happens if the work stops after step two.
+5. Make each step landable alone. Ask what happens if the work stops after step two.
    If the answer is that the system is broken or a half-built feature is exposed, the cut
    is wrong. Put the switch that turns it on last.
 
-5. Say what you are not doing. The adjacent work you noticed and deliberately left out,
+6. Say what you are not doing. The adjacent work you noticed and deliberately left out,
    named, so nobody has to guess whether you missed it. This is what stops a reviewer asking
    for it and stops you drifting into it.
 
-6. Keep the plan shorter than the change. Steps smaller than a commit are a way of avoiding
+7. Keep the plan shorter than the change. Steps smaller than a commit are a way of avoiding
    the work. If the plan is longer than the diff will be, the change is simple and does not
    need one.
 
-7. Re-plan when it is wrong rather than following it. A plan is a prediction. When step
+8. Re-plan when it is wrong rather than following it. A plan is a prediction. When step
    three turns out to be impossible, say so and re-cut, rather than forcing the original
    shape and calling it done.
 

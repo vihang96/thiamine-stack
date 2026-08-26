@@ -35,6 +35,9 @@ file, where it exists, when the rule seems wrong for the situation in front of y
   words in names, comments, or test titles are all leftovers.
 - Migration vocabulary dates the code. `staged`, `legacy`, and `new-style` describe a
   moment that has passed, and they outlive whoever remembers it.
+- When a shape changes, propagate it through every reference in the same change: callers,
+  types, tests, docs, examples, and the paragraph explaining why it is that way. A stale
+  example is read as current.
 
 ## Errors
 

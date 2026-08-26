@@ -70,8 +70,23 @@ that do not fit are the finding. This is the whole test, and it is cheaper than 
 argument about the design.
 
 **Compare shapes, do not defend the first.** Write the second model. A state machine against
-a status field, a tagged union against optional fields, a table against a chain of
-conditionals. Writing both takes an hour and settles what a discussion will not.
+a status field, a tagged union against optional fields, a registry against a chain of
+conditionals, a reducer against scattered mutations. Writing both takes an hour and settles
+what a discussion will not.
+
+**Organise around the domain, not around the order things happen.** Modules named `load`,
+`validate`, `transform`, and `save` repeat the same domain rules at every step, because
+execution order is not ownership. Group by the body of knowledge instead, so a rule about an
+order lives in one place regardless of when it runs.
+
+**Know the tells that you skipped this.** A new requirement that grows an existing chain of
+conditionals by one more branch. A second boolean that has to stay in sync with the first. A
+shape assumption repeated in four files. Each says the domain is being carried in the code
+rather than in a structure.
+
+**Do this now rather than later.** A data-structure change late is a rewrite, and early it is
+often a one-line diff. That gap is the entire reason this is a pre-implementation activity
+and not something to revisit during review.
 
 **Reply:** the decision it was built to settle, the variants explored, the evidence, which
 one you recommend and why, and the scratch path. For an experience decision include the
