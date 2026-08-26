@@ -3,7 +3,7 @@ name: reflect
 description: "Mines a finished session, or several, for what was learned the hard way and encapsulates it as a skill, agent definition, rule, or check so the next agent does not rediscover it. Use when asked to reflect on a session, to capture what a long build taught, to make a hard-won approach repeatable, or to pull recent sessions on a repo into the stack."
 disable-model-invocation: true
 owns: "turning what a session figured out into a repeatable capability"
-see_also: [thiamine-author, handoff, continual-learning, working-style, drift-audit]
+see_also: [thiamine-author, handoff, continual-learning, capture-preferences, maintain-skills]
 ---
 
 # Reflect
@@ -40,14 +40,14 @@ it. A method is not known to work until it has worked more than once, so a skill
 the moment of relief encodes a coincidence. Wait for the work to land.
 
 One artifact is shipped and can skip the wait: a `<handle>-mode` skill, owned by
-`working-style`. A preference the user **states** as a standing rule is true when they say
+`capture-preferences`. A preference the user **states** as a standing rule is true when they say
 it, because they are the authority on themselves. A preference **inferred** from watching
 one correction is a generalisation from a single case, and needs recurrence exactly like
 anything here. Everything this skill writes claims that a method works, which is a kind of
 claim nobody can settle by declaration. A finding that is really a preference goes there.
 
 The other two neighbours: `handoff` owns the record kept **during** a build, and that record
-is this skill's best input. `drift-audit` owns the corpus going **stale**, working from the
+is this skill's best input. `maintain-skills` owns the corpus going **stale**, working from the
 artifacts rather than from a transcript. Knowledge in, versus claims out.
 
 ## Procedure

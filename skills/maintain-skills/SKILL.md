@@ -1,12 +1,12 @@
 ---
-name: drift-audit
+name: maintain-skills
 description: "Runs a periodic pass over a repo's agent-facing context (rules, skills, AGENTS.md, CLAUDE.md) to find guidance that no longer matches the code, and routes each finding to a fix or a check. Use when asked to audit, refresh, or spring-clean the skills, when the feature map has outgrown what agents are told, when an agent followed stale guidance, or on a cadence after a batch of changes lands."
 disable-model-invocation: true
 owns: "whether the agent-facing context still describes the repo as it is now"
 see_also: [thiamine-author, consistency, reflect]
 ---
 
-# Drift audit
+# Maintain skills
 
 Agent context is written once and read forever. Nothing fails when it goes stale: the file
 still parses, the skill still loads, and the agent follows guidance for a repo that no
@@ -53,7 +53,7 @@ Audit what changed, not everything. The last audit is the boundary, and git alre
 where it is:
 
 ```sh
-git log --oneline -1 --grep='drift audit'      # the last pass
+git log --oneline -1 --grep='maintain-skills'      # the last pass
 git diff --stat <that commit>..HEAD            # ground that moved since
 ```
 
@@ -107,7 +107,7 @@ radius of a bad audit edit is larger than the blast radius of the drift it was f
 
 ### 6. Land it
 
-Commit with `drift audit` in the message, so the next pass can find this one and fix its
+Commit with `maintain-skills` in the message, so the next pass can find this one and fix its
 window from it. That sentence is the only state this skill keeps.
 
 ## Verify

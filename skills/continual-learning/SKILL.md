@@ -4,7 +4,7 @@ description: Runs the continual-learning loop by delegating transcript mining to
 disable-model-invocation: true
 owns: "durable facts about the user and the project, in the harness memory store"
 requires: [memory-updater]
-see_also: [reflect, working-style, handoff]
+see_also: [reflect, capture-preferences, handoff]
 ---
 
 # Continual learning
@@ -32,7 +32,7 @@ review, correctable in a line. A skill, an agent definition, or a rule is shippe
 every agent in every repo, and held to a higher bar for that reason. A lesson about how work
 should be done is one of those three, and `reflect` owns deciding which and promoting it. A
 preference about how this user wants work done is a `<handle>-mode` skill, owned by
-`working-style`.
+`capture-preferences`.
 
 When the updater reports a candidate of that kind, say so and stop. Do not write it to
 memory, and do not write it to `rules/`, `skills/`, or `agents/` yourself.

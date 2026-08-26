@@ -15,7 +15,7 @@
   user and the project, which belong in memory. This owns how work gets done.
 - where did I leave off yesterday. `handoff` owns the record of work in progress and
   reconstructing it. Reflection happens after work lands, not to resume it.
-- audit the skills for anything that has gone stale. `drift-audit` works from the corpus
+- audit the skills for anything that has gone stale. `maintain-skills` works from the corpus
   and looks for claims that stopped being true. This works from sessions and looks for
   knowledge that was never captured.
 - add a skill for handling flaky tests. `thiamine-author` owns writing the artifact. This

@@ -1,4 +1,4 @@
-# Triggers for drift-audit
+# Triggers for maintain-skills
 
 ## Should fire
 

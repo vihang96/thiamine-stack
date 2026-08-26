@@ -2,14 +2,14 @@
 name: thiamine-author
 description: Authors or revises a thiamine skill, agent, command, or rule from the repo templates, picking the right artifact type and shape and validating it before finishing. Use when adding to or changing the thiamine stack, when asked to "add a skill, rule, or command" for engineering standards, when a recurring correction should become a permanent standard, or when an audit or a session has produced an edit to land.
 requires: [thiamine-install]
-see_also: [drift-audit]
+see_also: [maintain-skills]
 ---
 
 # Author a thiamine artifact
 
 ## Changing one that exists
 
-Most requests that arrive here are edits, not new artifacts. `drift-audit` routes findings
+Most requests that arrive here are edits, not new artifacts. `maintain-skills` routes findings
 to this skill, and `continual-learning` stops at the boundary and hands the promotion over.
 Take the edit path when the artifact exists, and skip to Step 7 to validate.
 

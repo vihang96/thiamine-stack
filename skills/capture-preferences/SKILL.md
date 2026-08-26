@@ -1,11 +1,11 @@
 ---
-name: working-style
+name: capture-preferences
 description: "Captures how a person likes to work as a portable <handle>-mode skill that agents load and follow, covering response style, autonomy, verification posture, delegation, and the corrections they keep making. Use for automate me, capture or update my working style, make a mode skill for me, or when the same correction about how rather than what has come up again."
 owns: "the record of one person's taste and habits, as instructions an agent follows"
 see_also: [reflect, continual-learning, thiamine-author]
 ---
 
-# Working style
+# Capture preferences
 
 The corrections a person makes about *how* are the ones they make forever. Paste the output
 rather than summarising it. Give a recommendation, not a survey. Do not fold a refactor into

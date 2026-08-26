@@ -1,4 +1,4 @@
-# Triggers for working-style
+# Triggers for capture-preferences
 
 ## Should fire
 

@@ -86,9 +86,9 @@ enforce in your repos.
 | `thiamine-install` | Wires the stack into whichever harnesses are on the machine. |
 | `thiamine-author` | Adds or revises a rule, skill, agent, or command without creating a second answer to something. |
 | `reflect` | A long session figures things out and then loses them. Turns what it learned into skills, agents, and rules, so the next attempt is boring. |
-| `working-style` | The corrections you make about *how* are the ones you make forever. Captures them as a portable `<handle>-mode` skill agents follow. |
+| `capture-preferences` | The corrections you make about *how* are the ones you make forever. Captures them as a portable `<handle>-mode` skill agents follow. |
 | `continual-learning` | The same loop for memory, which is the harness's rather than yours. Facts about you and the project, not about how work is done. |
-| `drift-audit` | Guidance goes stale silently. A periodic pass over what agents are told, against what the code now does. |
+| `maintain-skills` | Guidance goes stale silently. A periodic pass over what agents are told, against what the code now does. |
 
 ## Extending it
 
