@@ -44,7 +44,7 @@ Preparation is not one size. Run the activities this work needs, and skip the re
 | --- | --- |
 | New feature | resolve unknowns, investigate, reference implementation, prototype when there is a design question, blast radius, plan |
 | Bug fix | reproduce it first, investigate to the root cause, blast radius |
-| Performance | pick a metric and measure the baseline before changing anything |
+| Performance | reproduce it, pick a metric, and measure the baseline before changing anything |
 | Migration | investigate, blast radius, plan the phases and their order |
 | Live testing | decide what you are proving and on which surface, before setting anything up |
 | Spanning repos | blast radius and plan, always, because the order the pieces land in is the plan |
@@ -57,10 +57,11 @@ Preparation is not one size. Run the activities this work needs, and skip the re
 | Understanding code that already exists, and where the gaps are | `playbooks/investigate.md` |
 | Settling a design or a domain question with a throwaway | `playbooks/prototype.md` |
 | Finding what a change breaks somewhere else | `playbooks/blast-radius.md` |
+| Choosing the number that says whether it worked | `playbooks/pick-a-metric.md` |
 | Sequencing the work across steps, repos, and pull requests | `playbooks/plan-the-work.md` |
 
-Named in the table above but not yet written: reference implementation, and pick a metric.
-Until they exist, do that activity by hand and say you did.
+Named in the table above but not yet written: reference implementation. Until it exists, do
+that activity by hand and say you did.
 
 ## Ready to implement
 

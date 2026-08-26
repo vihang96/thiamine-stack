@@ -15,6 +15,8 @@ Prompts that must load this skill, and near-misses that must not.
 - should this be a state machine or a status field
 - what breaks if I change this field to optional
 - is this safe to change, it is called from everywhere
+- this page takes four seconds to load, fix it
+- reduce the memory this worker uses
 
 ## Should not fire
 
