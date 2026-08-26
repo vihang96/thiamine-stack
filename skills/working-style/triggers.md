@@ -19,3 +19,5 @@
   `AGENTS.md`, not in a file describing a person.
 - add a skill for triaging review comments. `thiamine-author` owns writing artifacts. This
   decides what one person's taste is and hands the file over.
+- capture how I write commit messages. One narrow workflow is an ordinary skill, not a mode
+  skill, and needs no mining. A mode skill describes a whole way of working.

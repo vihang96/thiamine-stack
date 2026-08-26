@@ -39,10 +39,12 @@ The timing follows from the same thing. A fact about the user is true as soon as
 it. A method is not known to work until it has worked more than once, so a skill written in
 the moment of relief encodes a coincidence. Wait for the work to land.
 
-One artifact is shipped and still does not wait: a `<handle>-mode` skill, owned by
-`working-style`. Taste is declared by the person rather than proven by evidence, so it is
-recorded as soon as it is stated. Everything this skill writes claims that a method works,
-which is why it waits. A finding that is really a preference goes there, not here.
+One artifact is shipped and can skip the wait: a `<handle>-mode` skill, owned by
+`working-style`. A preference the user **states** as a standing rule is true when they say
+it, because they are the authority on themselves. A preference **inferred** from watching
+one correction is a generalisation from a single case, and needs recurrence exactly like
+anything here. Everything this skill writes claims that a method works, which is a kind of
+claim nobody can settle by declaration. A finding that is really a preference goes there.
 
 The other two neighbours: `handoff` owns the record kept **during** a build, and that record
 is this skill's best input. `drift-audit` owns the corpus going **stale**, working from the
