@@ -58,6 +58,20 @@ Read the one that matches. Each is a procedure with its own reply contract.
 | Worktrees have piled up, or a change has landed | `playbooks/worktree-cleanup.md` |
 | Stopping for the day, or context is about to compact | `playbooks/pause-safely.md` |
 | Resuming work, yours or someone else's | `playbooks/session-pickup.md` |
+| The change is ready for review | `playbooks/opening-a-pr.md` |
+| Splitting a change too large to review at once | `playbooks/stacked-prs.md` |
+| Checks are red, or you are waiting on them | `playbooks/drive-ci-green.md` |
+| A reviewer or a bot left comments | `playbooks/triage-review-comments.md` |
+| Deciding whether it is ready for approval | `playbooks/shippable.md` |
+
+The review loop runs several times. Open, drive to green, triage the comments, fix, back
+to green. Treat the second round as normal rather than as something going wrong.
+
+## Where the agent stops
+
+The agent opens pull requests, drives the checks green, and answers review comments. A
+human approves and a human merges. Never merge, never enable auto-merge, and never approve
+your own work, whatever the checks say.
 
 ## Audit before deciding
 
@@ -71,6 +85,16 @@ Read-only. One line per worktree with the facts a decision needs, flagged `dirty
 Run it before any cleanup and before answering "what was I working on". It is faster than
 walking the repos, and it is the only way to see a worktree holding uncommitted work
 before you remove it.
+
+For pull request state rather than worktree state:
+
+```sh
+sh scripts/pr-status.sh <branch> <workspace-root>           # one branch, every repo
+sh scripts/pr-status.sh --stack <branch> <workspace-root>   # the stack, bottom first
+```
+
+It names every failing check. A change spanning repos is as ready as its worst repo, and a
+stack is as ready as its lowest unfinished pull request.
 
 ## Do not
 
