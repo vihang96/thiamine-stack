@@ -23,8 +23,8 @@ it out loud.** For the start of any change, and whenever you notice yourself abo
    fact. Asking takes hours and produces an opinion.
 
 3. Observe the observable ones. Read the code, run the thing, query the data, or build a
-   throwaway sketch. Cheap and specific beats thorough. You are answering one question, not
-   auditing a system.
+   throwaway sketch with `playbooks/prototype.md`. Cheap and specific beats thorough. You
+   are answering one question, not auditing a system.
 
 4. Batch the questions that are genuinely for a person, and ask them well. One message, each
    question with the options you see and what each would cost, and your recommendation.

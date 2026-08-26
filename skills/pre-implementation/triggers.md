@@ -11,6 +11,8 @@ Prompts that must load this skill, and near-misses that must not.
 - plan this out, it touches three repos
 - users are reporting duplicate notifications, figure out why
 - what do you need to know before starting this
+- mock up a few directions for this settings page
+- should this be a state machine or a status field
 
 ## Should not fire
 

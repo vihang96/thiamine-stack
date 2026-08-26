@@ -23,8 +23,9 @@ solution. Then decide whether the solution follows.
 
 **Never ask a question you could answer by looking.** Reading the code, running the thing,
 or building a throwaway sketch beats a question in almost every case, and it hands back a
-result instead of a decision. Reserve questions for what only a person can settle: what the
-product should do, which tradeoff is acceptable, what the deadline is.
+result instead of a decision. `playbooks/prototype.md` is how you build the sketch. Reserve
+questions for what only a person can settle: what the product should do, which tradeoff is
+acceptable, what the deadline is.
 
 ## Scope
 
@@ -54,10 +55,11 @@ Preparation is not one size. Run the activities this work needs, and skip the re
 | --- | --- |
 | Listing what you do not know, and deciding what to observe versus what to ask | `playbooks/resolve-unknowns.md` |
 | Understanding code that already exists, and where the gaps are | `playbooks/investigate.md` |
+| Settling a design or a domain question with a throwaway | `playbooks/prototype.md` |
 | Sequencing the work across steps, repos, and pull requests | `playbooks/plan-the-work.md` |
 
-Named in the table above but not yet written: reference implementation, prototype, pick a
-metric, and blast radius. Until they exist, do that activity by hand and say you did.
+Named in the table above but not yet written: reference implementation, pick a metric, and
+blast radius. Until they exist, do that activity by hand and say you did.
 
 ## Ready to implement
 
