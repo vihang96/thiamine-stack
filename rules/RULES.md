@@ -38,6 +38,20 @@ file, where it exists, when the rule seems wrong for the situation in front of y
 - Catch only what you can actually handle, and handle it.
 - No defensive branches for states that cannot occur.
 
+## Retries
+
+- Anything that can be retried will be. A crash, a timeout, and at-least-once delivery all
+  replay the same step, so write it to leave the same state the second time as the first.
+- Name the key that makes repeating it safe, in the code rather than in your head. Without
+  one, the version that looks safe is the one that has not been retried yet.
+
+## Debugging
+
+- Reproduce it before changing anything. A fix for a failure you cannot trigger is a guess
+  you have no way to check.
+- Trace the symptom to its cause before fixing. Where a failure surfaces is rarely where it
+  starts, and a fix at the surface leaves the cause to break something else later.
+
 ## Comments and docs
 
 - Comment *why*, never *what*. If the code needs a narration, fix the code.
@@ -59,6 +73,8 @@ file, where it exists, when the rule seems wrong for the situation in front of y
 - Never say something works without having run it. Paste what you ran.
 - If it was not verified, say "not verified" and name what would verify it.
 - Report what actually happened, including the parts that failed.
+- Build the tool that does it or proves it. A script a reviewer can rerun outlives a claim
+  they have to take on trust, for the same effort spent once.
 
 ## Diffs
 
