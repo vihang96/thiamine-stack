@@ -117,6 +117,38 @@ except KeyError:
 For a plain dict, `cache.get(key, default)` is better than both. The pattern matters where
 the check and the use can drift apart, which is any shared or remote resource.
 
+## Independent awaits run together
+
+Sequential `await` of coroutines that do not depend on each other pays one round trip
+after another for no reason. On a request path that runs per turn, that is the difference
+users feel.
+
+```python
+# rejected: three round trips, and only one of them had to wait
+counts = await self._count_run_states(run_id)
+exception = await self._fetch_current_exception(run_id)
+retries = await count_prior_retries(exception)
+
+# required: two round trips. The retry count genuinely needs the exception, so it
+# stays sequential. The first two do not, so they go together.
+counts, exception = await asyncio.gather(
+    self._count_run_states(run_id),
+    self._fetch_current_exception(run_id),
+)
+retries = await count_prior_retries(exception) if exception else 0
+```
+
+Read the awaits in a function and ask which ones use a value produced by an earlier one.
+Those stay in order. Everything else gathers.
+
+Two cautions. `asyncio.gather` cancels nothing by default when one coroutine raises, so
+the others keep running unless you pass `return_exceptions=True` and handle them, or use a
+task group. And gathering a large unbounded list opens that many connections at once, so
+bound it with a semaphore when the list comes from data rather than from the code.
+
+Apply this to any path that fetches more than once per request, such as prompt assembly,
+hook handlers, and per-request context building.
+
 ## Log with fields, not f-strings
 
 ```python

@@ -134,6 +134,27 @@ The install is not complete until you check it:
 Report one line per harness: installed, skipped and why, or failed and how. Never report
 success for a harness you did not verify.
 
+## Rules for one project
+
+Thiamine is installed globally, so anything in it applies to every repo the user opens. A
+rule that names a module, a path, or a function belongs to one repo and must not go in.
+Told globally to use a helper that exists in one project, an agent will look for it
+everywhere and invent it where it is missing.
+
+Project rules go in that repo's own `AGENTS.md`, or `CLAUDE.md` for Claude Code. Both load
+alongside the global file rather than replacing it, so the two compose:
+
+| Scope | File | Holds |
+| --- | --- | --- |
+| Global | `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md` | thiamine, portable across repos |
+| Project | `<repo>/AGENTS.md` | module names, paths, directory layout, local conventions |
+
+The test for which file a rule belongs in: could another repo follow it? "Parallelise
+independent awaits" travels. "Parse resource names with `myapp.util.parse_name`" does not.
+
+When the user offers a rule naming something in their codebase, say which of the two files
+it belongs in rather than adding it to the stack.
+
 ## Vendor the rules into one repo
 
 Sometimes the rules have to live inside a specific repo, so that CI or a collaborator

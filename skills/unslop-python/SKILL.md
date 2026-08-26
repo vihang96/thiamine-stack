@@ -66,6 +66,19 @@ and the reason on a `# noqa`.
 | Ask forgiveness, not permission | `try: d[k] except KeyError:` beats `if k in d:`, which checks the key twice and races. | review |
 | Compare identity with `is` | `value == None` calls `__eq__`. `type(x) == list` ignores subclasses. | `ruff::E711`, `ruff::E721` |
 
+## Async
+
+| Criterion | What it requires | Enforceable by |
+| --- | --- | --- |
+| Independent awaits run together | Two awaits with no data dependency between them pay two round trips for no reason. Gather them, and sequence only the await that genuinely needs a prior result. | review |
+| Nothing blocking inside an async function | `open`, `time.sleep`, a synchronous HTTP client, or a subprocess call stops the event loop for every task, not just this one. | `ruff::ASYNC230`, `ruff::ASYNC251`, `ruff::ASYNC210`, `ruff::ASYNC221` |
+| No busy waiting | A loop that sleeps and re-checks is a missing event. | `ruff::ASYNC110`, `ruff::ASYNC115` |
+| Timeouts belong to the caller | An async function that takes a timeout argument usually wants the caller to wrap it instead. | `ruff::ASYNC109` |
+
+The first row is the one that costs real latency and the one no linter will find, because
+deciding whether two awaits are independent needs to follow the data. See
+`references/patterns.md` for a worked example.
+
 ## Surface and dead weight
 
 | Criterion | What it requires | Enforceable by |
@@ -86,6 +99,7 @@ and the reason on a `# noqa`.
 | No shell strings | `os.system` and `subprocess(shell=True)` concatenate their way into injection. Pass an argument list. | `ruff::S605`, `ruff::TID251` |
 | Paths are `Path` | `pathlib` handles separators, encodings, and existence checks that `os.path` string juggling does not. | `ruff::PTH123` |
 | Datetimes carry a timezone | `datetime.now()` is naive, and a naive datetime is wrong somewhere. | `ruff::DTZ005` |
+| Timestamps cross boundaries as UTC | Store and transmit UTC, serialized as ISO 8601 with a `Z` suffix. A local time in an API is ambiguous the moment it leaves the process, and nothing downstream can recover what it meant. | review |
 | No magic values in comparisons | A bare number in a condition names nothing. Bind it. | `ruff::PLR2004` |
 
 ## Tests
@@ -170,6 +184,12 @@ than an f-string at the raise site (raise a defined type, messages live on the e
 
 More examples live in `references/patterns.md`, and the test criteria are worked through in
 `references/testing.md`.
+
+Two libraries carry their own conventions, kept out of the criteria above because a project
+that does not use them should not pay for them:
+
+- `references/sqlalchemy.md` when the project uses SQLAlchemy 2.0 or later.
+- `references/grpc.md` when the project serves gRPC.
 
 ## Review checklist
 
