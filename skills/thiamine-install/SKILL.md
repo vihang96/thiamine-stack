@@ -123,6 +123,11 @@ If a target already exists as a real file with content, do not overwrite it. Sho
 user what is there. Ask whether to merge that content into `$THIAMINE/rules/RULES.md` or
 to leave the harness alone.
 
+`RULES.md` points at rationale files in `why/` beside itself, and those paths only resolve
+once you know where the real file is. Tell the user how to get there from the install you
+just made: `readlink -f` the symlink for Codex and Cursor, or read the `@` import line in
+`~/.claude/CLAUDE.md` for Claude Code.
+
 ## Step 6. Verify, then report what you checked
 
 The install is not complete until you check it:

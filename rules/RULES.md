@@ -2,7 +2,12 @@
 
 These apply to every change in this repo, whether written by a human or an agent.
 They are terse on purpose, one line per rule. A section with a rationale names it
-underneath. Read that file when the rule seems wrong for the situation in front of you.
+underneath, in `why/` beside this file. Read it when the rule seems wrong for the situation
+in front of you.
+
+Those paths are relative to this file, not to your project. If this reached you as
+`AGENTS.md`, `readlink -f` it to find the directory. If through a `CLAUDE.md` import, the
+import line names the path.
 
 ## Scope
 
@@ -10,7 +15,7 @@ underneath. Read that file when the rule seems wrong for the situation in front 
 - Out-of-scope work needs agreement first. Never fold a refactor into a feature diff.
 - Leave a discovered problem as a stated observation, not an unrequested fix.
 
-Rationale: `rules/why/scope.md`.
+Rationale: `why/scope.md`.
 
 ## Abstraction
 
@@ -20,7 +25,7 @@ Rationale: `rules/why/scope.md`.
 - A wrapper with one caller is a rename. Inline it, with any adapter or layer earning nothing.
 - Count both budgets: hops from question to answer, and state that can change the answer.
 
-Rationale: `rules/why/reader-load.md`.
+Rationale: `why/reader-load.md`.
 
 ## Reuse
 
@@ -44,14 +49,14 @@ Rationale: `rules/why/reader-load.md`.
 - Assume every step is retried. Leave the same state the second time as the first.
 - Name the key that makes repeating it safe, in the code rather than in your head.
 
-Rationale: `rules/why/idempotence.md`.
+Rationale: `why/idempotence.md`.
 
 ## Debugging
 
 - Reproduce it before changing anything. A fix you cannot trigger is a guess.
 - Trace the symptom to its cause. A fix at the surface leaves the cause to break elsewhere.
 
-Rationale: `rules/why/root-causes.md`.
+Rationale: `why/root-causes.md`.
 
 ## Comments and docs
 
@@ -81,4 +86,4 @@ Rationale: `rules/why/root-causes.md`.
 - Keep the subject short and imperative. Put the why in the body, and only when needed.
 - Deleting code is a valid deliverable. Prefer it to adding.
 
-Rationale: `rules/why/commit-messages.md`.
+Rationale: `why/commit-messages.md`.

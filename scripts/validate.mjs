@@ -122,7 +122,10 @@ const REPO_DIRS = new Set(
 		.filter((e) => e.isDirectory())
 		.map((e) => e.name),
 )
-const SKILL_LOCAL_DIRS = new Set(['references', 'playbooks', 'scripts', 'assets'])
+// Subdirectories an artifact may point into with a path relative to itself. A path whose
+// first segment is outside this set and outside the repo's own directories is treated as a
+// runtime path and left alone.
+const LOCAL_DIRS = new Set(['references', 'playbooks', 'scripts', 'assets', 'why'])
 
 const CODEISH = /[/._(){}<>=]|^--|^\\$/
 
@@ -332,7 +335,7 @@ function checkDeps(where, body, declared, skillDir, soft = []) {
 		// also name a runtime path it creates elsewhere, such as a harness memory store,
 		// and those are not this validator's business.
 		const first = rel.split('/')[0]
-		if (!REPO_DIRS.has(first) && !SKILL_LOCAL_DIRS.has(first)) continue
+		if (!REPO_DIRS.has(first) && !LOCAL_DIRS.has(first)) continue
 		{
 			err(
 				where,
@@ -597,6 +600,11 @@ for (const n of agentNames) {
 
 if (exists(ROOT, 'rules/RULES.md')) {
 	const index = read('rules/RULES.md')
+
+	// Its pointers are relative to itself, so an agent that resolved this file's real path
+	// can follow them. Check them against rules/ rather than the repo root.
+	checkDeps('rules/RULES.md', index, [], path.join(ROOT, 'rules'))
+
 	for (const rid of ruleIds) {
 		if (!index.includes(`${rid}.md`)) {
 			warn(
