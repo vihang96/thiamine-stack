@@ -1,0 +1,92 @@
+---
+name: consistency
+description: "Finds the answer a codebase already has for a concern before adding another one, and records the decision when there is none. Use when introducing a pattern, choosing a library or a store, starting a new service, styling a new surface, or when a codebase has grown several answers to one question."
+owns: "how many answers a concern is allowed, and where that decision is written down"
+see_also: [pre-implementation]
+---
+
+# Consistency
+
+The Nth answer to a concern costs more than its merits. A second date library, a third way
+to return an error, a fourth spacing scale: each one is defensible where it was added, and
+together they mean nobody can answer a question about the system without checking which
+version they are looking at.
+
+This is not about duplication. Two copies of the same thing are one fix. Two different
+answers to the same question are a fork, and it stays forked until somebody decides.
+
+Applies twice. Before implementing, so you use what exists rather than inventing beside it.
+During implementation, when you find that the thing you assumed was consistent is not.
+
+## The rule
+
+Find the existing answer before adding one. If there is none, choose deliberately and
+record the choice. If there are several, say which is canonical before writing the next
+line of code that depends on the answer.
+
+Consistency has value independent of which option is better. A worse pattern used
+everywhere is usually cheaper than a better pattern used once, because the reader learns
+one thing rather than two and the tooling has one shape to support.
+
+## Scope
+
+This skill owns how many answers a concern is allowed, and where that decision lives.
+
+`rules/RULES.md` owns duplication, which is the same answer written twice. This owns
+divergence, which is different answers to one question, and the two need opposite fixes.
+Deleting a copy is safe. Deleting a divergent pattern is a migration.
+
+`pre-implementation` owns understanding the change in front of you. This owns whether the
+approach it takes matches what is already there.
+
+Writing the record is a document, so `technical-writing` owns its prose and its mode. A
+decision record is explanation, not reference.
+
+## Where divergence grows
+
+These are the concerns that accumulate answers. When a change touches one, ask the question
+in the second column before choosing anything.
+
+| Concern | Ask |
+| --- | --- |
+| Visual design | is there already a token, a component, or a scale for this |
+| Data storage | which store do services of this shape use here, and why that one |
+| Schema change | how does a migration ship in this repo, and who runs it |
+| Error contracts | how does a caller learn what failed, and can it branch on it |
+| Auth | where is the check, and what does it read |
+| Logging and telemetry | what fields, under what names |
+| Config and secrets | where does a value come from at runtime |
+| API surface | how are resources named, how is a page requested, how is an error shaped |
+| Retries | what makes an operation safe to repeat here |
+| Build and release | how does this get tested and shipped |
+
+The list is not complete and will not be. The test is whether a reader would expect two
+parts of the system to answer the question the same way. If yes, it belongs here.
+
+## Playbooks
+
+| Situation | Playbook |
+| --- | --- |
+| About to introduce a pattern, pick a library, or style a new surface | `playbooks/survey-first.md` |
+| No existing answer, or a deliberate departure from one | `playbooks/record-the-decision.md` |
+| Found several answers to one question | `playbooks/converge.md` |
+
+## A new service is the hard case
+
+A new service has no existing answers of its own and inherits every question at once. Do
+not treat that as freedom. Survey the siblings first, take their answers by default, and
+write down only the places you depart and why. A service that answers ten questions
+differently from its neighbours is ten migrations nobody scheduled.
+
+Where there is genuinely no precedent, exhaust the space before committing, using
+`pre-implementation`'s prototype playbook. Then record it, because you are creating the
+precedent the next service will inherit.
+
+## Do not
+
+- Add the better pattern beside the worse one and leave both. That is the fork, and it is
+  the most common way this rule gets broken by someone trying to improve things.
+- Start a migration you were not asked for because you found an inconsistency. Record it,
+  say what converging would cost, and carry on with the work you have.
+- Write a decision record for something nobody would ask twice. A record that answers a
+  question no one has is ceremony, and it makes the useful ones harder to find.
