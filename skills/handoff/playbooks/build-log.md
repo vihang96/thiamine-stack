@@ -17,18 +17,25 @@ and a log kept badly is worse than none because it looks complete.
    - **A constraint you discovered.** An ordering that matters, a field that is never null in
      practice, a job that runs before the context it needs exists.
 
-2. Do not append narration. Not files touched, not tests run, not progress. Those are in the
+2. Point at evidence rather than describing it. A commit SHA, a `file:line`, a pull request
+   number, or the path to a screenshot. An entry that argues for itself in a paragraph is
+   unverifiable, and a pointer is checkable in seconds.
+
+   Where an entry has an outcome, record it: tests green, reverted, still open, inconclusive.
+   A decision with no recorded result reads as having worked.
+
+3. Do not append narration. Not files touched, not tests run, not progress. Those are in the
    diff and the transcript. A log padded with them buries the four things above.
 
-3. Keep the header true as you go. When the next action changes, rewrite the `Next` line
+4. Keep the header true as you go. When the next action changes, rewrite the `Next` line
    rather than appending a new one. The header is state and the log is history, and mixing
    them means reading the whole file to find out where things stand.
 
-4. Write it for someone with no context. Name the file and the symbol. "Moved the check
+5. Write it for someone with no context. Name the file and the symbol. "Moved the check
    earlier" means nothing next week. "Moved the tenant check into RetentionJob.enqueue,
    because run happens before tenant context exists" survives.
 
-5. Update the record before context compacts, not after. Compaction is the case this exists
+6. Update the record before context compacts, not after. Compaction is the case this exists
    for, and anything still only in the conversation is gone.
 
 **Reply:** nothing, usually. Appending is a side effect of working, not a task to report on.

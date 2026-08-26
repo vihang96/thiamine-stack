@@ -37,7 +37,11 @@ on, and stops there.
 6. Say what you are not sure about. A reviewer who knows where you are uncertain reviews
    that part properly. One who is told everything is fine reviews nothing properly.
 
-7. Stop. Do not merge, do not enable auto-merge, and do not approve it yourself. Hand over
+7. Check the other half. This playbook says the code is ready. It does not say the person
+   whose name is on it can explain it, which is the `post-implementation` skill. Green checks
+   on a change nobody can defend fails in review at best.
+
+8. Stop. Do not merge, do not enable auto-merge, and do not approve it yourself. Hand over
    with the evidence and let the human decide.
 
 **Reply:** the status line per repo, the verification you ran and what it reported, what
