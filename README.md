@@ -79,13 +79,15 @@ enforce in your repos.
 | --- | --- |
 | `post-implementation` | An agent can produce a change nobody understands. Makes sure the person who owns it can explain it and agrees with it. |
 
-### Maintaining the stack
+### Keeping the stack current
 
 | Skill | Why |
 | --- | --- |
 | `thiamine-install` | Wires the stack into whichever harnesses are on the machine. |
 | `thiamine-author` | Adds or revises a rule, skill, agent, or command without creating a second answer to something. |
-| `continual-learning` | Turns what a session learned about you into memory that outlives it. |
+| `reflect` | A long session figures things out and then loses them. Turns what it learned into skills, agents, and rules, so the next attempt is boring. |
+| `working-style` | The corrections you make about *how* are the ones you make forever. Captures them as a portable `<handle>-mode` skill agents follow. |
+| `continual-learning` | The same loop for memory, which is the harness's rather than yours. Facts about you and the project, not about how work is done. |
 | `drift-audit` | Guidance goes stale silently. A periodic pass over what agents are told, against what the code now does. |
 
 ## Extending it
@@ -118,6 +120,6 @@ Six skills and three rules derive from `pstack` in
 
 ## Status
 
-Early, and in use. Fourteen skills, eleven always-on rule sections, and a lint layer for
+Early, and in use. Sixteen skills, eleven always-on rule sections, and a lint layer for
 TypeScript, Rust, and Python. The rule corpus stays small on purpose, since every line is
 paid on every request.

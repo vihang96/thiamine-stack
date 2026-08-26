@@ -3,7 +3,7 @@ name: drift-audit
 description: "Runs a periodic pass over a repo's agent-facing context (rules, skills, AGENTS.md, CLAUDE.md) to find guidance that no longer matches the code, and routes each finding to a fix or a check. Use when asked to audit, refresh, or spring-clean the skills, when the feature map has outgrown what agents are told, when an agent followed stale guidance, or on a cadence after a batch of changes lands."
 disable-model-invocation: true
 owns: "whether the agent-facing context still describes the repo as it is now"
-see_also: [thiamine-author, consistency, continual-learning]
+see_also: [thiamine-author, consistency, reflect]
 ---
 
 # Drift audit
@@ -16,6 +16,10 @@ like a model problem rather than a documentation problem.
 This is the pass that catches that. It applies to any repo with agent-facing context, not
 only to this one. In thiamine that is `rules/` and `skills/`. Elsewhere it is `AGENTS.md`,
 `CLAUDE.md`, and whatever local skills the repo carries.
+
+It runs in one direction only: claims out. `reflect` runs the other, taking knowledge from
+finished sessions into new skills, agents, and rules. A finding here that the context never
+captured something is a `reflect` job, so hand it over rather than writing the skill inline.
 
 ## When to run it
 

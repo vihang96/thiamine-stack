@@ -2,8 +2,9 @@
 name: continual-learning
 description: Runs the continual-learning loop by delegating transcript mining to the memory-updater agent, keeping the mined transcripts out of the main context. Use when asked to mine prior chats, refresh project memory, or remember what was learned in earlier sessions.
 disable-model-invocation: true
+owns: "durable facts about the user and the project, in the harness memory store"
 requires: [memory-updater]
-see_also: [thiamine-author, handoff]
+see_also: [reflect, working-style, handoff]
 ---
 
 # Continual learning
@@ -26,10 +27,15 @@ They do not own work in progress. A note about where a half-built feature stands
 handoff record, owned by the `handoff` skill, and it is deleted when the work lands. A
 memory outlives the task.
 
-They do not own engineering standards. A lesson that should apply to all code, in every
-repo, is a rule or a skill, and the `thiamine-author` skill owns promoting it. When the
-updater reports a candidate of that kind, say so and stop. Do not write it to memory, and
-do not write it to `rules/` yourself.
+They do not own engineering standards. Memory is intrinsic to the harness: one machine, no
+review, correctable in a line. A skill, an agent definition, or a rule is shipped, read by
+every agent in every repo, and held to a higher bar for that reason. A lesson about how work
+should be done is one of those three, and `reflect` owns deciding which and promoting it. A
+preference about how this user wants work done is a `<handle>-mode` skill, owned by
+`working-style`.
+
+When the updater reports a candidate of that kind, say so and stop. Do not write it to
+memory, and do not write it to `rules/`, `skills/`, or `agents/` yourself.
 
 ## Procedure
 

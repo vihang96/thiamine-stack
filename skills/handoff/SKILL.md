@@ -2,7 +2,7 @@
 name: handoff
 description: "Keeps a durable record of work in progress so a new session can continue it, and reconstructs that record from transcripts and live state when none was kept. Use when starting work that will span sessions, when recording a decision or a deviation mid-build, when context is about to compact, and for catch me up or where did I leave off."
 owns: "the record of work in progress, and reconstructing it when none was kept"
-see_also: [multi-repo-mechanics, continual-learning]
+see_also: [multi-repo-mechanics, continual-learning, reflect]
 ---
 
 # Handoff
@@ -26,6 +26,9 @@ in each worktree and checking what moved underneath you. Its `pause-safely` and
 `continual-learning` owns durable memory, which is facts about the user and the project.
 The difference is lifetime. A memory outlives the task. A handoff record dies when the work
 lands, and keeping it afterwards is how a stale plan gets followed months later.
+
+`reflect` runs at that death. Before the record is discarded, its decisions, deviations, and
+failed attempts are the best available input for deciding what should become a skill.
 
 ## The record
 
