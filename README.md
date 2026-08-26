@@ -100,21 +100,21 @@ Read [templates/README.md](templates/README.md) before adding anything, and
 
 ## Where this came from
 
-A good deal of the structure and several skills are derived from `pstack`, the plugin stack
-in [cursor/plugins](https://github.com/cursor/plugins), and in particular its `poteto-mode`
-playbooks. That repo carries no license field, so this is credit rather than a license
-claim. Reworked here for a workflow where a human merges, where changes span repos, and
-without the tooling those originals assume. Each skill names what it took, under its own
-Source heading.
+Six skills and three rules derive from `pstack` in
+[cursor/plugins](https://github.com/cursor/plugins), mostly its `poteto-mode` playbooks.
+Those originals assume a stacking tool, a single repo, and an agent that merges. None of
+that holds here, so they were reworked rather than copied.
 
-The language standards come from elsewhere. TypeScript from
-[dmmulroy/anti-slop](https://github.com/dmmulroy/anti-slop), MIT, whose Oxlint rules are
-vendored under `lint/typescript/` with their license. Rust from the
-[Microsoft Pragmatic Rust Guidelines](https://microsoft.github.io/rust-guidelines/), MIT.
-Python from the `python-patterns` and `python-testing` skills in
-[affaan-m/ECC](https://github.com/affaan-m/ECC). Writing from
-[Diátaxis](https://diataxis.fr), the Google developer style guide, ASD-STE100, and Kohl's
-Global English.
+| What | Source | License |
+| --- | --- | --- |
+| Structure and most playbooks | [cursor/plugins](https://github.com/cursor/plugins) | none stated |
+| TypeScript rules, vendored under `lint/typescript/` | [dmmulroy/anti-slop](https://github.com/dmmulroy/anti-slop) | MIT |
+| Rust criteria and the clippy set | [Microsoft Pragmatic Rust Guidelines](https://microsoft.github.io/rust-guidelines/) | MIT |
+| Python criteria | [affaan-m/ECC](https://github.com/affaan-m/ECC) | MIT |
+| Writing standards | [Diátaxis](https://diataxis.fr), Google developer style, ASD-STE100, Global English | various |
+
+cursor/plugins states no license, so its row is credit rather than a license claim. Each
+skill names what it took under its own Source heading.
 
 ## Status
 
