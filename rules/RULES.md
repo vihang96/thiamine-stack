@@ -41,7 +41,7 @@ file, where it exists, when the rule seems wrong for the situation in front of y
 ## Comments and docs
 
 - Comment *why*, never *what*. If the code needs a narration, fix the code.
-- Comment only where the code cannot say it itself, and keep it short.
+- Comment only where the code cannot say it itself. Keep it short and human-readable.
 - Describe what the code does now. A comment about a mechanism that was deleted, or about
   how the code came to look this way, is history that will outlast its readers.
 - Do not add a README, CHANGELOG entry, or summary doc unless it was requested.
