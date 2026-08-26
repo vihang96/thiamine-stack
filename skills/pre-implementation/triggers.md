@@ -13,6 +13,8 @@ Prompts that must load this skill, and near-misses that must not.
 - what do you need to know before starting this
 - mock up a few directions for this settings page
 - should this be a state machine or a status field
+- what breaks if I change this field to optional
+- is this safe to change, it is called from everywhere
 
 ## Should not fire
 

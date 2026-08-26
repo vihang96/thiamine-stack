@@ -4,9 +4,9 @@
 sequence proves itself.** For multi-step work, anything spanning repos, and any change too
 large to land in one pull request.
 
-1. Start from what it touches. List the files, the callers you do not own, the repos, and
-   the data. A step that turns out to touch a second repo halfway through is a re-plan, and
-   re-planning mid-implementation is where scope quietly doubles.
+1. Start from what it touches, using `playbooks/blast-radius.md`. A step that turns out to
+   touch a second repo halfway through is a re-plan, and re-planning mid-implementation is
+   where scope quietly doubles.
 
 2. Cut at the seams where something becomes checkable. A good step ends with a test that
    passes, a command that prints the right thing, or a behavior you can exercise. A step

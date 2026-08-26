@@ -56,10 +56,11 @@ Preparation is not one size. Run the activities this work needs, and skip the re
 | Listing what you do not know, and deciding what to observe versus what to ask | `playbooks/resolve-unknowns.md` |
 | Understanding code that already exists, and where the gaps are | `playbooks/investigate.md` |
 | Settling a design or a domain question with a throwaway | `playbooks/prototype.md` |
+| Finding what a change breaks somewhere else | `playbooks/blast-radius.md` |
 | Sequencing the work across steps, repos, and pull requests | `playbooks/plan-the-work.md` |
 
-Named in the table above but not yet written: reference implementation, pick a metric, and
-blast radius. Until they exist, do that activity by hand and say you did.
+Named in the table above but not yet written: reference implementation, and pick a metric.
+Until they exist, do that activity by hand and say you did.
 
 ## Ready to implement
 
