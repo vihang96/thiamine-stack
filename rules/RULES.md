@@ -1,104 +1,84 @@
 # Engineering standards
 
 These apply to every change in this repo, whether written by a human or an agent.
-They are terse on purpose. A section with a rationale names it underneath. Read that file
-when the rule seems wrong for the situation in front of you.
+They are terse on purpose, one line per rule. A section with a rationale names it
+underneath. Read that file when the rule seems wrong for the situation in front of you.
 
 ## Scope
 
 - Build what was asked. Nothing adjacent, nothing anticipatory.
-- If a change requires touching something out of scope, say so and get agreement
-  before doing it. Do not fold an unrequested refactor into a feature diff.
-- Leave discovered problems as a stated observation, not an unrequested fix.
+- Out-of-scope work needs agreement first. Never fold a refactor into a feature diff.
+- Leave a discovered problem as a stated observation, not an unrequested fix.
 
 Rationale: `rules/scope.md`.
 
 ## Abstraction
 
-- Solve the case in front of you. Add the abstraction on the second real use, not the first.
-- No config knobs, strategy interfaces, or extension points without a present caller
-  that needs them.
-- Prefer editing an existing file over adding a new one. A new module needs a reason
-  that survives being said out loud.
-- A wrapper with one caller is a rename. Inline it, along with the adapter that has no
-  second implementation and the layer added for a future that did not arrive.
-- Count what a reader has to carry: the hops between the question and the answer, and the
-  state that can change the answer. Both are budgets, and they are independent.
+- Solve the case in front of you. Abstract on the second real use, not the first.
+- No config knob, strategy interface, or extension point without a caller that needs it.
+- Prefer editing a file to adding one. A new module needs a reason said out loud.
+- A wrapper with one caller is a rename. Inline it, with any adapter or layer earning nothing.
+- Count both budgets: hops from question to answer, and state that can change the answer.
 
 Rationale: `rules/reader-load.md`.
 
 ## Reuse
 
-- Search before writing a helper. Most helpers already exist under a different name.
-- Two copies of a thing is a signal, three is a defect.
+- Search before writing a helper. Most already exist under a different name.
+- Two copies of a thing is a signal. Three is a defect.
 
 ## Scaffolding
 
-- When a migration lands, delete the scaffolding that carried it. Two names for one type,
-  a re-export kept for compatibility with no live external consumer, and migration-era
-  words in names, comments, or test titles are all leftovers.
-- Migration vocabulary dates the code. `staged`, `legacy`, and `new-style` describe a
-  moment that has passed, and they outlive whoever remembers it.
-- When a shape changes, propagate it through every reference in the same change: callers,
-  types, tests, docs, examples, and the paragraph explaining why it is that way. A stale
-  example is read as current.
+- When a migration lands, delete the scaffolding that carried it.
+- No migration vocabulary in names, comments, or test titles. `staged` and `legacy` date code.
+- When a shape changes, move every reference with it: callers, types, tests, docs, examples.
 
 ## Errors
 
-- Let it fail. `try/except` that logs and continues converts a loud bug into a silent one.
-- Catch only what you can actually handle, and handle it.
-- No defensive branches for states that cannot occur.
+- Let it fail. A catch that logs and continues turns a loud bug into a silent one.
+- Catch only what you can handle, and handle it.
+- No defensive branch for a state that cannot occur.
 
 ## Retries
 
-- Anything that can be retried will be. A crash, a timeout, and at-least-once delivery all
-  replay the same step, so write it to leave the same state the second time as the first.
-- Name the key that makes repeating it safe, in the code rather than in your head. Without
-  one, the version that looks safe is the one that has not been retried yet.
+- Assume every step is retried. Leave the same state the second time as the first.
+- Name the key that makes repeating it safe, in the code rather than in your head.
 
 Rationale: `rules/idempotence.md`.
 
 ## Debugging
 
-- Reproduce it before changing anything. A fix for a failure you cannot trigger is a guess
-  you have no way to check.
-- Trace the symptom to its cause before fixing. Where a failure surfaces is rarely where it
-  starts, and a fix at the surface leaves the cause to break something else later.
+- Reproduce it before changing anything. A fix you cannot trigger is a guess.
+- Trace the symptom to its cause. A fix at the surface leaves the cause to break elsewhere.
 
 Rationale: `rules/root-causes.md`.
 
 ## Comments and docs
 
-- Comment *why*, never *what*. If the code needs a narration, fix the code.
-- Comment only where the code cannot say it itself. Keep it short and human-readable.
-- Describe what the code does now. A comment about a mechanism that was deleted, or about
-  how the code came to look this way, is history that will outlast its readers.
-- Do not add a README, CHANGELOG entry, or summary doc unless it was requested.
+- Comment why, never what. If the code needs narration, fix the code.
+- Comment only where the code cannot say it itself, and keep it short.
+- Describe what the code does now. A deleted mechanism and a history are not documentation.
+- No README, CHANGELOG entry, or summary doc unless it was requested.
 - No decorative headers, banner comments, or emoji.
 
 ## Tests
 
-- A test that asserts on a mock's return value tests the mock.
-- When fixing a bug, write the test that fails before the fix. It is the only proof the
-  fix works. Skip it for trivial or documentation-only changes.
-- No tests added purely to move a coverage number.
+- A test asserting on a mock's return value tests the mock.
+- When fixing a bug, write the test that fails before it. Skip trivial and doc-only changes.
+- No test added purely to move a coverage number.
 
 ## Claims
 
-- Never say something works without having run it. Paste what you ran.
+- Never say it works without having run it. Paste what you ran.
 - If it was not verified, say "not verified" and name what would verify it.
-- Report what actually happened, including the parts that failed.
-- Build the tool that does it or proves it. A script a reviewer can rerun outlives a claim
-  they have to take on trust, for the same effort spent once.
+- Report what happened, including the parts that failed.
+- Build the tool that does it or proves it. A rerunnable script outlives a claim.
 
 ## Diffs
 
 - One concern per commit. Refactor and behavior change do not travel together.
-- Write the commit message in the repo's own convention, and check the repo for what that
-  is before guessing. Where release tooling reads commits, the message is an input to a
-  build rather than a note to a reader.
-- Keep the subject short and imperative, under the limit the repo enforces. Put the why in
-  the body, and only when it is not obvious from the diff.
+- Write the commit message in the repo's convention. Check the repo before guessing.
+- Keep the subject short and imperative. Put the why in the body, and only when needed.
 - Deleting code is a valid deliverable. Prefer it to adding.
 
 Rationale: `rules/commit-messages.md`.

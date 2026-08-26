@@ -18,6 +18,8 @@ const MIN_DESC = 80
 const SHARED_EXAMPLE_LIMIT = 3
 const MIN_SHOULD_FIRE = 3
 const MIN_SHOULD_NOT_FIRE = 2
+const RULES_MAX_LINES = 90
+const RULES_MAX_BULLET = 100
 const MIN_EXAMPLE_LEN = 6 // tuned against the technical-writing / unslop-prose overlap
 
 const errors = []
@@ -517,6 +519,39 @@ for (const [kind, names] of [
 			err(rel, 'no description', 'this is the only text shown when choosing whether to use it')
 		}
 		checkDeps(rel, body, asList(fm.requires), null, asList(fm.see_also))
+	}
+}
+
+// ---------------------------------------------------------------- always-on budget
+// rules/RULES.md is loaded on every request in every repo, so its size is a cost paid
+// everywhere. One line per bullet is the discipline that keeps it that way: the moment a
+// rule needs a second line, its reason belongs in the rationale file instead.
+if (exists(ROOT, 'rules/RULES.md')) {
+	const lines = read('rules/RULES.md').split('\n')
+	lines.forEach((line, i) => {
+		if (!line.startsWith('- ')) return
+		const next = lines[i + 1] ?? ''
+		if (/^\s+\S/.test(next) && !next.startsWith('- ')) {
+			err(
+				'rules/RULES.md',
+				`bullet on line ${i + 1} continues onto the next line`,
+				"one line per rule. Move the reason into the section's rationale file.",
+			)
+		}
+		if (line.length > RULES_MAX_BULLET) {
+			err(
+				'rules/RULES.md',
+				`bullet on line ${i + 1} is ${line.length} characters`,
+				`keep it under ${RULES_MAX_BULLET}. A rule that will not fit is carrying its reason.`,
+			)
+		}
+	})
+	if (lines.length > RULES_MAX_LINES) {
+		warn(
+			'rules/RULES.md',
+			`${lines.length} lines, over the ${RULES_MAX_LINES} line budget`,
+			'every line is paid on every request. Move a situational section into a skill.',
+		)
 	}
 }
 
