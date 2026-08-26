@@ -84,6 +84,5 @@ Rationale: `why/root-causes.md`.
 - One concern per commit. Refactor and behavior change do not travel together.
 - Write the commit message in the repo's convention. Check the repo before guessing.
 - Keep the subject short and imperative. Put the why in the body, and only when needed.
-- Deleting code is a valid deliverable. Prefer it to adding.
 
 Rationale: `why/commit-messages.md`.

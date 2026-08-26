@@ -20,13 +20,13 @@ continue.
    If a tree is broken, say so in one line of the commit body rather than leaving it for
    the next session to discover.
 
-4. Write the resume note to a file, not to the conversation. Context that is about to
-   compact will not survive, which is the case this exists for. Put it at
-   `<workspace>/.resume-<branch>.md` so it sits with the work rather than in a temp
-   directory that gets swept.
+4. Bring the record up to date, in a file rather than in the conversation. Context that is
+   about to compact will not survive, which is the case this exists for. The record is
+   `<workspace>/.handoff-<branch>.md`, and the `handoff` skill owns what goes in it.
 
-   Record intent, what is done and verified, what is in flight, the exact next action, the
-   repos and worktree paths involved, and any gotcha you hit during setup.
+   If one was kept during the build, finish it: the current state at the top, and anything
+   decided since the last entry appended below. If none was kept, write it now, and expect
+   the reasoning to be thinner than it would have been.
 
 **Reply:** where you stopped, what is on disk versus still in your head, the commits you
 made per repo and whether each tree is clean, the path to the resume note, and the first

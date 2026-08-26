@@ -3,8 +3,10 @@
 **Reconstruct state from the workspace before touching anything.** For "pick up where I
 left off", "what was I working on", and starting on a change someone else paused.
 
-1. Read the resume note if there is one. `<workspace>/.resume-*.md`. It is the only source
-   for intent, and intent is the part the repository cannot tell you.
+1. Read the record if there is one. `<workspace>/.handoff-*.md`. It is the only source for
+   intent, and intent is the part the repository cannot tell you. Where none exists, the
+   `handoff` skill reconstructs one, which is slower and less complete, so do not skip
+   looking first.
 
 2. Audit. `sh scripts/audit.sh <workspace-root>`. Group the output by branch name, because
    one change spans repos and the branch is what ties them together. A branch appearing in
@@ -37,5 +39,5 @@ left off", "what was I working on", and starting on a change someone else paused
 
 **Reply:** what the change is and which repos it spans, what is committed versus
 uncommitted per repo, whether the base moved and what landed, the result of re-verifying,
-and the next action. Say plainly when the resume note and the repository disagree, and
-trust the repository.
+and the next action. Say plainly when the record and the repository disagree, and trust the
+repository.

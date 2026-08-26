@@ -1,8 +1,8 @@
 ---
 name: multi-repo-mechanics
 description: "Carries one change across a multi-repo workspace, from worktrees through to a pull request ready for approval. Use when work touches more than one service, when creating or cleaning up worktrees, when pausing or resuming a session, when opening or stacking pull requests, when driving checks green, or when triaging review comments."
-owns: "the multi-repo workspace layout, worktree lifecycle, and handing work between sessions"
-see_also: [thiamine-author]
+owns: "the multi-repo workspace layout, the worktree lifecycle, and the git side of stopping and resuming"
+see_also: [handoff]
 ---
 
 # Multi-repo mechanics
@@ -43,6 +43,10 @@ sessions.
 
 It does not own committing, pushing, or opening a pull request. Whatever the harness
 provides for those still applies.
+
+It does not own what a handoff record says either. The `handoff` skill defines that, and
+`pause-safely` and `session-pickup` use it. What stays here is the git side: the commit in
+each worktree, and checking whether the base moved while you were gone.
 
 Some harnesses also ship a command that makes one worktree per open pull request in a
 single repo. That answers a different question, which is what is currently under review.
