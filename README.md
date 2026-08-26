@@ -1,205 +1,105 @@
-# thiamine-stack
+# thiamine
 
-Engineering standards that survive AI-assisted development. Portable rules, review
-skills, and authoring templates. The standard holds whether an agent or a human writes
-the code.
+Thiamine is the vitamin whose absence does quiet, cumulative damage. You take it before
+anything goes wrong, and it is cheap.
 
-Install in Claude Code:
+This is the same idea for AI-written code. A set of standards, skills, and checks that
+coding agents load automatically, so what they produce holds up without a person reading
+every line.
+
+The point is not to slow agents down. It is to run more of them at once and trust the
+output, so human attention goes to the outcome and the experience rather than to
+line-by-line review. That is what makes a software factory possible: parallelism you can
+actually rely on.
+
+Underneath all of it is one habit. Take the problem apart before accepting how it was
+framed, and decide from what is true rather than from what was asked for.
+
+## Install
+
+In Claude Code:
 
 ```
 /plugin marketplace add vihang96/thiamine-stack
 /plugin install thiamine@thiamine-stack
 ```
 
-To set up Codex, Cursor, the always-on rules, or a local checkout you intend to edit,
-read [INSTALL.md](INSTALL.md), or tell an agent `use the thiamine-install skill`.
+For Codex, Cursor, the always-on rules, or a local checkout you intend to edit, read
+[INSTALL.md](INSTALL.md), or tell an agent `use the thiamine-install skill`.
 
-## Three commitments explain the rest
+## How it works
 
-```
-rules/RULES.md          the always-on standard, terse and harness-agnostic
-rules/why/<id>.md           the rationale behind one rule, read on demand
-skills/<name>/          SKILL.md, plus triggers.md recording when it should load
-agents/<name>.md        delegated work whose output is small and whose input is not
-hooks/                  Claude Code hooks, plus their handlers
-lint/<language>/        the mechanically enforced half of a language standard
-templates/              scaffolds for adding rules, skills, agents, and commands
-scripts/new.mjs         scaffolds an artifact, links it, validates it
-scripts/validate.mjs    validates every artifact, with no dependencies
-.prettierrc             tabs, no semicolons, single quotes, 100 columns
-.claude-plugin/         makes this repo a Claude Code plugin and marketplace
-.cursor-plugin/         the same content under Cursor's manifest
-```
+Three layers, and they load differently.
 
-**Plain markdown, no build step.** Rules and skills are portable by construction rather
-than by compilation. There is no CLI, no generated output, and nothing to keep in sync.
+**Rules** are always on. `rules/RULES.md` is one line per rule, wired into every harness so
+it applies to every request in every repo. An agent never has to be told the same thing
+twice. Each section names a longer rationale in `why/` for when the rule seems wrong.
 
-**Installed by symlink.** Harnesses point at this repo, so one edit reaches all of them
-at once. A copy exists only where a rule has to live inside another repo for CI, and
-that copy is a fork.
+**Skills** load when an agent recognises the situation from their description. Each owns a
+piece of territory and names the sibling that owns the neighbouring piece, so two of them
+never quietly disagree.
 
-**The agent is the installer.** Setup is a checklist, so it is a skill. Any capable
-agent can install, extend, or audit this stack by reading the files in it.
+**Checks** run with no agent at all. `scripts/validate.mjs` needs nothing installed and
+holds the stack to its own standards. `lint/<language>/` carries the rules a linter can
+enforce in your repos.
 
-## What the validator catches that prompting cannot
+## Skills
 
-```sh
-node scripts/validate.mjs           # errors fail, warnings inform
-node scripts/validate.mjs --strict  # warnings fail too
-```
+### Before you build
 
-Node standard library only, with nothing to install.
+| Skill | Why |
+| --- | --- |
+| `pre-implementation` | Most bad implementations are correct answers to the wrong question. Sorts unknowns into what to observe and what to ask, then plans. |
+| `consistency` | The second answer to a concern costs more than its merits. Finds what the codebase already does before adding another way. |
 
-- **Missing dependencies.** A skill that says "apply the `foo` skill" when `foo` does not
-  exist is the worst defect here. An agent does not error on it. It invents the missing
-  contents and proceeds. Every referenced skill, agent, command, slash command, and file
-  path has to resolve. A missing `requires:` entry fails, because the artifact cannot
-  work without it. A missing `see_also:` entry only warns, so a general skill can name a
-  specific one without depending on it.
-- **Invocation contradictions.** A description that promises automatic triggering on a
-  skill with `disable-model-invocation: true`, or one that claims to always apply when
-  skill invocation is discretionary.
-- **Overlapping artifacts.** Pairs of skills that share several identical examples. That
-  is the cheapest signal that two standards have merged and may now disagree.
-- **Unfilled templates.** Placeholder text that still matches a file in `templates/`, so
-  a scaffolded artifact was never written.
-- **Missing trigger examples.** Every skill needs a `triggers.md` holding prompts that
-  must load it and near-misses that must not. Nothing else records that intent.
-- Frontmatter, agreement between a name and its directory, thin descriptions, oversized
-  bodies, rule ids, and version drift between `plugin.json` and `marketplace.json`.
+### While you build
 
-To apply the same gate to hand-written changes, wire it into git once:
+| Skill | Why |
+| --- | --- |
+| `unslop-typescript` | Rejects code that throws away evidence the compiler would have checked. |
+| `unslop-rust` | The same, for what the compiler and the type system can prove. |
+| `unslop-python` | The same, on uv and ruff, where the annotation is the only contract. |
+| `unslop-prose` | Cuts the tells that make writing read as machine-generated. |
+| `technical-writing` | Decides what a document is before writing it, so docs do not become four documents fighting each other. |
 
-```sh
-echo 'node scripts/validate.mjs' >> .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
-```
+### Carrying the change
 
-Both scripts follow `.prettierrc`: tabs, no semicolons, single quotes. Tabs because
-`technical-writing` says to indent code with tabs, and prettier's defaults disagreed
-silently.
+| Skill | Why |
+| --- | --- |
+| `multi-repo-mechanics` | A change spans repos. Worktrees, pull requests, checks, and review comments, through to ready for approval. |
+| `handoff` | Context does not survive a session ending. Keeps the record that does. |
+
+### Closing out
+
+| Skill | Why |
+| --- | --- |
+| `post-implementation` | An agent can produce a change nobody understands. Makes sure the person who owns it can explain it and agrees with it. |
+
+### Maintaining the stack
+
+| Skill | Why |
+| --- | --- |
+| `thiamine-install` | Wires the stack into whichever harnesses are on the machine. |
+| `thiamine-author` | Adds a rule, skill, agent, or command without creating a second answer to something. |
+| `continual-learning` | Turns what a session learned about you into memory that outlives it. |
+
+## Extending it
 
 ```sh
-npx prettier --check scripts/    # or --write
+node scripts/new.mjs skill my-thing --standard
+node scripts/validate.mjs --strict
 ```
 
-### The lint layer
+Or hand it over: `use the thiamine-author skill to add a rule about swallowed exceptions`.
 
-`lint/<language>/` holds the mechanically enforced half of a language standard. The shape
-follows the language rather than one template.
-
-**`lint/rust/`** is configuration. clippy already ships hundreds of lints and has no stable
-plugin API, so authoring a Rust rule set means curating a lint table. `lints.toml` carries
-the set prescribed by the source guidelines, and `clippy.toml` carries project
-prohibitions, which is the one place a custom Rust rule can be written without a nightly
-toolchain. Each prohibition states a reason, and clippy prints it where the code fails.
-
-**`lint/python/`** is configuration. ruff carries both linting and formatting, has no
-plugin API, and expresses a project prohibition as a `banned-api` entry that matches
-imports and attribute access alike.
-
-**`lint/typescript/`** is code, because TypeScript has no built-in linter. 15 rules
-vendored from [anti-slop](https://github.com/dmmulroy/anti-slop) under MIT, with their
-tests.
-
-One plugin serves both Oxlint and ESLint. Rules are written with Oxlint's `createOnce`
-API, and `eslintCompatPlugin` adds the ESLint-shaped `create` that delegates to it. The
-same plugin file produces identical findings under both linters. Remove the wrapper and
-ESLint throws while Oxlint keeps working, so it earns its place.
-
-Every rule is syntactic, reading type annotations off the AST rather than resolved types.
-Oxlint has no type-aware linting, so that constraint is what keeps one plugin portable.
-The cost is real: a rule catches a written `: unknown` and misses a return only inferred
-as unknown.
-
-`skills/unslop-<language>/` names each rule in an Enforceable-by column, and the validator
-fails if a skill claims a rule that language does not have. For Rust it checks against a
-dated snapshot of the installed toolchain's lints, so a citation cannot be a typo or a
-lint that never existed. See [lint/README.md](lint/README.md) to wire either into a repo.
-
-```sh
-cd lint/rust/fixture && cargo clippy                       # must report 6 warnings
-cd lint/python/fixture && ruff check --no-cache src/bad.py # must report 16 findings
-```
-
-Each language directory carries its own `package.json`, because the lint layer is the
-only part of this repo with dependencies. The validator and the hooks import `node:`
-builtins alone, so the core needs no install.
-
-```sh
-cd lint/typescript && npm install && npm test
-```
-
-### What the hooks do
-
-Two hooks support the continual-learning loop, and neither one acts on its own.
-
-The `Stop` hook counts completed turns and notes whether the transcript moved. It writes
-nothing else and prints nothing, because a hook that talks during a task is the reason
-people stop reading hooks. It returns immediately while `stop_hook_active` is set, which
-is what Claude Code asks of a Stop hook.
-
-The `SessionStart` hook reads that state. Once the turn count and the elapsed time both
-pass their thresholds, it prints one line suggesting `/continual-learning`. It suggests
-and nothing more. Override the thresholds with `THIAMINE_CL_MIN_TURNS` and
-`THIAMINE_CL_MIN_MINUTES`, which default to 10 turns and 120 minutes.
-
-State lives next to the memory it describes, in
-`~/.claude/projects/<slug>/memory/.continual-learning.json`, so nothing is written into
-your repo.
-
-### Two checks static analysis cannot make
-
-Static checks confirm that a description is well formed. They cannot confirm that it
-fires.
-
-**What the harness actually loaded.** Install the plugin, then run:
-
-```sh
-claude plugin details thiamine
-```
-
-That prints the component inventory and the projected token cost, which catches a valid
-manifest whose skills Claude never picked up.
-
-**Whether a skill fires on a real prompt.** `claude plugin eval` answers this. It runs
-cases from `evals/`. Under `--ablation with-without` it scores the plugin against a
-no-plugin baseline and reports the delta. Graders marked `with-only`, including
-`tool_used: Skill`, act as a plugin-fired indicator, so a case can assert that a given
-prompt loaded a given skill. `--threshold` exits 1, which makes it usable in CI.
-
-The command is in early access and is not enabled on this account, so nothing here uses
-it yet. `skills/<name>/triggers.md` holds the inputs in the meantime. They are a manual
-rehearsal now and the raw material for eval cases later.
-
-## Add to the stack
-
-Scaffold an artifact, which copies the template, substitutes the name, symlinks new
-skills into the other installed harnesses, and validates the result:
-
-```sh
-node scripts/new.mjs skill my-thing --standard   # or --procedure
-node scripts/new.mjs rule my-rule
-node scripts/new.mjs command my-command
-node scripts/new.mjs agent my-agent
-```
-
-A skill requires an explicit `--standard` or `--procedure`. Picking the wrong shape is
-the mistake that makes a skill unusable, so the flag forces the decision up front. Pass
-`--no-link` to skip symlinks and `--force` to overwrite.
-
-To have an agent do the whole thing, including choosing the artifact type:
-
-```
-use the thiamine-author skill to add a rule about swallowed exceptions
-```
-
-Read [templates/README.md](templates/README.md) for which template to reach for and
-why. Copying one by hand still works, because nothing here requires the scripts.
+The validator is the part worth knowing about. It catches what prompting does not: a skill
+naming a helper that does not exist, a description promising a trigger that cannot fire,
+two skills that have quietly merged, an enforcement claim for a lint rule nobody wrote.
+Read [templates/README.md](templates/README.md) before adding anything, and
+[lint/README.md](lint/README.md) to wire the lint layer into a repo.
 
 ## Status
 
-Early. The install path, templates, authoring flow, and validator are in place. The rule
-corpus in `rules/RULES.md` is seeded but not complete. `rules/why/scope.md` is the exemplar
-for what an expanded rule looks like.
-
-`node scripts/validate.mjs --strict` reports 0 errors and 0 warnings at this commit.
+Early, and in use. Thirteen skills, eleven always-on rule sections, and a lint layer for
+TypeScript, Rust, and Python. The rule corpus stays small on purpose, since every line is
+paid on every request.

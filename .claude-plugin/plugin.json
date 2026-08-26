@@ -2,7 +2,7 @@
 	"$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
 	"name": "thiamine",
 	"version": "0.1.0",
-	"description": "Anti-slop engineering standards for coding agents. Portable rules, review skills, and authoring templates that keep code quality high.",
+	"description": "Deslops AI-written code. Always-on engineering standards, skills for each phase of a change, and checks that run without an agent, so you can run agents in parallel and trust the output.",
 	"author": {
 		"name": "Vihang Agarwal"
 	},
