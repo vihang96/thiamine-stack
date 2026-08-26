@@ -93,6 +93,10 @@ the set prescribed by the source guidelines, and `clippy.toml` carries project
 prohibitions, which is the one place a custom Rust rule can be written without a nightly
 toolchain. Each prohibition states a reason, and clippy prints it where the code fails.
 
+**`lint/python/`** is configuration. ruff carries both linting and formatting, has no
+plugin API, and expresses a project prohibition as a `banned-api` entry that matches
+imports and attribute access alike.
+
 **`lint/typescript/`** is code, because TypeScript has no built-in linter. 15 rules
 vendored from [anti-slop](https://github.com/dmmulroy/anti-slop) under MIT, with their
 tests.
@@ -113,7 +117,8 @@ dated snapshot of the installed toolchain's lints, so a citation cannot be a typ
 lint that never existed. See [lint/README.md](lint/README.md) to wire either into a repo.
 
 ```sh
-cd lint/rust/fixture && cargo clippy    # must report six warnings
+cd lint/rust/fixture && cargo clippy                       # must report 6 warnings
+cd lint/python/fixture && ruff check --no-cache src/bad.py # must report 16 findings
 ```
 
 Each language directory carries its own `package.json`, because the lint layer is the

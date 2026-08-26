@@ -544,17 +544,21 @@ for (const language of listdir('lint')) {
 		continue
 	}
 
-	// Configured lints from an existing linter, listed in a generated snapshot.
+	// Configured lints from an existing linter, listed in a generated snapshot. The
+	// namespaces come from the snapshot itself, so a new language needs no code here.
 	const snapshot = `lint/${language}/lints-available.txt`
 	if (exists(ROOT, snapshot)) {
+		const names = new Set(
+			read(snapshot)
+				.split('\n')
+				.filter((l) => l && !l.startsWith('#'))
+				.map((l) => l.trim()),
+		)
+		const namespaces = [...new Set([...names].map((n) => n.split('::')[0]))].sort()
+		if (!namespaces.length) continue
 		lintLanguages.set(language, {
-			names: new Set(
-				read(snapshot)
-					.split('\n')
-					.filter((l) => l && !l.startsWith('#'))
-					.map((l) => l.trim()),
-			),
-			ref: /`((?:clippy|rustc)::[a-z0-9_]+)`/g,
+			names,
+			ref: new RegExp('`((?:' + namespaces.join('|') + ')::[A-Za-z0-9_]+)`', 'g'),
 			where: snapshot,
 			stale: true,
 		})
@@ -577,7 +581,7 @@ for (const name of skillNames) {
 			rel,
 			`claims lint \`${cited}\`, which is not in ${where}`,
 			stale
-				? 'either the lint does not exist, or the snapshot predates it. Run scripts/regen-rust-lints.sh.'
+				? 'either the lint does not exist, or the snapshot predates it. Run scripts/regen-lints.sh.'
 				: `add lint/${language}/rules/${cited}.ts, or change the Enforceable-by entry to review`,
 		)
 	}

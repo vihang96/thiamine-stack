@@ -5,6 +5,7 @@ One directory per language, holding whatever form enforcement takes in that lang
 ```
 lint/typescript/    a plugin, authored, running in Oxlint and ESLint
 lint/rust/          clippy configuration and project prohibitions
+lint/python/        ruff configuration and project prohibitions
 ```
 
 The shapes differ because the languages do, and the layout follows that rather than

@@ -1,0 +1,64 @@
+# Merge this into the target project's pyproject.toml under [tool.ruff], or keep it as a
+# standalone ruff.toml at the project root. ruff reads either.
+#
+# The selection is opinionated toward rejecting low-evidence code rather than toward
+# style. Formatting is `ruff format`, which is not configured here and needs no rules.
+
+target-version = "py311"
+line-length = 100
+
+[lint]
+select = [
+	"F",     # pyflakes: undefined names, unused imports, f-strings without placeholders
+	"E",     # pycodestyle errors
+	"W",     # pycodestyle warnings
+	"B",     # bugbear: mutable defaults, loop variable binding, useless expressions
+	"S",     # bandit: shell injection, pickle, weak hashes, asserts in shipped code
+	"ANN",   # annotations: signatures state their types
+	"ARG",   # unused arguments, which are ceremony or a signature nobody updated
+	"C4",    # comprehension rewrites
+	"DTZ",   # naive datetimes
+	"EM",    # exception messages assigned to a name rather than inlined
+	"ERA",   # commented-out code
+	"FBT",   # boolean positional arguments
+	"G",     # logging format: no f-strings in log calls
+	"LOG",   # logging misuse
+	"N",     # pep8 naming
+	"PIE",   # unnecessary pass, duplicate class fields, range(len(x))
+	"PL",    # pylint subset: too many branches, magic values, useless returns
+	"PT",    # pytest style
+	"PTH",   # use pathlib rather than os.path
+	"RET",   # unreachable and redundant returns
+	"RUF",   # ruff-specific, including mutable class defaults
+	"SIM",   # simplifiable conditionals, nested with, needless else
+	"SLF",   # private member access across objects
+	"T20",   # print and pprint in shipped code
+	"TID",   # tidy imports, which enables the banned-api table below
+	"TRY",   # exception antipatterns: long try bodies, raise inside except, bare raise
+	"UP",    # pyupgrade: syntax the target version supersedes
+]
+
+ignore = [
+	# The formatter owns line breaks, so a long line is its problem and not the author's.
+	"E501",
+	# A docstring on every module, class, and function is not a standard this repo holds.
+	"D",
+]
+
+[lint.per-file-ignores]
+# Tests assert, use fixtures positionally, and reach into what they are testing.
+"**/tests/**" = ["S101", "ANN", "SLF001", "PLR2004", "ARG001", "ARG002"]
+"**/conftest.py" = ["ANN"]
+
+[lint.flake8-tidy-imports.banned-api]
+# The one place a project-specific prohibition can be written. ruff prints the message
+# inline where the code fails, so a prohibition teaches instead of only blocking.
+"pickle".msg = "pickle executes arbitrary code on load. Use json, or msgspec when it needs to be fast."
+"os.system".msg = "os.system hands a string to a shell. Use subprocess.run with an argument list."
+"os.popen".msg = "os.popen hands a string to a shell. Use subprocess.run with an argument list."
+"tempfile.mktemp".msg = "mktemp races. Use tempfile.NamedTemporaryFile or mkstemp."
+"typing.Any".msg = "Any switches off checking wherever it lands. Name the type, or use object and narrow it."
+
+[lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false

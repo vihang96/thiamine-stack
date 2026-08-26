@@ -1,11 +1,12 @@
 # Lint names available to unslop-rust's Enforceable-by column.
 #
-# One name per line, prefixed with its namespace. Underscores throughout, because
-# that is how a lint is written in Cargo.toml and in an attribute. clippy prints
-# them with hyphens.
+# One name per line, prefixed with its namespace.
 #
 # Generated 2026-08-25 from rustc 1.97.1 and clippy 0.1.97.
-# Regenerate with scripts/regen-rust-lints.sh when the toolchain moves.
+# Regenerate with scripts/regen-lints.sh when the toolchain moves.
+#
+# Underscores throughout, because that is how a lint is written in Cargo.toml and
+# in an attribute. clippy prints them with hyphens.
 clippy::absolute_paths
 clippy::absurd_extreme_comparisons
 clippy::all
