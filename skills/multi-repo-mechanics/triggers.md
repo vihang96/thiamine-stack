@@ -1,4 +1,4 @@
-# Trigger examples: workspace-coding
+# Trigger examples: multi-repo-mechanics
 
 Prompts that must load this skill, and near-misses that must not.
 

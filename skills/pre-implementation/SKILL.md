@@ -2,7 +2,7 @@
 name: pre-implementation
 description: "Prepares work before any code is written: sorting unknowns into what to observe and what to ask, understanding the code that exists, finding the blast radius, and sequencing the steps across repos. Use when starting a feature, a bug fix, a performance push, or a migration, and whenever a request names a solution rather than a problem."
 owns: "the phase before the first commit: what to build, what is unknown, and in what order"
-see_also: [workspace-coding]
+see_also: [multi-repo-mechanics]
 ---
 
 # Pre-implementation
@@ -29,9 +29,9 @@ acceptable, what the deadline is.
 
 ## Scope
 
-This skill owns deciding what to build and in what order. `workspace-coding` owns the
-mechanics of doing it, starting at worktree setup and running through to the pull request.
-The language standards own the code itself.
+This skill owns deciding what to build and in what order. `multi-repo-mechanics` takes it
+from there, starting at worktree setup and running through to the pull request. The language
+standards own the code itself.
 
 It does not own the implementation plan surviving contact. When the plan is wrong, say so
 and re-plan rather than following it off a cliff.

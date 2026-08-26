@@ -1,11 +1,11 @@
 ---
-name: workspace-coding
-description: "Works across a multi-repo workspace using one git worktree per repo per change. Use when starting work that touches more than one service, when creating or cleaning up worktrees, when pausing work to resume later, or when picking up a session someone else left."
+name: multi-repo-mechanics
+description: "Carries one change across a multi-repo workspace, from worktrees through to a pull request ready for approval. Use when work touches more than one service, when creating or cleaning up worktrees, when pausing or resuming a session, when opening or stacking pull requests, when driving checks green, or when triaging review comments."
 owns: "the multi-repo workspace layout, worktree lifecycle, and handing work between sessions"
 see_also: [thiamine-author]
 ---
 
-# Workspace coding
+# Multi-repo mechanics
 
 A workspace is a directory of sibling repositories, one per service. A change usually
 touches more than one of them, so the unit of work is a set of worktrees on the same
