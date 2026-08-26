@@ -47,6 +47,11 @@ Fix or explain every finding before going further. What survives is the part tha
 reader. In another repo, run whatever that repo's linters and link checkers are, for the
 same reason.
 
+In a thiamine checkout a `PostToolUse` hook already runs this after every edit to an
+artifact, and surfaces errors immediately. If that hook is installed, expect this step to be
+clean and treat it as confirmation rather than as the pass. What it never checks is whether
+a well-formed claim is true, which is the whole of what follows.
+
 ### 2. Fix the window
 
 Audit what changed, not everything. The last audit is the boundary, and git already knows

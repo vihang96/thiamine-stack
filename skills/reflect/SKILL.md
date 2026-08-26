@@ -209,6 +209,12 @@ Commit with `reflect` in the message, so the next pass can bound its window:
 git log --oneline -1 --grep=reflect
 ```
 
+Then clear the nudge, or the next session start suggests a pass that just happened:
+
+```sh
+node scripts/mark-pass-run.mjs reflect     # from a thiamine checkout
+```
+
 ## Verify
 
 - `node scripts/validate.mjs` is clean for every artifact touched.

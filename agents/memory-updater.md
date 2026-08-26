@@ -105,11 +105,17 @@ Record the modification time of every transcript you processed. Drop index entri
 files no longer exist. Refresh the index even when no memory changed, so the next run does
 not re-read the same transcripts.
 
-Then reset the nudge state in `.continual-learning.json`, in the same directory. Set
-`lastRunAtMs` to the current epoch milliseconds and `turnsSinceLastRun` to `0`. Leave
-`version` and `lastTranscriptMtimeMs` alone. Skip this only when the file is absent, which
-means the hooks are not installed. Without the reset, the session-start hook keeps
-suggesting a run that already happened.
+Then reset the nudge state, so the session-start hook stops suggesting a run that already
+happened. From a thiamine checkout:
+
+```sh
+node scripts/mark-pass-run.mjs continual-learning
+```
+
+Without a checkout, edit `.thiamine-nudge.json` in the project's `~/.claude/projects/<slug>/`
+directory: set `passes.continual-learning.lastRunAtMs` to the current epoch milliseconds and
+its `turns` to `0`, leaving the other passes alone. The file being absent means the hooks are
+not installed, so skip it.
 
 Report the files you created, updated, and deleted, one line each. If you found nothing
 durable, reply with exactly `No durable memory updates.` and still refresh the index.

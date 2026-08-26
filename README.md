@@ -44,8 +44,9 @@ piece of territory and names the sibling that owns the neighbouring piece, so tw
 never quietly disagree.
 
 **Checks** run with no agent at all. `scripts/validate.mjs` needs nothing installed and
-holds the stack to its own standards. `lint/<language>/` carries the rules a linter can
-enforce in your repos.
+holds the stack to its own standards; a hook runs it after every edit to an artifact, so a
+structural error surfaces in the same turn that caused it. `lint/<language>/` carries the
+rules a linter can enforce in your repos.
 
 ## Skills
 

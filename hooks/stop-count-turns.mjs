@@ -1,19 +1,14 @@
 #!/usr/bin/env node
 /**
- * Stop hook. Counts completed turns and tracks transcript movement. Nothing else.
+ * Stop hook. Counts completed turns for every pass and tracks transcript movement.
+ * Nothing else.
  *
- * This hook never blocks and never speaks. Mining transcripts mid-session would
- * interrupt work to do bookkeeping, so the suggestion is deferred to the next
- * SessionStart. A hook that talks during a task is the reason people stop reading hooks.
+ * This hook never blocks and never speaks. Mining transcripts mid-session would interrupt
+ * work to do bookkeeping, so the suggestion is deferred to the next SessionStart. A hook
+ * that talks during a task is the reason people stop reading hooks.
  */
 import fs from 'node:fs'
-import {
-	blankState,
-	readState,
-	readStdin,
-	stateFile,
-	writeState,
-} from './continual-learning-state.mjs'
+import { PASSES, blankState, readState, readStdin, stateFile, writeState } from './nudge-state.mjs'
 
 const quiet = () => {
 	process.stdout.write('{}')
@@ -42,8 +37,8 @@ try {
 		}
 	}
 
-	state.turnsSinceLastRun += 1
-	if (mtime !== null) state.lastTranscriptMtimeMs = mtime
+	for (const p of PASSES) state.passes[p.name].turns += 1
+	if (mtime !== null) state.transcriptMtimeMs = mtime
 	writeState(file, state)
 } catch {
 	// A hook that fails must not break the session. Swallow and stay silent.
