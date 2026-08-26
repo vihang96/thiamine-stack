@@ -88,6 +88,7 @@ deciding whether two awaits are independent needs to follow the data. See
 | Log with fields, not f-strings | `logger.info("user %s", uid)` defers formatting and keeps the message groupable. | `ruff::G004`, `ruff::LOG015` |
 | No unused arguments | An argument nobody reads is a signature nobody updated. | `ruff::ARG001`, `ruff::ARG002` |
 | Explicit imports | `from x import *` makes every name's origin a guess and every rename silent. | `ruff::F403`, `ruff::F401` |
+| Imports at the top of the file | An import inside a function hides a dependency from every reader and from the linter, and pays the lookup on each call. Move it up, and keep it inline only to break a real import cycle or to defer a genuinely heavy module. | `ruff::PLC0415` |
 | No reaching into other objects | Touching `other._thing` couples you to a promise that was never made. | `ruff::SLF001` |
 | No placeholder bodies | A `pass` or `...` left where code was meant to go. | `ruff::PIE790` |
 

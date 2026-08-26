@@ -43,6 +43,45 @@ def db() -> Iterator[Database]:
         yield database
 ```
 
+## Async tests and real dependencies
+
+`pytest-asyncio` in auto mode lets a test be `async def` with no decorator. Set it once:
+
+```toml
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+```
+
+Where a test needs a real database, run one in a container and let fixture scope do the
+work. The container is expensive and the connection is not, so they get different scopes:
+
+```python
+@pytest.fixture(scope="session")
+def database_url() -> Iterator[str]:
+    with PostgresContainer("pgvector/pgvector:pg16") as container:
+        yield container.get_connection_url()
+
+
+@pytest.fixture
+async def engine(database_url: str) -> AsyncIterator[AsyncEngine]:
+    engine = create_async_engine(database_url)
+    async with engine.begin() as connection:
+        await connection.run_sync(Base.metadata.create_all)
+    yield engine
+    await engine.dispose()
+```
+
+Session scope on the container means one startup for the whole run. Function scope on the
+engine means one test cannot leave state that another one reads. Getting these the wrong
+way round produces either a slow suite or a suite whose failures depend on ordering, and
+the second is much harder to notice.
+
+Make the mocks for services you do not own `autouse`, so a new test cannot reach the
+network by forgetting to ask for the fixture. Opting out is explicit and visible.
+
+For an API you replay rather than mock, a cassette library records once and replays after.
+Commit the cassettes, and scrub credentials before you do.
+
 ## pytest.raises names the error
 
 ```python

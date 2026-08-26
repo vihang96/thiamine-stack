@@ -53,6 +53,32 @@ the code rather than inferred from the first statement.
 loaded object after commit issues a fresh query, which is a surprising round trip inside
 what looks like plain attribute access.
 
+## Migrations
+
+Two rules that cost a wasted afternoon each.
+
+**Revision ids are at most 32 characters.** Alembic's own `alembic_version` table declares
+`version_num` as `VARCHAR(32)`, so a longer id fails at apply time rather than at creation:
+
+```
+sqlalchemy.exc.DataError: value too long for type character varying(32)
+```
+
+Alembic's generated hash ids fit. A hand-written one such as
+`revision: str = "add_workspace_retention_policy_table"` does not, and the failure names
+the column rather than the revision, so it reads as a data problem in the migration
+instead of a problem with its name. Keep a custom id short, or take the generated one.
+
+**The migrations package depends on nothing from the application.** A migration runs
+against a schema from a point in the past, but it imports code from the present. Import a
+model into a migration and replaying history from zero breaks as soon as that model
+changes, which is exactly when someone needs the replay to work. Spell the columns out in
+the migration rather than deriving them from the model.
+
+**Autogenerate drafts, it does not decide.** Alembic compares metadata to the database and
+guesses. It does not see a rename, only a drop and an add, which discards the column's
+data. Read every generated migration before committing it, and check the downgrade too.
+
 ## Load what you need, explicitly
 
 A lazy relationship is a query that fires from attribute access, at a place in the code
