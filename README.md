@@ -113,8 +113,7 @@ that holds here, so they were reworked rather than copied.
 | Python criteria | [affaan-m/ECC](https://github.com/affaan-m/ECC) | MIT |
 | Writing standards | [Diátaxis](https://diataxis.fr), Google developer style, ASD-STE100, Global English | various |
 
-cursor/plugins states no license, so its row is credit rather than a license claim. Each
-skill names what it took under its own Source heading.
+cursor/plugins states no license, so its row is credit rather than a license claim.
 
 ## Status
 

@@ -80,8 +80,3 @@ the domain is. The rule is about layers that do not correspond to anything.
   remember.
 - A reviewer asks what a layer is for and the answer is what it does rather than why it is
   separate.
-
-## Source
-
-Adapted from `principle-minimize-reader-load` in `github.com/cursor/plugins`, fetched
-2026-08-26, which carries no license.

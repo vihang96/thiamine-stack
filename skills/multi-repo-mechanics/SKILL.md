@@ -110,10 +110,3 @@ stack is as ready as its lowest unfinished pull request.
   and the error names the existing path. Use it.
 - Assume every repo in the workspace is involved. A change touches the repos it touches,
   and a worktree in a repo you never edit is noise in every future audit.
-
-## Source
-
-The playbook shapes come from the `poteto-mode` playbooks in `github.com/cursor/plugins`,
-fetched 2026-08-25, which carries no license. Reworked for a workflow where a human merges,
-where a change spans repos rather than stacking in one, and without the Graphite queue
-mechanics the originals assume.
