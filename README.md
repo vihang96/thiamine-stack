@@ -1,4 +1,6 @@
-# thiamine
+# Thiamine Stack
+
+<img src="assets/thiamine-tablet.jpeg" alt="A vitamin tablet fizzing in a glass of water, bubbles streaming upward" width="300" align="right">
 
 Thiamine is the vitamin whose absence does quiet, cumulative damage. You take it before
 anything goes wrong, and it is cheap.
