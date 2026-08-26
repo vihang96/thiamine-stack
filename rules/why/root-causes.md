@@ -58,3 +58,8 @@ A symptom that is genuinely the cause needs no tracing. A typo in a string is a 
 - The test you wrote would pass without the fix.
 - You cannot explain why it started happening when it did.
 - The same class of bug has been fixed nearby more than once.
+
+## Source
+
+Adapted from `principle-fix-root-causes` in `github.com/cursor/plugins`, fetched 2026-08-25,
+which carries no license.

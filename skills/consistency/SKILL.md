@@ -120,3 +120,9 @@ precedent the next service will inherit.
   say what converging would cost, and carry on with the work you have.
 - Write a decision record for something nobody would ask twice. A record that answers a
   question no one has is ceremony, and it makes the useful ones harder to find.
+
+## Source
+
+The structural rules draw on `principle-foundational-thinking` and
+`principle-model-the-domain` in `github.com/cursor/plugins`, fetched 2026-08-26, which
+carries no license.

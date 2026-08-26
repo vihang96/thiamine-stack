@@ -54,3 +54,9 @@ during the build, which is where the decisions being confirmed should already be
   send it. That is outward-facing and cannot be taken back.
 - Treat silence as agreement. A decision nobody responded to is unconfirmed, and saying so
   is more useful than assuming.
+
+## Source
+
+Adapted from `teach` in `github.com/cursor/plugins`, fetched 2026-08-26, which carries no
+license. Its rule against quizzing is kept, and is why confirming decisions is a separate
+activity from explaining the change.

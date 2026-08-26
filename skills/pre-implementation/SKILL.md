@@ -86,3 +86,9 @@ If any of these is missing, the next thing to do is find it, not to start typing
   way of avoiding the work.
 - Carry an unknown into implementation silently. An assumption you name can be corrected. An
   assumption nobody sees becomes a bug with a plausible explanation.
+
+## Source
+
+Adapted from `pstack` in `github.com/cursor/plugins`, fetched 2026-08-26, which carries no
+license. The investigation, prototype, hillclimb, and blast-radius material comes from there,
+as does the rule that a question you could answer by looking is not a question.

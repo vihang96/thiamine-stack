@@ -62,3 +62,8 @@ you can find later beats one you cannot.
   nothing in the code says what happens on the second pass.
 - Recovering from a partial failure means someone reading the logs to work out where it got
   to.
+
+## Source
+
+Adapted from `principle-make-operations-idempotent` in `github.com/cursor/plugins`, fetched
+2026-08-25, which carries no license.

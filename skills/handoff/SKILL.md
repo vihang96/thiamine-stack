@@ -78,3 +78,9 @@ and the drift.
   scaffolding when the work lands rather than shipping it.
 - Reconstruct when a record exists. Read it first, then verify it against the repository,
   and trust the repository where they disagree.
+
+## Source
+
+The reconstruction half is adapted from `recall` in `github.com/cursor/plugins`, fetched
+2026-08-26, which carries no license. Two ideas in the build log come from `show-me-your-work`
+in the same repo: evidence is a pointer rather than prose, and an entry records its outcome.

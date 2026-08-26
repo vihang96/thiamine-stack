@@ -118,3 +118,8 @@ durable, reply with exactly `No durable memory updates.` and still refresh the i
 
 The parent receives only your final message. Return the per-file report, or the exact
 sentence above. Do not summarize the transcripts.
+
+## Source
+
+Adapted from a Cursor memory-updater agent. Its transcript paths and its `AGENTS.md` write
+target were specific to that setup and are replaced here.

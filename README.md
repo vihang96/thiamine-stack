@@ -98,6 +98,24 @@ two skills that have quietly merged, an enforcement claim for a lint rule nobody
 Read [templates/README.md](templates/README.md) before adding anything, and
 [lint/README.md](lint/README.md) to wire the lint layer into a repo.
 
+## Where this came from
+
+A good deal of the structure and several skills are derived from `pstack`, the plugin stack
+in [cursor/plugins](https://github.com/cursor/plugins), and in particular its `poteto-mode`
+playbooks. That repo carries no license field, so this is credit rather than a license
+claim. Reworked here for a workflow where a human merges, where changes span repos, and
+without the tooling those originals assume. Each skill names what it took, under its own
+Source heading.
+
+The language standards come from elsewhere. TypeScript from
+[dmmulroy/anti-slop](https://github.com/dmmulroy/anti-slop), MIT, whose Oxlint rules are
+vendored under `lint/typescript/` with their license. Rust from the
+[Microsoft Pragmatic Rust Guidelines](https://microsoft.github.io/rust-guidelines/), MIT.
+Python from the `python-patterns` and `python-testing` skills in
+[affaan-m/ECC](https://github.com/affaan-m/ECC). Writing from
+[Diátaxis](https://diataxis.fr), the Google developer style guide, ASD-STE100, and Kohl's
+Global English.
+
 ## Status
 
 Early, and in use. Thirteen skills, eleven always-on rule sections, and a lint layer for
