@@ -18,18 +18,22 @@ import path from 'node:path'
  * reflect sits far higher than continual-learning on purpose. Memory takes a fact the
  * moment it is stated, so it is worth mining often. A method is not proven until a body of
  * work has landed, and a reflect pass over half a feature finds coincidences.
+ *
+ * `invoke` carries the `thiamine:` prefix because these hooks only ever run from the
+ * installed Claude Code plugin, where that is the skill's real name. The bare name does not
+ * resolve there, and a suggestion naming a command that does not exist is worse than none.
  */
 export const PASSES = [
 	{
 		name: 'continual-learning',
-		invoke: '/continual-learning',
+		invoke: '/thiamine:continual-learning',
 		minTurns: 10,
 		minMinutes: 120,
 		says: (turns) => `${turns} turns of transcript have not been mined for durable memory`,
 	},
 	{
 		name: 'reflect',
-		invoke: '/reflect',
+		invoke: '/thiamine:reflect',
 		minTurns: 40,
 		minMinutes: 720,
 		says: (turns) => `${turns} turns of work have landed without being reflected into skills`,

@@ -70,6 +70,19 @@ const agentNames = listdir('agents')
 	.map((f) => f.slice(0, -3))
 const known = new Set([...skillNames, ...ruleIds, ...commandNames, ...agentNames])
 
+/**
+ * The namespace Claude Code puts in front of a skill name once the plugin is installed.
+ * Read from the manifest so a rename cannot leave a stale copy of the name here. Null when
+ * the manifest is unreadable, which the manifest checks below already report.
+ */
+const PLUGIN_NAME = (() => {
+	try {
+		return JSON.parse(read('.claude-plugin/plugin.json')).name ?? null
+	} catch {
+		return null
+	}
+})()
+
 // ---------------------------------------------------------------- dependencies
 const DEP_PATTERNS = [
 	// "apply the **unslop-prose** skill", "see the foo skill"
@@ -78,7 +91,9 @@ const DEP_PATTERNS = [
 	/[`*_]{1,2}([a-z][a-z0-9-]{2,})[`*_]{1,2}\s+(?:skill|agent|command)\b/g,
 ]
 const POSSESSIVE = /`([a-z][a-z0-9-]{2,})`'s\s+\w+\s+(?:rule|skill|section|catalog)/g
-const SLASH_REF = /(?<=^|[\s`("'])\/([a-z][a-z0-9-]{2,})\b/gm
+// A skill typed under the installed plugin is namespaced (`/thiamine:reflect`), so the
+// optional prefix is part of the reference and only the part after the colon is a name.
+const SLASH_REF = /(?<=^|[\s`("'])\/((?:[a-z][a-z0-9-]*:)?[a-z][a-z0-9-]{2,})\b/gm
 const PATH_REF = /`([\w./-]*[\w-]+\/[\w./-]+\.(?:md|sh|py|mjs|json|ya?ml))`/g
 
 const SLASH_ALLOW = new Set([
@@ -318,11 +333,20 @@ function checkDeps(where, body, declared, skillDir, soft = []) {
 		}
 	}
 
-	for (const name of captures(body, SLASH_REF)) {
+	for (const ref of captures(body, SLASH_REF)) {
+		const [prefix, name] = ref.includes(':') ? ref.split(':') : [null, ref]
+		if (prefix && PLUGIN_NAME && prefix !== PLUGIN_NAME) {
+			warn(
+				where,
+				`mentions slash command /${ref}, but this plugin is named '${PLUGIN_NAME}'`,
+				`use /${PLUGIN_NAME}:${name}, or the bare name for a symlinked install`,
+			)
+			continue
+		}
 		if (SLASH_ALLOW.has(name) || known.has(name)) continue
 		warn(
 			where,
-			`mentions slash command /${name}, which is not in commands/ or skills/`,
+			`mentions slash command /${ref}, which is not in commands/ or skills/`,
 			'a slash reference only resolves if a command or skill of that name exists',
 		)
 	}

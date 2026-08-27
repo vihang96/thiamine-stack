@@ -3,7 +3,8 @@
 Prompts that must load this skill, and near-misses that must not.
 
 This skill sets `disable-model-invocation`, so the prompts below describe when you should
-type `/continual-learning`, not when the agent picks it up on its own.
+type `/thiamine:continual-learning`, not when the agent picks it up on its own. Where the
+skills are symlinked rather than installed as a plugin, the name is `/continual-learning`.
 
 ## Should fire
 
