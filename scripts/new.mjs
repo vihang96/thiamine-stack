@@ -62,7 +62,7 @@ if (kind === 'skill') {
 	target = `skills/${name}/SKILL.md`
 } else if (kind === 'rule') {
 	template = 'templates/rule/RULE.md.template'
-	target = `rules/${name}.md`
+	target = `rules/why/${name}.md`
 } else if (kind === 'command') {
 	template = 'templates/command/COMMAND.md.template'
 	target = `commands/${name}.md`

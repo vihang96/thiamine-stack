@@ -52,6 +52,14 @@ Rationale: `why/reader-load.md`.
 
 Rationale: `why/idempotence.md`.
 
+## Secrets
+
+- Report that a secret is present, never its value. Test the variable and print your own words.
+- A secret that reached a log, a transcript, or a chat thread is leaked. Rotate it.
+- Never print a secret while debugging. The log outlives the session.
+
+Rationale: `why/secrets.md`.
+
 ## Debugging
 
 - Reproduce it before changing anything. A fix you cannot trigger is a guess.
