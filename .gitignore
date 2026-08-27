@@ -4,3 +4,4 @@ target/
 .ruff_cache/
 .handoff-*.md
 .thiamine/
+/tree/

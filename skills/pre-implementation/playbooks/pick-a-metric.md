@@ -40,24 +40,18 @@ because the number agrees with you.
 7. Record the baseline and a green test run before touching anything. The baseline is worth
    nothing without the tests that say the system still worked when you took it.
 
-## Running the loop
+## Then hand the loop over
 
-The metric only means something if the loop respects it.
+This playbook ends with a metric, a frozen harness, and a baseline. That is enough for a
+single push, where one change is measured once and either helped or did not.
 
-- One change, one measurement, keep or revert. Never stack two untested changes, because a
-  win and a regression together read as no change.
-- Never claim an improvement from reading the code. The data decides.
-- Ground each attempt in a mechanism. "Defer this off the startup path because it blocks
-  first paint" is a hypothesis. "Try memoising something" is not.
-- Log every attempt, kept or reverted, with the before, the after, and one line of why. Keep
-  it outside the tree so it survives a revert. It is what stops the run circling back to an
-  idea already tried.
-- Correctness and simplicity outrank the number. Revert a win that breaks behavior. Keep a
-  simplification that holds the number.
-- Do not relax the target to declare victory, and do not stop while cheap untried ideas
-  remain. If you are stuck, say so rather than spinning.
+A run of many attempts is a different activity and the `experimentation` skill owns it: the
+loop discipline, several competing metrics where one is being moved and the others only held,
+generating hypotheses from what is failing, and pruning what stops paying. Reach for it as
+soon as you expect more than a handful of attempts, or as soon as a second metric has to be
+protected while you move the first.
 
 **Reply:** the metric and the direction, the workload it is measured on, the harness command
 and its noise floor, the baseline with the test run that accompanied it, and the stop
-condition. Once the loop has run, add baseline to final with the delta, how many attempts
-were kept against reverted, and the best idea you would try next.
+condition. Say whether one push or a run of attempts follows, since that decides who reports
+the result.
