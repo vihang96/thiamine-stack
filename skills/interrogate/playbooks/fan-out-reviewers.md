@@ -3,6 +3,10 @@
 **Fresh context is the mechanism, not the parallelism.** For high-stakes changes, for a
 harness with no built-in diff review, and for "tear this apart" or "find the blind spots".
 
+This is the heaviest shape in the skill, so check the floor in `SKILL.md` before reaching
+for it. A small reversible diff has few angles to take, and spawning six reviewers over it
+returns six reviewers' worth of nits.
+
 A reviewer that shares the author's context inherits the author's blind spots. That is the
 whole reason to spawn one, and the reason a second pass in the same session is worth less
 than a first pass somewhere else. `fan-out-work` owns the mechanics, and its

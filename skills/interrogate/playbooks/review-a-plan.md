@@ -52,6 +52,9 @@ preferences, which is what the observation step below exists to stop.
    A hunt list silently returns nothing for the item you forgot, and a plan review's most
    expensive failure is the criterion nobody applied.
 
+   Scale it. A three-step plan gets the criteria applied and a one-line answer; the sweep
+   report is for a plan long enough that a missed criterion could hide in it.
+
    Report it compressed. Findings in full, and the clean criteria as one line naming what
    you checked. A section per criterion saying "PASS" is padding by construction: it
    produces the same six headings whether the plan is sound or unread, which is what the

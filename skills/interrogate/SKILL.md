@@ -25,9 +25,45 @@ Three things outrank everything below.
 3. **Rank by what breaks, then stop.** Cut at the point where the next finding would not
    change what the author does. No findings is a result, and saying so is the review.
 
-The escape hatch is severity. A data loss, auth, or corrupt-state defect goes in the review
-however long the list already is and however unsure you are of the rest. Under-reporting
-one of those is the only failure here that cannot be undone by a second pass.
+There are two hatches, and they point in opposite directions. The first is severity: a data
+loss, auth, or corrupt-state defect goes in the review however long the list already is and
+however unsure you are of the rest. Under-reporting one of those is the only failure here
+that cannot be undone by a second pass. The second is size, below.
+
+## Scale to the change
+
+Most reviews are one pass. Read the diff, read the enclosing function, say what you found.
+Everything below this section is for the changes that earn it, and running it on a rename
+produces a verdict longer than the change, which is its own kind of noise.
+
+Take the short path when all three hold:
+
+- **Small and one concern**, readable in a sitting without a map.
+- **Reversible.** A revert puts things back. No migration, no deploy ordering, no data
+  written in a new shape, nothing already consumed by somebody else.
+- **Nothing from the list below.**
+
+The short path is: read every hunk and the enclosing function, check the description's
+claims if it makes any, then answer in one or two sentences. No fan-out, no criterion sweep,
+no severity table for a single note. Still say what you read and what you did not reach,
+because that is the only thing separating a short review from a skipped one.
+
+**Size never lowers the bar on these, whatever the diff looks like.**
+
+- Auth, permissions, sessions, tenancy.
+- Secrets, tokens, credentials, and anything logged next to them.
+- Money, billing, and quantities that settle.
+- Deletion, retention, migration, or anything that rewrites stored data.
+- Concurrency, locking, retries, idempotency keys.
+- A published contract: an API shape, a proto, an event payload, an exported type.
+- Generated files or a lockfile edited by hand.
+
+A one-line change to any of these is where the expensive defects live, and being small is
+why nobody looks. `fan-out-work` makes the same argument about its own floor in
+`Serial first`, from the other side: below the floor the machinery loses to a plain pass.
+
+The floor is a starting guess, not a commitment. If the short path turns up anything you
+cannot trace inside the file in front of you, stop and take the long path.
 
 ## Scope
 
@@ -201,3 +237,5 @@ Run this against your own review, before it goes out.
 5. For each finding, would the author know what to do next?
 6. Did you say what you did not check?
 7. If everything you found is a nit, did you say the artifact is fine?
+8. Was the review proportionate? A small, reversible change should have cost the author two
+   sentences, not a verdict block.

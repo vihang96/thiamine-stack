@@ -3,6 +3,9 @@
 **Intent, then reviewability, then defects.** For a pull request, a branch, a range of
 commits, or uncommitted work somebody hands you.
 
+Check the floor in `SKILL.md` first. A small, reversible, one-concern diff gets steps 1 and
+3 and a two-sentence answer, and none of the rest.
+
 1. Fix the scope, and say what it is. `git diff origin/HEAD...HEAD` for a branch,
    `gh pr diff <n>` for a pull request, `git diff HEAD` when the work is uncommitted. If
    both a range diff and a working tree exist, review both and say so, because the half you
