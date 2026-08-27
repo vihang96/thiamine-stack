@@ -13,8 +13,7 @@ every line.
 
 The point is not to slow agents down. It is to run more of them at once and trust the
 output, so human attention goes to the outcome and the experience rather than to
-line-by-line review. That is what makes a software factory possible: parallelism you can
-actually rely on.
+line-by-line review.
 
 Underneath all of it is one habit. Take the problem apart before accepting how it was
 framed, and decide from what is true rather than from what was asked for.
@@ -75,7 +74,6 @@ have them run the thiamine playbook for the general pass rather than restating i
 
 **Two copies of one agent drift.** The weaker one still answers. Where a local agent and a
 thiamine agent do the same job, keep one, and if you keep yours, say in the instruction why.
-Otherwise the next person deletes the wrong one.
 
 ## Skills
 
