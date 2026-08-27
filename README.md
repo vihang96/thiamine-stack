@@ -61,6 +61,7 @@ the workspace board and puts what is in flight into context, whether or not the 
 | --- | --- |
 | `pre-implementation` | Most bad implementations are correct answers to the wrong question. Sorts unknowns into what to observe and what to ask, then plans. |
 | `consistency` | The second answer to a concern costs more than its merits. Finds what the codebase already does before adding another way. |
+| `experimentation` | Improvement by measurement. One objective moved, the rest held as guards, hypotheses from the failures, and pruning. |
 
 ### While you build
 
@@ -128,6 +129,6 @@ Six skills and three rules derive from `pstack` in
 
 ## Status
 
-Early, and in use. Eighteen skills, eleven always-on rule sections, and a lint layer for
+Early, and in use. Nineteen skills, eleven always-on rule sections, and a lint layer for
 TypeScript, Rust, and Python. The rule corpus stays small on purpose, since every line is
 paid on every request.

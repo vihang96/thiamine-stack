@@ -2,7 +2,7 @@
 name: handoff
 description: "Keeps a durable record of work in progress so a new session can continue it, and reconstructs that record from transcripts and live state when none was kept. Use when starting work that will span sessions, when recording a decision or a deviation mid-build, when context is about to compact, and for catch me up or where did I leave off."
 owns: "the record of work in progress, and reconstructing it when none was kept"
-see_also: [multi-repo-mechanics, continual-learning, reflect, working-alongside]
+see_also: [multi-repo-mechanics, continual-learning, reflect, working-alongside, experimentation]
 ---
 
 # Handoff
@@ -31,6 +31,10 @@ lands, and keeping it afterwards is how a stale plan gets followed months later.
 the same time. The difference is the audience. This record is for whoever continues this
 work, and holds the reasoning. That announcement is for whoever might collide with it, and
 holds only what a stranger needs to judge overlap. One file serving both is stale for both.
+
+`experimentation` keeps its own log, one row per attempt, and that is the record of a
+search rather than of a session. A decision that came out of a run belongs in both: the
+attempt row says what the number did, and the log here says what you concluded and chose.
 
 `reflect` runs at that death. Before the record is discarded, its decisions, deviations, and
 failed attempts are the best available input for deciding what should become a skill.
