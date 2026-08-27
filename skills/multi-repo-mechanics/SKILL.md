@@ -1,15 +1,20 @@
 ---
 name: multi-repo-mechanics
-description: "Carries one change across a multi-repo workspace, from worktrees through to a pull request ready for approval. Use when work touches more than one service, when creating or cleaning up worktrees, when pausing or resuming a session, when opening or stacking pull requests, when driving checks green, or when triaging review comments."
-owns: "the multi-repo workspace layout, the worktree lifecycle, and the git side of stopping and resuming"
+description: "Decides where a change lands and carries it from there to a pull request ready for approval, in one repo or several. Use before the first edit of any change that will be committed, when work touches more than one service, when creating or cleaning up worktrees, when pausing or resuming a session, when opening or stacking pull requests, when driving checks green, or when triaging review comments."
+owns: "where a change lands, the worktree lifecycle, and the git side of stopping and resuming, in one repo or many"
 see_also: [handoff, fan-out-work, working-alongside, interrogate]
 ---
 
 # Multi-repo mechanics
 
-A workspace is a directory of sibling repositories, one per service. A change usually
-touches more than one of them, so the unit of work is a set of worktrees on the same
-branch name rather than a single checkout.
+The first decision in any change is where it lands, and it is made before the first edit
+rather than at commit time. The answer is a branch, in a worktree per repo the change
+touches. Often that is one repo, and the mechanics below are the same with one entry as
+with four: nothing here needs a second repo to be worth doing.
+
+A workspace is a directory of sibling repositories, one per service. A change that touches
+more than one of them is a set of worktrees on the same branch name rather than a single
+checkout.
 
 ```
 <workspace>/
@@ -25,7 +30,8 @@ branch name rather than a single checkout.
 
 ## Conventions
 
-**One branch name across every repo a change touches.** A feature spanning a service and the repo holding its published contract uses
+**One branch name across every repo a change touches.** With one repo that is just the
+branch name. A feature spanning a service and the repo holding its published contract uses
 the same branch in both. That is what makes
 the set findable later, and it is what `scripts/audit.sh` groups by.
 
@@ -38,8 +44,9 @@ from, and the one directory whose state is never a surprise. Work happens in wor
 
 ## Scope
 
-This skill owns the workspace layout, the worktree lifecycle, and handing work between
-sessions.
+This skill owns where a change lands, the worktree lifecycle, and handing work between
+sessions. A single-repo change is in scope. The name says multi-repo because that is the
+harder case, not because one repo is somebody else's.
 
 It does not own committing, pushing, or opening a pull request. Whatever the harness
 provides for those still applies.

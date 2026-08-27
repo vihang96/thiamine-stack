@@ -76,7 +76,7 @@ the workspace board and puts what is in flight into context, whether or not the 
 
 | Skill | Why |
 | --- | --- |
-| `multi-repo-mechanics` | A change spans repos. Worktrees, pull requests, checks, and review comments, through to ready for approval. |
+| `multi-repo-mechanics` | Where a change lands, in one repo or several. Worktrees, pull requests, checks, and review comments, through to ready for approval. |
 | `fan-out-work` | One agent, several subagents, one result. The cut, the brief, and making the pieces add up. |
 | `working-alongside` | Another session is already in the repo. Whether to start, start and expect conflicts, or wait. |
 | `handoff` | Context does not survive a session ending. Keeps the record that does. |
