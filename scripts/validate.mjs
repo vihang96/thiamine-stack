@@ -102,6 +102,18 @@ const POSSESSIVE = /`([a-z][a-z0-9-]{2,})`'s\s+\w+\s+(?:rule|skill|section|catal
 const SLASH_REF = /(?<=^|[\s`("'])\/((?:[a-z][a-z0-9-]*:)?[a-z][a-z0-9-]{2,})\b/gm
 const PATH_REF = /`([\w./-]*[\w-]+\/[\w./-]+\.(?:md|sh|py|mjs|json|ya?ml))`/g
 
+// Text the agent publishes for a person to read: a review comment, a pull request body, a
+// channel message. Every skill that emits one names the standard that owns its words at the
+// point it emits it, and a file read on its own does not inherit a sibling's reference. The
+// patterns stay narrow deliberately. A determiner in front of the artifact is what separates
+// "post the comment" from "a draft requests review from nobody".
+const OUTBOUND_TEXT = [
+	/gh (?:pr|issue) (?:comment|review)\b/i,
+	/\b(?:channel|slack|email)\s+(?:message|post|update)\b/i,
+	/\b(?:post|posts|posting|reply|replies|replying|send|sends|sending|publish|publishing)\b[^.,;:\n]{0,20}\b(?:the|a|an|your|every|each|one)\s+(?:inline\s+)?(?:comment|thread|message|review|description|body)\b/i,
+]
+const WRITING_STANDARDS = ['unslop-prose', 'technical-writing']
+
 const SLASH_ALLOW = new Set([
 	'plugin',
 	'skills',
@@ -614,6 +626,30 @@ for (const name of skillNames) {
 				)
 			}
 		}
+	}
+}
+
+// An artifact that tells the agent to publish prose, without naming who owns the words, is
+// the miss this catches: the guidance is right and the review that goes out is hedged and
+// padded anyway. The writing standards are exempt, since naming themselves proves nothing.
+for (const name of skillNames.filter((n) => !WRITING_STANDARDS.includes(n))) {
+	const files = [`skills/${name}/SKILL.md`]
+	for (const sub of ['playbooks', 'references']) {
+		for (const file of listdir(`skills/${name}/${sub}`)) {
+			if (file.endsWith('.md')) files.push(`skills/${name}/${sub}/${file}`)
+		}
+	}
+	for (const rel of files) {
+		if (!exists(ROOT, rel)) continue
+		const text = read(rel)
+		const hit = OUTBOUND_TEXT.map((re) => text.match(re)).find(Boolean)
+		if (!hit) continue
+		if (WRITING_STANDARDS.some((std) => text.includes(std))) continue
+		warn(
+			rel,
+			`publishes text for a person to read ("${hit[0].trim()}") and names no writing standard`,
+			`name ${WRITING_STANDARDS.join(' or ')} where the text is written, as opening-a-pr.md does`,
+		)
 	}
 }
 

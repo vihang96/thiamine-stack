@@ -30,7 +30,9 @@ required code change, and to stop treating any of them as optional.
 
 4. Reply to every thread you resolve, with the reason or the SHA. A thread resolved in
    silence reads as ignored, and the reviewer has to diff the branch to find out what
-   happened.
+   happened. `unslop-prose` applies to the reply: a dismissal that opens by thanking the
+   reviewer and then hedges reads as evasion, and a reviewer who has to reread it to find
+   the verdict reopens the thread.
 
 5. Hold the line on the change's intent. A reviewer asking for something outside the
    change's scope gets a reply naming the boundary and, where it is worth doing, a
