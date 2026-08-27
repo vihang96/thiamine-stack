@@ -21,7 +21,9 @@ epoch() {
 	date -u -d "$1" +%s 2>/dev/null || date -j -u -f '%Y-%m-%dT%H:%M:%SZ' "$1" +%s 2>/dev/null || echo ''
 }
 
-field() { sed -n "s/^$2:[[:space:]]*//p" "$1" | head -1; }
+# Leading whitespace is tolerated because an entry pasted out of an indented code block
+# is the common case, and anchoring hard on ^ made every field read as empty.
+field() { sed -n "s/^[[:space:]]*$2:[[:space:]]*//p" "$1" | head -1; }
 
 now=$(date -u +%s)
 waiting=0

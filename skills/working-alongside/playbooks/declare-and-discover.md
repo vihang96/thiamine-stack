@@ -16,24 +16,50 @@ anything.** For starting a unit of work in a workspace where other sessions may 
    board entry is normal and means somebody worked without announcing, which is the case
    the fetch and the audit exist to cover.
 
-2. Write your entry at `<workspace>/.thiamine/lanes/<branch-with-dashes>`. Create it with
-   `set -C` so a second session cannot silently overwrite one:
+2. Write your entry on the same board the readers scan. That is the workspace holding the
+   sibling repos, not the repo you are standing in. Two boards with one of them scanned is
+   the failure here, and it is silent: your entry exists, and every check misses it.
 
    ```sh
-   ( set -C; cat > "$root/.thiamine/lanes/$slug" ) <<'ENTRY'
-   unit: feat/retention
+   # Derive the root rather than typing it. --git-common-dir resolves to the main
+   # checkout's .git even from a linked worktree, which is where lanes usually run.
+   repo=$(dirname "$(cd "$(git rev-parse --git-common-dir)" && pwd)")
+   root=$(dirname "$repo")
+   now=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+   # The unit, not the branch. They are the same thing only where each change gets its own
+   # branch. Name it yourself where they are not.
+   unit="feat/retention"
+   slug=$(printf '%s' "$unit" | tr '/ ' '--')
+
+   mkdir -p "$root/.thiamine/lanes"
+   ( set -C; cat > "$root/.thiamine/lanes/$slug" ) <<ENTRY
+   unit: $unit
    goal: let an admin set how long exception data is kept, per workspace
    repos: orders, orders-schema
    paths: src/retention/**, migrations/**
    decides: how a retention policy is represented in the API
-   session: claude-code pid 48213 on mbp
-   started: 2026-08-26T09:02:00Z
-   heartbeat: 2026-08-26T09:02:00Z
+   session: $(basename "${SHELL:-shell}") pid $$ on $(hostname -s)
+   started: $now
+   heartbeat: $now
    ENTRY
    ```
 
-   If it already exists, read it. Either another session is on this unit, or it is yours
-   from a previous session, and those need opposite responses.
+   `mkdir -p` matters: the first announcement in a workspace has no board to write into,
+   and `set -C` alone fails there rather than creating one.
+
+   `set -C` refuses to overwrite an entry that already exists. When it refuses, read the
+   entry. Either another session is on this unit, or it is yours from a previous session,
+   or your slug does not identify your unit, and those need three different responses.
+
+   That third case is the one to watch in a repo that commits straight to its default
+   branch. Deriving the slug from the branch gives every session `main`, so the second
+   announcement is refused and reads as a collision when it is only a naming clash. Where
+   the branch does not identify the work, name the unit after the work.
+
+   Where the repo has no sibling repos, put the board at the repo root instead. Which
+   directory does not matter. Every session in the group using the same one does, so pass
+   that path to `scripts/lanes.sh` as well.
 
 3. Fill `decides` even when it feels obvious. It is the field that prevents the expensive
    collision, because two sessions overlapping on files produce a merge conflict somebody

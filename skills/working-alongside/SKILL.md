@@ -41,7 +41,9 @@ Three places, cheapest first, and each covers what the one before it cannot.
 holding it. Free, enforced, no bookkeeping.
 
 **The board**, at `<workspace>/.thiamine/lanes/<slug>`, one file per unit of work. It says
-what a session is doing so another session can judge overlap. One writer per file and
+what a session is doing so another session can judge overlap. The workspace is the directory
+of sibling repos rather than any one repo, and a writer that picks a different root from the
+readers has made a second board that nobody scans. One writer per file and
 nobody reads a file they did not write, so there is no contention and nothing to lock.
 An entry is an announcement, never a claim: it never blocks anyone, and a stale entry from a
 dead session is out of date rather than dangerous.
@@ -54,6 +56,21 @@ how you appear on it.
 sh scripts/lanes.sh <workspace-root>      # what is in flight, and how stale each entry is
 sh scripts/ready.sh <workspace-root>      # which waiting units are now unblocked
 ```
+
+## What the board does not cover
+
+It records intent. It does not make a working tree safe to share.
+
+Every route below assumes each unit has its own checkout, so two sessions in one working
+tree are outside all of them: nothing here separates the writers, and git's refusal of a
+duplicate worktree cannot fire when nobody created a worktree. `git add -A` from either
+session sweeps up the other's edits, and the announcement that both sessions dutifully
+wrote does not change that.
+
+Where you find yourself in a shared tree, either move to a worktree per unit, per
+`multi-repo-mechanics`, or hold to path-scoped commits on both sides and never stage by
+wildcard. Say which of the two you are relying on, because a careful session that announced
+and then read this skill will otherwise believe it is covered.
 
 ## The three routes
 
