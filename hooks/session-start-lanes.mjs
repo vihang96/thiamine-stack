@@ -29,7 +29,12 @@ const HERE = path.dirname(fileURLToPath(import.meta.url))
 const LANES = path.join(HERE, '..', 'skills', 'working-alongside', 'scripts', 'lanes.sh')
 
 const git = (cwd, args) =>
-	execFileSync('git', args, { cwd, encoding: 'utf8', timeout: 4000, stdio: ['ignore', 'pipe', 'ignore'] }).trim()
+	execFileSync('git', args, {
+		cwd,
+		encoding: 'utf8',
+		timeout: 4000,
+		stdio: ['ignore', 'pipe', 'ignore'],
+	}).trim()
 
 /** Entries on a board, or null when there is no board with anything in it. */
 const populated = (root) => {

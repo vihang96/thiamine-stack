@@ -95,7 +95,10 @@ const fmt = (n) => {
 	if (Number.isInteger(n)) return String(n)
 	// Strip trailing zeros without eating the decimal point, and fall back to exponential
 	// for a value that rounds to zero at four places, such as the smallest reachable p.
-	const s = n.toFixed(4).replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '')
+	const s = n
+		.toFixed(4)
+		.replace(/(\.\d*?)0+$/, '$1')
+		.replace(/\.$/, '')
 	return Number(s) === 0 ? n.toExponential(1) : s
 }
 

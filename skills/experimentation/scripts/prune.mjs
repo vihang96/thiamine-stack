@@ -144,14 +144,17 @@ const unmeasured = guards
 if (unmeasured.length) {
 	out.push(`  NEVER MEASURED on any accepted attempt: ${unmeasured.join(', ')}`)
 }
-if (!breaches.length && !unmeasured.length) out.push('  every accepted attempt is inside its floors')
+if (!breaches.length && !unmeasured.length)
+	out.push('  every accepted attempt is inside its floors')
 
 // ---------------------------------------------------------------- banked regressions
 // Accepted attempts are sequential, so a later one should not be worse than an earlier one
 // on the objective. When it is, either a regression was banked or two parallel variants are
 // both still live and one of them is dominated.
 out.push('', 'ACCEPTED PROGRESSION')
-const withAfter = kept.map((a) => ({ id: a.id, after: num(a.after) })).filter((a) => a.after !== null)
+const withAfter = kept
+	.map((a) => ({ id: a.id, after: num(a.after) }))
+	.filter((a) => a.after !== null)
 const regressions = []
 for (let i = 1; i < withAfter.length; i++) {
 	for (let j = 0; j < i; j++) {
@@ -188,7 +191,9 @@ const buckets = PRIORS.map((p) => {
 	return { p, n: rows.length, kept: rows.filter((a) => a.verdict === 'kept').length }
 }).filter((b) => b.n > 0)
 
-const strayPriors = [...new Set(attempts.map((a) => a.prior).filter((p) => p && !PRIORS.includes(p)))]
+const strayPriors = [
+	...new Set(attempts.map((a) => a.prior).filter((p) => p && !PRIORS.includes(p))),
+]
 if (strayPriors.length) {
 	out.push(
 		`  UNRECOGNISED prior value(s) ${strayPriors.map((p) => `"${p}"`).join(', ')}, excluded ` +
