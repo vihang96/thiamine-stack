@@ -83,9 +83,17 @@ finding.
 | Orphaned advice | Guidance for a workflow, tool, or service nobody uses now | Look for a caller. Advice with no live situation is deleted, not updated. |
 | Unverified claim | A number, an output, or a behaviour nobody has re-run since it was written | Re-run it. Fixture counts and command output are the usual suspects. |
 | Feature-map gap | The repo does something real that the context never mentions, so every agent rediscovers it | Diff the directory tree and the entry points against what the context names. |
+| Missing hatch | A standard states criteria with no way out, so the first bad result gets it abandoned wholesale rather than overridden once | Read the top of the skill for an override, and for a floor where the work is small. Keyword grep does not find these: technical-writing's hatch uses none of the obvious words. |
 
-The last one is the only class that finds absence rather than error, so hunt it
+The last two are the only classes that find absence rather than error, so hunt them
 deliberately. The others announce themselves once you look; a gap never does.
+
+A hatch comes in two kinds and a heavy skill needs both. An override says what to do when a
+criterion makes the artifact worse, and the mechanical forms are the best ones, as in
+`unslop-rust`'s expiring `#[expect]`. A floor says when the machinery loses to a plain pass,
+as in `fan-out-work`'s `Serial first`. Absence of the second is the easier one to miss,
+because a skill with no floor still works, and just costs more than the work it is applied
+to.
 
 ### 4. Route each finding
 
