@@ -32,7 +32,25 @@ PR", and at the end of any change that is ready for review.
 
    Never `## Summary` or `## Test plan` boilerplate. Apply the `unslop-prose` and
    `technical-writing` skills to the title and body, because both are prose a person reads
-   under time pressure.
+   under time pressure. Apply them by running them, not by having read them. Knowing the
+   rules and having applied them feel identical from the inside, and only one of them
+   changes the text.
+
+   Keep it short enough to be read in full before the diff is opened. A description a
+   reviewer skims is worse than a shorter one, because the parts they skip are the parts you
+   most wanted read. A couple of sentences a section is usually right, and a section that
+   needs a paragraph is often a change that needs splitting.
+
+   The description is for reviewing, not for justifying. That is the distinction that
+   controls the length. Cut whatever argues that the work was good: the bugs you found on the
+   way, the alternatives you weighed, the tests you are pleased with. Those belong in the
+   commits or nowhere. What earns a place is what changed, what is risky, and what you ran.
+
+   The test is whether a reviewer could say, after reading it, what to look at hardest. When
+   they could not, the problem is which facts you chose rather than how many.
+
+   This names a bar, not a number. Where the person you are working for has a length
+   preference, theirs is the number, and `capture-preferences` owns recording it.
 
 5. Open ready, not draft. Several tools default to draft, including `gh stack submit`
    unless you pass `--open`. Check with `gh pr view` after creating rather than assuming,
