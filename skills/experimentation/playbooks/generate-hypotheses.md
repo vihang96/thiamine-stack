@@ -8,16 +8,19 @@ last successful attempt had. Clustering the failures produces a list of causes, 
 how much of the gap each one owns, and it tells you when to stop looking at a category
 because nothing is failing there.
 
-1. Pull the per-item scores from the harness and sort by how badly each item did. Look at the
-   worst twenty yourself. Not the aggregate, not a summary, the actual items.
+1. Pull the per-item scores from the harness and sort by how badly each item did.
 
-2. Cluster them by what went wrong, not by what they are. "Multi-page tables where the total
-   sits on a later page than the line items" is a cluster. "Invoices" is not. The test of a
-   cluster is that one change could plausibly fix all of it.
+2. Delegate the reading to the `failure-clusterer` agent. Reading two hundred failing items
+   in this context spends what the next thirty attempts need, and the conclusion is six lines.
+   The agent returns clusters with counts, the share of the gap each caps at, and a mechanism
+   where the evidence shows one.
 
-   Where the volume is too large to read, this is a good fan-out: one lane per slice of the
-   failures, each returning its clusters and counts, per `fan-out-work`'s read-only shape.
-   Reconcile the clusters yourself, because two lanes will name the same cluster differently.
+   Where the volume is large enough that one agent cannot read it either, fan out one lane per
+   slice per `fan-out-work`'s read-only shape, and reconcile the clusters yourself, because two
+   lanes will name the same cluster differently.
+
+   Read a handful of items yourself anyway. Not to redo the clustering, but because the agent
+   cannot tell you whether the failures match the complaint that started the run, and you can.
 
 3. Count each cluster and work out what it is worth. A cluster covering a fifth of the
    failures caps what fixing it can buy you. This is the ranking, and it is the thing that

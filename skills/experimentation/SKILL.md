@@ -3,7 +3,7 @@ name: experimentation
 description: "Runs a sustained improvement loop against a measured objective: states the goal, isolates the one metric being moved from the ones that must only be held, generates hypotheses from clustered failures, and prunes what stops paying. Use for hill climbing, tuning prompts for accuracy or overlap scores, driving reliability or stability up, and any run of many attempts where a number decides."
 owns: "the sustained improvement loop: competing objectives, hypothesis generation, pruning, and convergence"
 requires: [pre-implementation]
-see_also: [fan-out-work, handoff, consistency]
+see_also: [fan-out-work, handoff, consistency, failure-clusterer]
 ---
 
 # Experimentation
@@ -109,9 +109,10 @@ itself, and the repeats are invisible because each one feels like a new idea.
    the two things a loop is worthless without: a held-out set you do not climb on, and the
    size of the noise band.
 
-3. **Generate hypotheses from the failures**, per `playbooks/generate-hypotheses.md`. Read
-   what is failing and cluster it. The clusters are the hypotheses, and they arrive ranked
-   by how much of the gap they explain.
+3. **Generate hypotheses from the failures**, per `playbooks/generate-hypotheses.md`. The
+   `failure-clusterer` agent does the reading and returns clusters ranked by how much of the
+   gap each one owns. Turning a cluster into a hypothesis with a mechanism is yours, because
+   it needs the system knowledge the agent does not have.
 
 4. **Run the loop**, per `playbooks/run-the-loop.md`. One change, one measurement, keep or
    revert, log either way.
