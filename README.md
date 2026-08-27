@@ -86,6 +86,7 @@ the workspace board and puts what is in flight into context, whether or not the 
 | Skill | Why |
 | --- | --- |
 | `post-implementation` | An agent can produce a change nobody understands. Makes sure the person who owns it can explain it and agrees with it. |
+| `interrogate` | Somebody else's plan or pull request, from a human or an agent. What earns a finding, how to rank them, and when to stop picking nits. |
 
 ### Keeping the stack current
 
@@ -116,7 +117,7 @@ Read [templates/README.md](templates/README.md) before adding anything, and
 
 ## Where this came from
 
-Six skills and three rules derive from `pstack` in
+Seven skills and three rules derive from `pstack` in
 [cursor/plugins](https://github.com/cursor/plugins), mostly its `poteto-mode` playbooks.
 
 | What | Source | License |
@@ -128,6 +129,6 @@ Six skills and three rules derive from `pstack` in
 
 ## Status
 
-Early, and in use. Eighteen skills, eleven always-on rule sections, and a lint layer for
+Early, and in use. Nineteen skills, eleven always-on rule sections, and a lint layer for
 TypeScript, Rust, and Python. The rule corpus stays small on purpose, since every line is
 paid on every request.

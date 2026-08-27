@@ -3,6 +3,9 @@
 **Classify every comment before changing any code.** For "address the review comments",
 "the reviewer left notes", and any automated review that files findings on a pull request.
 
+This is the inbound direction. Reviewing somebody else's change and writing the comments in
+the first place belongs to the `interrogate` skill.
+
 The goal is not to make comments disappear. It is to stop treating every comment as a
 required code change, and to stop treating any of them as optional.
 

@@ -68,7 +68,13 @@ const commandNames = listdir('commands')
 const agentNames = listdir('agents')
 	.filter((f) => f.endsWith('.md'))
 	.map((f) => f.slice(0, -3))
+// Skills the coding harness ships itself. This repo's design is to defer to what already
+// exists rather than write a second answer to it, which means an artifact has to be able to
+// name one. They are not in skills/, so they are known for reference purposes only, and a
+// harness that does not ship one is the artifact's problem to handle in prose.
+const harnessProvided = new Set(['code-review', 'security-review', 'simplify'])
 const known = new Set([...skillNames, ...ruleIds, ...commandNames, ...agentNames])
+const referenceable = new Set([...known, ...harnessProvided])
 
 /**
  * The namespace Claude Code puts in front of a skill name once the plugin is installed.
@@ -308,6 +314,7 @@ function checkDeps(where, body, declared, skillDir, soft = []) {
 		// A name the author declared optional is already covered by the see_also warning.
 		// Erroring again would make a soft cross-reference behave like a hard dependency.
 		if (soft.includes(name)) continue
+		if (harnessProvided.has(name)) continue
 		if (!known.has(name)) {
 			err(
 				where,
@@ -343,7 +350,7 @@ function checkDeps(where, body, declared, skillDir, soft = []) {
 			)
 			continue
 		}
-		if (SLASH_ALLOW.has(name) || known.has(name)) continue
+		if (SLASH_ALLOW.has(name) || referenceable.has(name)) continue
 		warn(
 			where,
 			`mentions slash command /${ref}, which is not in commands/ or skills/`,

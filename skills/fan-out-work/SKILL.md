@@ -2,7 +2,7 @@
 name: fan-out-work
 description: "Runs several subagents in parallel from one session and converges what they return into one coherent change. Use when work splits into units that can run at once, when spawning subagents to investigate or write code in parallel, when a change spans several repos that can be worked simultaneously, and when parallel results need checking for duplication and contradiction before they land."
 owns: "parallelism inside one session: the cut, the brief, the drain, and converging the results"
-see_also: [working-alongside, multi-repo-mechanics, pre-implementation, consistency, coherence-reviewer]
+see_also: [working-alongside, multi-repo-mechanics, pre-implementation, consistency, coherence-reviewer, interrogate]
 ---
 
 # Fan out work
@@ -37,6 +37,9 @@ agent decided the cut, so interference is a planning mistake rather than a disco
 `multi-repo-mechanics` owns the worktree and branch mechanics each lane runs inside, and
 the pull request at the end. `pre-implementation` owns whether the work was understood and
 sequenced at all, and its `plan-the-work` playbook is where a fan-out is decided on.
+
+`interrogate` owns what a reviewer is looking for and which findings survive. This skill
+owns only the shape of running several of them at once.
 
 `consistency` owns how many answers a concern is allowed. This skill is the largest
 manufacturer of second answers there is, which is why converging is a step here rather

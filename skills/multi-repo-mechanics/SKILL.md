@@ -2,7 +2,7 @@
 name: multi-repo-mechanics
 description: "Carries one change across a multi-repo workspace, from worktrees through to a pull request ready for approval. Use when work touches more than one service, when creating or cleaning up worktrees, when pausing or resuming a session, when opening or stacking pull requests, when driving checks green, or when triaging review comments."
 owns: "the multi-repo workspace layout, the worktree lifecycle, and the git side of stopping and resuming"
-see_also: [handoff, fan-out-work, working-alongside]
+see_also: [handoff, fan-out-work, working-alongside, interrogate]
 ---
 
 # Multi-repo mechanics
@@ -25,8 +25,8 @@ branch name rather than a single checkout.
 
 ## Conventions
 
-**One branch name across every repo a change touches.** A feature spanning a service and
-the repo holding its published contract uses the same branch in both. That is what makes
+**One branch name across every repo a change touches.** A feature spanning a service and the repo holding its published contract uses
+the same branch in both. That is what makes
 the set findable later, and it is what `scripts/audit.sh` groups by.
 
 **Worktrees live at `<repo>/tree/<branch-with-dashes>`.** Slashes in the branch become
