@@ -23,6 +23,11 @@ than a first pass somewhere else. `fan-out-work` owns the mechanics, and its
    - The tests: what they assert, and which claimed behaviour nothing covers.
    - Data and migrations: what is already written in the old shape.
 
+   Security is not on that list on purpose. Where the harness ships a security review, run
+   it as its own pass, since it carries a threat model this list does not. Add the angle
+   here only when nothing ships one, and give it the rule that keeps it useful: an untrusted
+   input traced to the sink it reaches, not a category name.
+
 3. Spawn read-only, one angle per agent, all in one message. Use the
    `adversarial-reviewer` agent, whose disposition and return contract are already written.
    Where the harness lets you choose models, put different families on different angles;
@@ -35,6 +40,10 @@ than a first pass somewhere else. `fan-out-work` owns the mechanics, and its
    keeping the most concrete failure scenario. Then put each survivor past one verifier that
    did not raise it, returning confirmed, plausible, or refuted with the line that proves
    it. Keep confirmed and plausible. Refuted needs a quote, not a feeling.
+
+   Three states rather than a confidence score. A score invites a threshold, and a reviewer
+   who knows the threshold writes findings that clear it, so the number ends up measuring
+   the writing. Each of the three states names what would settle it instead.
 
 6. Weight by independence. Two angles arriving at the same defect without seeing each other
    is the strongest signal this shape produces, and it belongs above the notes. A lone
