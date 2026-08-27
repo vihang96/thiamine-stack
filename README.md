@@ -48,6 +48,11 @@ holds the stack to its own standards; a hook runs it after every edit to an arti
 structural error surfaces in the same turn that caused it. `lint/<language>/` carries the
 rules a linter can enforce in your repos.
 
+A hook is also how the parallelism layer avoids depending on an agent choosing to look. A
+skill only loads when the agent recognises the situation, so the session most likely to
+collide with someone is the one that never loaded the skill. At session start a hook reads
+the workspace board and puts what is in flight into context, whether or not the skill fires.
+
 ## Skills
 
 ### Before you build

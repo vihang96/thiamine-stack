@@ -57,6 +57,12 @@ sh scripts/lanes.sh <workspace-root>      # what is in flight, and how stale eac
 sh scripts/ready.sh <workspace-root>      # which waiting units are now unblocked
 ```
 
+A SessionStart hook runs the first of those for you and puts the result in context, so a
+session that never loads this skill still sees the board. It reports and stops there. It
+does not announce on your behalf, because at session start there is no unit yet, and it
+cannot help the first session in a workspace, because an empty board has nothing to say.
+Announcing is still step 2 below.
+
 ## What the board does not cover
 
 It records intent. It does not make a working tree safe to share.
