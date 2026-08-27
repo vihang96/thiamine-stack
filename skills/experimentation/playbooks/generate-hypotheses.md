@@ -10,7 +10,7 @@ because nothing is failing there.
 
 1. Pull the per-item scores from the harness and sort by how badly each item did.
 
-2. Delegate the reading to the `failure-clusterer` agent. Reading two hundred failing items
+2. Delegate the reading to the `curator` agent. Reading two hundred failing items
    in this context spends what the next thirty attempts need, and the conclusion is six lines.
    The agent returns clusters with counts, the share of the gap each caps at, and a mechanism
    where the evidence shows one.
