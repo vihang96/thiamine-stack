@@ -86,6 +86,27 @@ Then point the marketplace at your checkout:
 
 Everything else matches the sections above, with `$THIAMINE` set to your checkout.
 
+### Which copy is actually loaded
+
+A directory marketplace loads the plugin **live from your checkout**. An edit to a skill,
+a rule, or a hook takes effect on the next session with no update step.
+
+Claude Code also writes a snapshot of the plugin under
+`~/.claude/plugins/cache/thiamine-stack/thiamine/<version>/` at install time, and records
+it as `installPath`. That copy is not what runs. It goes stale the moment you commit, and
+reading it is the easiest way to debug the wrong file. The path that runs is the
+marketplace install location, which the plugin's own hooks receive as
+`$CLAUDE_PLUGIN_ROOT`.
+
+`claude plugin list` does not print either path, so check it directly:
+
+```sh
+jq -r '."thiamine-stack".installLocation' ~/.claude/plugins/known_marketplaces.json
+```
+
+Like the marketplace path above, that file is Claude Code's own layout rather than a
+documented interface, so treat a change in it as expected rather than broken.
+
 ## Add any other harness
 
 Every harness reads some always-on instruction file. Point it at `rules/RULES.md`, and

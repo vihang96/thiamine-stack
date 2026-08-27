@@ -76,6 +76,14 @@ user to run them, then confirm that `thiamine` appears under `enabledPlugins` in
 This picks up `skills/`, `agents/`, and `commands/` on its own. It does not deliver
 `rules/RULES.md`. Step 5 does that.
 
+A marketplace added from a local checkout loads the plugin live from that checkout, so the
+user's edits need no update step. Claude Code also snapshots the plugin into
+`~/.claude/plugins/cache/` and records that as `installPath`; it is not what runs. Never
+read or edit the cache copy, and never report it as the install location.
+
+Under the plugin, a skill's typed name is namespaced: `/thiamine:reflect`, not `/reflect`.
+Symlinked installs use the bare name. Say which form applies to the harness you installed.
+
 ## Step 4. Link the skills for Codex and Cursor
 
 For each harness you found, symlink each skill directory on its own. One link per skill
@@ -134,7 +142,9 @@ The install is not complete until you check it:
 
 - Run `ls -la` on each target. Every link resolves, and none dangle.
 - Run `readlink` on two of them. Confirm the paths point into `$THIAMINE`.
-- For Claude Code, confirm the plugin appears in `enabledPlugins`.
+- For Claude Code, confirm the plugin appears in `enabledPlugins`, and report the path that
+  actually loads: `jq -r '."thiamine-stack".installLocation'
+  ~/.claude/plugins/known_marketplaces.json`.
 
 Report one line per harness: installed, skipped and why, or failed and how. Never report
 success for a harness you did not verify.
