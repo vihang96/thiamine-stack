@@ -778,19 +778,30 @@ if (plugin) {
 	}
 }
 
+// Metadata a marketplace entry repeats from the plugin manifest is a drift surface: both
+// files load, and the reader believes whichever they opened.
+const SHARED_META = ['version', 'license', 'homepage', 'repository', 'keywords']
+
 if (plugin && market) {
 	for (const entry of market.plugins || []) {
-		if (entry.name === plugin.name && entry.version !== plugin.version) {
+		if (entry.name !== plugin.name) continue
+		for (const field of SHARED_META) {
+			if (entry[field] === undefined || plugin[field] === undefined) continue
+			const a = JSON.stringify(entry[field])
+			const b = JSON.stringify(plugin[field])
+			if (a === b) continue
 			err(
 				'.claude-plugin/marketplace.json',
-				`version ${entry.version} disagrees with plugin.json ${plugin.version}`,
-				'bump both together; the mismatch silently serves a stale plugin',
+				`${field} ${a} disagrees with plugin.json ${b}`,
+				field === 'version'
+					? 'bump both together; the mismatch silently serves a stale plugin'
+					: 'match them, or drop the field from the marketplace entry',
 			)
 		}
 	}
 }
 
-for (const rel of ['.cursor-plugin/plugin.json']) {
+for (const rel of ['.claude-plugin/plugin.json', '.cursor-plugin/plugin.json']) {
 	const man = loadJson(rel)
 	if (!man) continue
 	for (const key of ['skills', 'agents', 'commands']) {

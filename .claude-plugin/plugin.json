@@ -2,10 +2,12 @@
 	"$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
 	"name": "thiamine",
 	"version": "0.1.0",
-	"description": "Deslops AI-written code. Always-on engineering standards, skills for each phase of a change, and checks that run without an agent, so you can run agents in parallel and trust the output.",
+	"description": "Deslops AI-written code. Always-on engineering standards, skills, and checks that run without an agent, so you can run agents in parallel and trust the output.",
 	"author": {
 		"name": "Vihang Agarwal"
 	},
+	"homepage": "https://github.com/vihang96/thiamine-stack#readme",
+	"repository": "https://github.com/vihang96/thiamine-stack",
 	"license": "MIT",
 	"keywords": [
 		"code-quality",
@@ -15,5 +17,6 @@
 		"standards",
 		"refactoring",
 		"scope-control"
-	]
+	],
+	"skills": "./skills"
 }

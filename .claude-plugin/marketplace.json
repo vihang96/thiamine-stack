@@ -10,7 +10,31 @@
 			"name": "thiamine",
 			"source": "./",
 			"description": "Deslops AI-written code. Always-on standards and per-phase skills for coding agents.",
-			"version": "0.1.0"
+			"version": "0.1.0",
+			"author": {
+				"name": "Vihang Agarwal"
+			},
+			"homepage": "https://github.com/vihang96/thiamine-stack#readme",
+			"repository": "https://github.com/vihang96/thiamine-stack",
+			"license": "MIT",
+			"keywords": [
+				"code-quality",
+				"code-review",
+				"best-practices",
+				"anti-slop",
+				"standards",
+				"refactoring",
+				"scope-control"
+			],
+			"category": "development",
+			"tags": [
+				"anti-slop",
+				"engineering-standards",
+				"skills",
+				"hooks",
+				"linting",
+				"code-review"
+			]
 		}
 	]
 }
