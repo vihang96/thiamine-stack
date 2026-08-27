@@ -71,4 +71,16 @@ for repo in */; do
 	found=$((found + 1))
 done
 
-[ "$found" -eq 0 ] && echo "no git repositories directly under $root" >&2
+# An empty table and a directory holding no repositories look identical, and the cleanup
+# playbook runs this before deciding what to remove. So a root with nothing to audit is an
+# error rather than a quiet success. pr-status.sh exits 0 in its equivalent case on purpose:
+# "no repo has that branch" is a real answer about a real workspace.
+#
+# The explicit exits matter beyond that. Without them the script's status is whatever the
+# last test evaluated to, which made a successful audit of five repositories exit 1.
+if [ "$found" -eq 0 ]; then
+	echo "no git repositories directly under $root" >&2
+	exit 1
+fi
+
+exit 0
