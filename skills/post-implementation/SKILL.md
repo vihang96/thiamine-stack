@@ -2,7 +2,7 @@
 name: post-implementation
 description: "Closes out a change after the code is written and before it lands: explaining it so the user can defend it, confirming each decision was the one they wanted, and getting buy-in from teammates with a summary, screenshots, or a demo. Use when a change is finished, when asked to explain what was built, or when a new feature or service needs the team behind it."
 owns: "the user's understanding of a finished change, and the team's agreement to it"
-see_also: [multi-repo-mechanics, pre-implementation]
+see_also: [multi-repo-mechanics, pre-implementation, interrogate]
 ---
 
 # Post-implementation

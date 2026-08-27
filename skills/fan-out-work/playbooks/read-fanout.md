@@ -26,9 +26,10 @@ Reach for it before reaching for the write case.
 
 5. Expect inflated findings when the lanes are reviewing rather than investigating. A
    reviewer with nothing serious to say will fill the space with nits, so a batch that is
-   all nits means the code is fine and the right answer is to say so. Sort findings into
-   what to act on, what to consider, and what you are dismissing, and keep the dismissals
-   visible so the user can overrule you.
+   all nits means the code is fine and the right answer is to say so. What earns a finding,
+   how to rank what is left, and how the result reaches the author belong to the
+   `interrogate` skill, whose `fan-out-reviewers` playbook is the review-shaped version of
+   this one.
 
 6. Say what nobody looked at. The gap in a parallel sweep is invisible, because every lane
    reports success at covering its own slice.
