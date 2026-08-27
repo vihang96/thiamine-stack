@@ -2,7 +2,7 @@
 name: pre-implementation
 description: "Prepares work before any code is written: sorting unknowns into what to observe and what to ask, understanding the code that exists, sketching a prototype to settle a design or a domain question, choosing the metric a performance push is measured by, finding the blast radius, and sequencing the steps across repos. Use when starting a feature, a bug fix, a performance push, or a migration, when asked to mock something up, and whenever a request names a solution rather than a problem."
 owns: "the phase before the first commit: what to build, what is unknown, and in what order"
-see_also: [multi-repo-mechanics, fan-out-work, working-alongside]
+see_also: [multi-repo-mechanics, fan-out-work, working-alongside, experimentation]
 ---
 
 # Pre-implementation
@@ -37,6 +37,11 @@ Whether the steps can run at once is `fan-out-work`, which `playbooks/plan-the-w
 routes to once the order exists. Whether it is safe to start at all, given what another
 session already has in flight, is `working-alongside`.
 
+`playbooks/pick-a-metric.md` chooses the number and takes the baseline, which is where a
+single performance push starts and ends. A sustained run of many attempts against that number
+is `experimentation`, which owns the loop and the case where a second metric has to be held
+while the first one moves.
+
 It does not own the implementation plan surviving contact. When the plan is wrong, say so
 and re-plan rather than following it off a cliff.
 
@@ -49,6 +54,7 @@ Preparation is not one size. Run the activities this work needs, and skip the re
 | New feature | resolve unknowns, investigate, reference implementation, prototype when there is a design question, blast radius, plan |
 | Bug fix | reproduce it first, investigate to the root cause, blast radius |
 | Performance | reproduce it, pick a metric, and measure the baseline before changing anything |
+| Tuning against a score | frame the objective and its guards, then run the loop in `experimentation` |
 | Migration | investigate, blast radius, plan the phases and their order |
 | Live testing | decide what you are proving and on which surface, before setting anything up |
 | Spanning repos | blast radius and plan, always, because the order the pieces land in is the plan |
