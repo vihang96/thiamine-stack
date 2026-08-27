@@ -6,6 +6,25 @@ several surviving variants, and deciding it is finished.
 A run without pruning slows down as it goes, because every attempt is drawn from a pool that
 still contains everything that has already failed.
 
+Run the arithmetic rather than doing it by eye. `scripts/prune.mjs <run-dir>` counts the
+reject streaks, checks every accepted attempt against its guard floors, flags an accepted
+result that went backwards, and reports which priors actually predicted anything. A
+forty-row log read at 2am by whoever authored the ideas in it is not where these judgements
+should live.
+
+**Do not screen ideas on how good they sound.** A filter that predicts which hypotheses will
+work is the question the run exists to answer, and it fails in the one way a filter must not:
+its false negatives are invisible, so it silently shrinks the search and reports no cost. It
+also prefers articulate, conventional ideas, which is precisely the tail where hill climbing
+finds its wins. Rank by the cluster share an idea addresses and by whether it names a
+mechanism. Both are evidence rather than prediction.
+
+The honest version of that idea is measurable, which is what the `prior` column is for.
+Record what you expected before each attempt, and after twenty attempts `prune.mjs` will tell
+you whether your confident ideas actually beat your long shots. If they do, ordering the queue
+by them is earning something. If they do not, no classifier built on the same intuition would
+have helped, and you have found that out for the price of one column.
+
 1. Prune an exhausted category. Three attempts from one category, all rejected, means the
    category is done for this run. Record it as pruned in the log with the three attempt ids,
    so it is not rediscovered as a fresh idea in an hour or by the next session.

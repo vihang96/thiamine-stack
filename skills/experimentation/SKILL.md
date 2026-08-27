@@ -85,13 +85,22 @@ complaint is "it works sometimes", the objective is the spread and the mean is t
 
 One directory per run, at `<workspace>/.thiamine/experiments/<slug>/`.
 
-`card.md` holds the frame, rewritten as it changes: the objective, the guards with their
-floors, what is ignored, the sequence, the harness command, the data split, and the stop
-condition. `attempts.tsv` holds one row per attempt, appended and never edited.
+`card.md` holds the frame in prose, rewritten as it changes: what is ignored and why, the
+sequence, the harness command, the data split, and the stop condition. `metrics.tsv` holds the
+machine-readable half, so a floor is checkable rather than remembered. `attempts.tsv` holds one
+row per attempt, appended and never edited.
 
 ```
-id  hypothesis  change  objective-before  objective-after  guards  verdict  note
+metrics.tsv   role       name          direction  threshold
+              objective  iou           higher     0.90
+              guard      cost_per_doc  lower      0.004
+
+attempts.tsv  id  category  prior  hypothesis  change  before  after  guards  verdict  note
 ```
+
+`category` is what pruning counts, so an attempt with no category cannot be pruned by streak.
+`prior` is what you expected before running it, one of likely, unsure, or longshot. It is the
+only way to find out later whether your predictions about this system are worth anything.
 
 Both live outside the tree so they survive a revert, which is most of what they are for.
 `handoff` owns the record of the session, which is a different question: what is in progress
@@ -135,6 +144,7 @@ itself, and the repeats are invisible because each one feels like a new idea.
 ```sh
 node scripts/compare.mjs --paired baseline.txt variant.txt   # did this attempt move it
 node scripts/compare.mjs --interval final.txt                # is the target actually met
+node scripts/prune.mjs <run-dir>                             # what should be pruned, and what got overridden
 ```
 
 A run is finished when the objective met its target on the **held-out** data rather than the
