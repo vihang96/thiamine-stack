@@ -115,6 +115,7 @@ Group what survived. This is a menu, not a template:
 | Section | Covers |
 | --- | --- |
 | Response style | length, tone, format, what to lead with |
+| Prose length | actual numbers for replies, commit bodies, and PR descriptions |
 | Autonomy | how much to do without asking; when to stop and confirm; tool and MCP use |
 | Understand first | which skills to reach for when scoping or investigating |
 | Subagents | default posture, parallelism, model to task, specialised workflows |
@@ -126,6 +127,14 @@ Group what survived. This is a menu, not a template:
 **A section earns its place by holding a specific, non-default rule.** "Communicate clearly"
 is not a section. "Short paragraphs. Tables when comparing options. Bullets only when the
 items are genuinely parallel" is.
+
+**Prose length is the section most worth a number.** The standards deliberately stop at a
+bar: short enough to read in full, shorter than the diff it explains. That is as far as a
+shared standard can go, because the right length differs by person and by team. A number here
+is what makes it enforceable, so write the ones the person actually holds you to, per
+artifact. Watch for the same correction arriving about one channel at a time, since a person
+who asks for shorter chat replies usually wants shorter commit messages too and will not
+think to say so.
 
 **Do not force symmetry.** A user with no process rules worth writing down gets no Process
 section. Sparse is correct; a file with eight thin sections is a file nobody finishes.

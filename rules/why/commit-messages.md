@@ -2,6 +2,7 @@
 id: commit-messages
 summary: Write the commit message in the repo's convention. Where release tooling reads commits, a malformed message fails a check and a wrong type ships a wrong version.
 enforced_by: cocogitto (`cog check`), commitlint, or the repo's own hook. Nothing catches a well-formed message with the wrong type.
+see_also: [handoff, capture-preferences]
 ---
 
 # Commit messages
@@ -46,6 +47,25 @@ setups cap it, often at 72 characters. The body is for why, wrapped, and separat
 blank line.
 
 A merge commit is usually exempt, and tooling often skips it explicitly.
+
+## How long
+
+The subject is short and imperative, and the body exists only where the diff does not
+already carry the why.
+
+Keep the body shorter than the change it explains. A body longer than its diff is an essay,
+written to show the work rather than to be read, and it comes from the same instinct as a
+plan longer than the change. A reader opens a commit message to find out why something was
+done, having already seen what was done.
+
+One consequence worth stating, since it is where this usually goes wrong. A run of attempts
+that ended in one commit does not put all of them in the message. Rejected approaches, bugs
+found and fixed along the way, and the reasoning you are proud of are all history rather than
+explanation. Where that history has value, it belongs in the record the work kept, and the
+`handoff` skill owns that.
+
+This names a bar rather than a number. Where a person has a length preference,
+`capture-preferences` records theirs and it wins.
 
 ## When to override
 
