@@ -42,19 +42,25 @@ rather than a run. The framing is what turns it into something that can succeed 
    Say for each one what converts it into a guard: the target it must reach, and the floor it
    holds afterwards.
 
-5. Set the stop condition, with a floor on attempts so a lucky early result cannot end the
+5. Say which regime the system is in, because the stop condition below depends on it. If
+   re-running the harness unchanged gives a different answer, it is stochastic, and every
+   measurement from here is a distribution rather than a number. Where the complaint is that
+   it works sometimes, say now that the objective is the spread rather than the average, with
+   the average as a guard.
+
+6. Set the stop condition, with a floor on attempts so a lucky early result cannot end the
    run, and a budget so a hopeless one does not run forever. Both numbers, agreed or stated.
 
-6. Name the degenerate solution. For every metric there is a stupid change that improves it,
+7. Name the degenerate solution. For every metric there is a stupid change that improves it,
    and knowing it in advance is how you recognise it when an attempt finds it. One enormous
    predicted box improves recall. Refusing every uncertain document improves accuracy on
    what remains. Retrying forever improves the success rate and destroys latency. If the
    degenerate solution would pass all your guards, the frame is wrong and this is the
    cheapest moment to find that out.
 
-7. Write `card.md`, and only then start.
+8. Write `card.md`, and only then start.
 
 **Reply:** the objective with its target and direction, each guard with its floor, what is
-ignored and the risk of each, the sequence if there is one, the stop condition, the
-degenerate solution you are watching for, and the card path. If the goal came in as two
+ignored and the risk of each, the sequence if there is one, which regime the system is in, the
+stop condition, the degenerate solution you are watching for, and the card path. If the goal came in as two
 objectives, say which one you put first and why.

@@ -36,18 +36,24 @@ produces numbers that cannot be attributed to anything.
    stability floor catches the accuracy win that reintroduced a crash, and it only works if
    it happens on accept rather than at the end.
 
-7. On reject, revert in full. Nothing rides along because it "might help". A partial keep
+7. In the stochastic regime, re-measure an accepted change on a fresh sample before you
+   commit it. An attempt selected for looking good on one sample will look worse on the next,
+   and that is not bad luck, it is the selection. A win that survives a second independent
+   measurement is a win. One that shrinks toward nothing was the sample, and banking it is
+   the default way these runs go wrong.
+
+8. On reject, revert in full. Nothing rides along because it "might help". A partial keep
    makes every later number ambiguous, and the ambiguity is not visible in the log.
 
-8. Log the row either way, with the before, the after, the guards, the verdict, and one line
+9. Log the row either way, with the before, the after, the guards, the verdict, and one line
    of why. A rejected attempt is worth more than an accepted one, because it removes a
    branch of the search and nothing else records that.
 
-9. Commit each accepted change on its own, staging by path. Never stage by wildcard: a run
+10. Commit each accepted change on its own, staging by path. Never stage by wildcard: a run
    generates harness output, logs, and scratch files, and sweeping them into the commit is
    how a run's scaffolding ships.
 
-10. Where several hypotheses are independent and each has its own mechanism, run them in
+11. Where several hypotheses are independent and each has its own mechanism, run them in
     parallel lanes rather than in sequence, per `fan-out-work`. Each lane needs its own
     worktree and its own harness output, because two attempts sharing an output directory
     produce one unattributable number. Accept them one at a time afterwards, re-measuring

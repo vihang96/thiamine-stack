@@ -16,10 +16,17 @@ still contains everything that has already failed.
    objective only when it is genuinely better on a guard, and say which guard, because that
    is a trade for the user to make rather than for you to bank.
 
-3. On a plateau, pivot once before concluding. In order of what pays: re-cluster the
-   failures, since the distribution has moved and the queue is stale. Take a category you
-   have not tried. Combine two near-misses that failed for different reasons. Re-read the
-   thing you are optimising rather than reasoning about your model of it.
+3. On a plateau, work out first whether it is the hill or the ruler.
+
+   In the stochastic regime, raise N and re-measure the last few rejects before pivoting.
+   Real gains hide inside a wide spread, and several rejects in a row is what a good direction
+   looks like when it is measured too loosely. Only once the measurement is tight enough to
+   resolve the gain you are chasing does a plateau mean what it appears to.
+
+   Then pivot, in order of what pays: re-cluster the failures, since the distribution has
+   moved and the queue is stale. Take a category you have not tried. Combine two near-misses
+   that failed for different reasons. Re-read the thing you are optimising rather than
+   reasoning about your model of it.
 
    A plateau is not a stop. Neither is it a licence to keep going forever, which is what
    step 6 is for.
@@ -42,6 +49,13 @@ still contains everything that has already failed.
 6. Stop when one of these is true, and say which. The target was met on the held-out data
    and the attempt floor was cleared. The budget is spent. The remaining hypotheses are all
    marginal and you can name what they would be worth.
+
+   In the stochastic regime the first one needs more care. The target is met when the interval
+   is clear of it, not when the point estimate crosses it, because a point estimate that
+   crossed on a lucky sample will cross back. And there is a fourth condition: the gap
+   remaining is smaller than your sample budget can resolve. That is a real stop and it is not
+   a failure, but say so plainly rather than reporting the last flattering number, and say what
+   a larger budget would be worth.
 
    Never by relaxing the target, never by widening a guard to admit the current state, and
    never while a cheap untried mechanism is sitting in the queue.

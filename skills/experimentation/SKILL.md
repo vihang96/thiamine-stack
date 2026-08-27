@@ -50,6 +50,37 @@ catching any accuracy win that reintroduces a crash.
 Write the sequence down at the start. Reordering it mid-run is allowed and worth saying out
 loud, because it is a change to what the run is for.
 
+## Two regimes, and the loop differs in both
+
+Whether the system under test is repeatable changes the harness, the stopping condition, and
+what a plateau means. Decide which regime you are in at framing time, because retrofitting
+it invalidates the numbers taken before.
+
+You do not have to guess. Measuring the noise band answers it: run the harness twice against
+an unchanged system, and if the answer differs, you are in the second column.
+
+| | Repeatable | Stochastic |
+| --- | --- | --- |
+| Example | latency, error count, tests passing, bytes | anything with a model generating in the loop |
+| A measurement is | one run | N runs, and the result is a distribution |
+| A gain is | the number moved past machine noise | the distribution shifted, by a test rather than by eye |
+| The default failure | a win here that does not hold in production | banking a win that was luck |
+| A plateau means | pivot to another category | measure harder first, then pivot |
+| Sample budget | not a constraint | the binding constraint, and it trades attempts against confidence |
+| Stop when | the target is met, or the remaining ideas are marginal | the target is met with the interval clear of it, or the gap left is smaller than your budget can resolve |
+
+Two consequences worth stating outright.
+
+**A plateau in the stochastic regime is usually the measurement, not the hill.** With a wide
+distribution and a small sample, real gains hide inside the spread. Increasing N is the
+first response to a stall, and pivoting category is the second. Getting that order backwards
+abandons a good direction because it was measured badly.
+
+**Variance is often the thing you actually want.** Reliability and stability are questions
+about spread, not about the average. A change that lifts the mean and doubles the spread has
+made things worse for the user, who sees one run rather than your distribution. When the
+complaint is "it works sometimes", the objective is the spread and the mean is the guard.
+
 ## The run card
 
 One directory per run, at `<workspace>/.thiamine/experiments/<slug>/`.
@@ -101,7 +132,8 @@ itself, and the repeats are invisible because each one feels like a new idea.
 ## Verify
 
 ```sh
-node scripts/compare.mjs --paired baseline.txt variant.txt
+node scripts/compare.mjs --paired baseline.txt variant.txt   # did this attempt move it
+node scripts/compare.mjs --interval final.txt                # is the target actually met
 ```
 
 A run is finished when the objective met its target on the **held-out** data rather than the

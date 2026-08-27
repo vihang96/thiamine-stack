@@ -5,6 +5,7 @@
  *   node compare.mjs before.txt after.txt              # two independent samples
  *   node compare.mjs --paired before.txt after.txt     # same items scored twice
  *   node compare.mjs --lower-is-better a.txt b.txt     # latency, error count, cost
+ *   node compare.mjs --interval final.txt              # one sample, bootstrap interval
  *
  * Input is one number per line. Blank lines and lines starting with # are skipped, so a
  * file can carry a note about what it is. In paired mode the files must be aligned: line N
@@ -28,6 +29,12 @@ const ALPHA = 0.05
 // value invites treating an anecdote as a result.
 const MIN_N = 5
 
+// Answering "is the target met" needs an interval on one sample, not a comparison of two.
+// A point estimate that crossed the target on a lucky sample crosses back, which is why the
+// skill's stop condition asks for the interval to be clear of the target rather than the
+// median to be past it.
+const INTERVAL_MODE = '--interval'
+
 const args = process.argv.slice(2)
 const flags = new Set(args.filter((a) => a.startsWith('--')))
 const files = args.filter((a) => !a.startsWith('--'))
@@ -40,11 +47,19 @@ const die = (msg) => {
 	process.exit(2)
 }
 
-if (files.length !== 2) {
-	die('need two files\n  usage: node compare.mjs [--paired] [--lower-is-better] before after')
+const interval = flags.has(INTERVAL_MODE)
+if (interval && (paired || files.length !== 1)) {
+	die('--interval takes exactly one file and cannot be paired')
+}
+if (!interval && files.length !== 2) {
+	die(
+		'need two files\n' +
+			'  usage: node compare.mjs [--paired] [--lower-is-better] before after\n' +
+			'         node compare.mjs --interval sample.txt',
+	)
 }
 for (const f of flags) {
-	if (!['--paired', '--lower-is-better'].includes(f)) die(`unknown flag ${f}`)
+	if (!['--paired', '--lower-is-better', INTERVAL_MODE].includes(f)) die(`unknown flag ${f}`)
 }
 
 const fs = await import('node:fs')
@@ -93,6 +108,35 @@ const rand = () => {
 	seed ^= seed << 5
 	seed >>>= 0
 	return seed / 0x100000000
+}
+
+if (interval) {
+	const xs = readSeries(files[0]).filter((x) => x !== null)
+	if (xs.length < MIN_N) die(`only ${xs.length} values, need at least ${MIN_N}`)
+
+	// Resample with replacement and take the median each time. No distributional assumption,
+	// which matters for a bounded score that piles up near its ceiling.
+	const medians = []
+	for (let it = 0; it < ITERATIONS; it++) {
+		const draw = new Array(xs.length)
+		for (let i = 0; i < xs.length; i++) draw[i] = xs[Math.floor(rand() * xs.length)]
+		medians.push(median(draw))
+	}
+	const lo = quantile(medians, ALPHA / 2)
+	const hi = quantile(medians, 1 - ALPHA / 2)
+
+	process.stdout.write(
+		`one sample, bootstrap interval\n` +
+			`n                ${xs.length}\n` +
+			`median           ${fmt(median(xs))}\n` +
+			`mean             ${fmt(mean(xs))}\n` +
+			`spread           ${fmt(Math.min(...xs))} to ${fmt(Math.max(...xs))}\n` +
+			`interquartile    ${fmt(quantile(xs, 0.25))} to ${fmt(quantile(xs, 0.75))}\n` +
+			`95% interval     ${fmt(lo)} to ${fmt(hi)} (on the median, ${ITERATIONS} resamples)\n` +
+			`\nThe target is met when the whole interval is past it, not when the median is. ` +
+			`Compare the ${lowerIsBetter ? 'upper' : 'lower'} bound against your target.\n`,
+	)
+	process.exit(0)
 }
 
 const before = readSeries(files[0])

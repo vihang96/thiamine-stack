@@ -37,23 +37,43 @@ This playbook owns the three things a repeated loop needs that a single measurem
    scoring the same documents under two prompts. It is far more sensitive than comparing two
    medians, because it looks at each item's own change rather than at the aggregate.
 
-3. Emit the per-item scores, not just the aggregate. One number per attempt tells you it got
+3. In the stochastic regime, decide the sample budget before the first attempt, and treat it
+   as a trade rather than a detail. Every measurement costs N generations, so a fixed budget
+   buys either many attempts measured loosely or fewer measured well. Fewer, measured well,
+   wins: a loose measurement produces accepted changes that were luck, and those are worse
+   than no attempt because they enter the log as knowledge.
+
+   Size N from the spread you just measured and the smallest gain worth detecting. If the
+   spread is wide and the gain you are chasing is narrow, no affordable N will resolve it, and
+   the honest response is to change the metric or the goal rather than to run the loop anyway.
+
+   Pin what you can, and know what pinning costs. A fixed seed and a temperature of zero
+   shrink the spread and make the search cheaper, at the price of tuning against one sample of
+   the system's behaviour. Search pinned if you must, but validate unpinned before accepting,
+   or the run optimises the seed.
+
+   Where the objective is the spread rather than the average, the harness emits both, and the
+   comparison is between distributions. A change that narrows the spread and leaves the mean
+   alone is the win, and it looks like nothing happened to anyone reading only the average.
+
+4. Emit the per-item scores, not just the aggregate. One number per attempt tells you it got
    better. Per-item scores tell you which cases got better, which is what
    `playbooks/generate-hypotheses.md` needs and what makes the next attempt more than a
    guess. This is the highest-value thing the harness can do and it costs almost nothing.
 
-4. Measure the guards too, with the cheap ones on every attempt and the expensive ones on
+5. Measure the guards too, with the cheap ones on every attempt and the expensive ones on
    accept. Say which is which in `card.md`. A guard nobody can afford to measure is not a
    guard, it is a hope, and it belongs in ignored where it will at least be honest.
 
-5. Freeze it, and make it one command. Every number in the log is comparable only to numbers
+6. Freeze it, and make it one command. Every number in the log is comparable only to numbers
    from the same harness, so a change to it invalidates the run's history. When you must
    change it, re-baseline everything and say so in the log rather than comparing across the
    change.
 
-6. Record the baseline: the objective on both sets, every guard, and the noise band. With a
+7. Record the baseline: the objective on both sets, every guard, and the noise band. With a
    passing test run beside it, since a baseline taken from a broken system measures nothing.
 
-**Reply:** the harness command, the split with the size of each half and how you stratified
-it, the noise band and how many samples produced it, the baseline for the objective and every
+**Reply:** the harness command, which regime the noise band puts you in, the split with the
+size of each half and how you stratified it, the noise band with how many samples produced it
+and the sample budget per attempt if the regime needs one, the baseline for the objective and every
 guard, and which guards are measured per attempt against on accept.
