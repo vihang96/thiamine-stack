@@ -2,7 +2,7 @@
 name: consistency
 description: "Finds the answer a codebase already has for a concern before adding another one, and records the decision when there is none. Use when introducing a pattern, choosing a library or a store, starting a new service, styling a new surface, or when a codebase has grown several answers to one question."
 owns: "how many answers a concern is allowed, and where that decision is written down"
-see_also: [pre-implementation, multi-repo-mechanics]
+see_also: [pre-implementation, multi-repo-mechanics, working-alongside, fan-out-work]
 ---
 
 # Consistency
@@ -97,6 +97,19 @@ nobody reads a sibling's docs before making a local choice. Put it where all of 
 it, whether that is a shared repository, the workspace root, or the standards this stack is
 installed from. A cross-service decision recorded in one service is a decision the other nine
 will each make again.
+
+## Look at what is in flight, not only what is committed
+
+Searching the codebase finds the answers that landed. It cannot find the answer another
+session or another parallel agent is deciding right now, and that one will land before
+yours does. Two units of work each choosing how an error is shaped both pass review and
+ship the fork.
+
+So when the concern is one from the table above, check the work in progress too. The board
+in `working-alongside` records what each unit of work decides, and `fan-out-work` settles a
+shared question into every brief before its lanes start rather than letting each lane
+answer it. Where a unit in flight has already decided your question, take its answer or
+agree a different one with it, and do not decide independently and reconcile later.
 
 ## A new service is the hard case
 

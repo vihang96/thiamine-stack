@@ -11,6 +11,7 @@ Prompts that must load this skill, and near-misses that must not.
 - write an ADR for this decision
 - how do other services here handle retries
 - I need to add pagination to this endpoint
+- two agents are working on this at once, will they pick different error shapes
 
 ## Should not fire
 

@@ -3,3 +3,4 @@ target/
 .DS_Store
 .ruff_cache/
 .handoff-*.md
+.thiamine/

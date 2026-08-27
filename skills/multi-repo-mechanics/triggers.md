@@ -25,3 +25,7 @@ Prompts that must load this skill, and near-misses that must not.
 - review this diff for correctness bugs. The language standards own code review.
 - why is the build failing in this worktree. A build failure, whatever directory it is in.
 - rename this function. Ordinary work that happens to be inside a worktree.
+- spawn five agents to work on these repos at once. Splitting work into parallel lanes is
+  `fan-out-work`; this skill is what each lane runs.
+- another session is already in this repo, can I start. That judgement is
+  `working-alongside`.

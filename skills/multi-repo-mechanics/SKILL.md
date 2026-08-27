@@ -2,7 +2,7 @@
 name: multi-repo-mechanics
 description: "Carries one change across a multi-repo workspace, from worktrees through to a pull request ready for approval. Use when work touches more than one service, when creating or cleaning up worktrees, when pausing or resuming a session, when opening or stacking pull requests, when driving checks green, or when triaging review comments."
 owns: "the multi-repo workspace layout, the worktree lifecycle, and the git side of stopping and resuming"
-see_also: [handoff]
+see_also: [handoff, fan-out-work, working-alongside]
 ---
 
 # Multi-repo mechanics
@@ -47,6 +47,10 @@ provides for those still applies.
 It does not own what a handoff record says either. The `handoff` skill defines that, and
 `pause-safely` and `session-pickup` use it. What stays here is the git side: the commit in
 each worktree, and checking whether the base moved while you were gone.
+
+It does not own running several changes at once. This skill carries one change, and each
+parallel lane runs it. `fan-out-work` owns lanes this session spawned, and
+`working-alongside` owns deciding whether to start beside a lane it did not.
 
 Some harnesses also ship a command that makes one worktree per open pull request in a
 single repo. That answers a different question, which is what is currently under review.

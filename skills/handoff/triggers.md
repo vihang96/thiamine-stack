@@ -13,6 +13,9 @@ Prompts that must load this skill, and near-misses that must not.
 
 ## Should not fire
 
+- tell the other sessions what I am working on so they do not collide. That announcement is
+  `working-alongside`; this record is for whoever continues the work.
+
 - what did I ask you to do earlier in this session. Already in context.
 - summarize this conversation. A summary is not a record of work in progress.
 - pick up the branch in orders/tree/feat-retention. One known session with a worktree, so

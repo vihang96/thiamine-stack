@@ -35,7 +35,13 @@ large to land in one pull request.
    the work. If the plan is longer than the diff will be, the change is simple and does not
    need one.
 
-8. Re-plan when it is wrong rather than following it. A plan is a prediction. When step
+8. Ask which steps are independent, once the order is written down. Steps that touch
+   different files, answer no shared question, and can each be checked without the others
+   can run at once, and the `fan-out-work` skill owns cutting them into parallel lanes. Most
+   plans have no such steps, and saying so is a real answer. A step whose check needs the
+   step before it is sequential however separate its files look.
+
+9. Re-plan when it is wrong rather than following it. A plan is a prediction. When step
    three turns out to be impossible, say so and re-cut, rather than forcing the original
    shape and calling it done.
 
