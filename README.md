@@ -67,9 +67,7 @@ sentence somewhere, every session re-decides it.
 
 **Cut, do not layer.** The mistake is keeping a workflow skill that already covers review
 or pull requests and adding thiamine underneath. An agent then gets two answers for one task.
-Delete the half thiamine owns and point at it. In one workspace that took a PR skill from 141
-lines to 67, and the part it lost was the part that contradicted `opening-a-pr` by templating
-`## Summary` and `## Test plan`.
+Delete the half thiamine owns and point at it.
 
 **Keep local what thiamine cannot know.** A deploy gate, a proto ordering rule, or a
 reviewer that knows your architecture decisions has no portable equivalent. Keep those, and
@@ -78,10 +76,6 @@ have them run the thiamine playbook for the general pass rather than restating i
 **Two copies of one agent drift.** The weaker one still answers. Where a local agent and a
 thiamine agent do the same job, keep one, and if you keep yours, say in the instruction why.
 Otherwise the next person deletes the wrong one.
-
-`claude plugin details thiamine@thiamine-stack` lists what loaded. Skills also appear as
-`/thiamine:<name>`. Agents have no slash entry, because a model chooses them and you never
-type them.
 
 ## Skills
 
