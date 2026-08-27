@@ -53,6 +53,36 @@ skill only loads when the agent recognises the situation, so the session most li
 collide with someone is the one that never loaded the skill. At session start a hook reads
 the workspace board and puts what is in flight into context, whether or not the skill fires.
 
+## Alongside skills and agents you already have
+
+Nothing shadows your own. Plugin skills and agents are namespaced, so thiamine's are
+`thiamine:interrogate` and `thiamine:code-simplifier`. A local skill or agent of the same
+bare name keeps working and keeps its name.
+
+**Split by what travels.** Your files own what is only true in your repos: services, paths,
+build commands, deploy gates, architecture decisions. Thiamine owns what travels between
+them: scope, abstraction, errors, tests, language idioms, review, prose. Write that split
+down once in the repo's `CLAUDE.md` or `AGENTS.md`, along with which side wins. Without that
+sentence somewhere, every session re-decides it.
+
+**Cut, do not layer.** The mistake is keeping a workflow skill that already covers review
+or pull requests and adding thiamine underneath. An agent then gets two answers for one task.
+Delete the half thiamine owns and point at it. In one workspace that took a PR skill from 141
+lines to 67, and the part it lost was the part that contradicted `opening-a-pr` by templating
+`## Summary` and `## Test plan`.
+
+**Keep local what thiamine cannot know.** A deploy gate, a proto ordering rule, or a
+reviewer that knows your architecture decisions has no portable equivalent. Keep those, and
+have them run the thiamine playbook for the general pass rather than restating it.
+
+**Two copies of one agent drift.** The weaker one still answers. Where a local agent and a
+thiamine agent do the same job, keep one, and if you keep yours, say in the instruction why.
+Otherwise the next person deletes the wrong one.
+
+`claude plugin details thiamine@thiamine-stack` lists what loaded. Skills also appear as
+`/thiamine:<name>`. Agents have no slash entry, because a model chooses them and you never
+type them.
+
 ## Skills
 
 ### Before you build
