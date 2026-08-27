@@ -83,3 +83,7 @@ for path in "$@"; do
 	dirty=$(git -C "$path" status --porcelain)
 	[ -n "$dirty" ] && echo "   uncommitted: $(echo "$dirty" | wc -l | tr -d ' ') file(s) not in the summary above"
 done
+
+# Without this the status is that last test, so a run whose final worktree happened to be
+# clean reported failure.
+exit 0
