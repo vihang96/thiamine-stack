@@ -60,4 +60,25 @@ When analyzing code, you will:
 
 1. Read the full diff: `git diff main...HEAD` for analysis
 2. Re-run the service's quality checks to verify no behavioral change
-3. Output a summary of what was simplified and why
+3. Leave anything you are not confident is behaviour-preserving alone, and say you left it
+
+## What to return
+
+The parent receives only your final message. It will not re-read the files to work out what
+you did, so the message is the whole record of the pass. At most 200 words, no preamble, and
+never the diff or the rewritten code, which the parent can read for itself.
+
+One block per simplification, largest reduction first:
+
+```
+FILE      path:line
+WAS       what made it complex, in a clause
+NOW       the technique applied
+```
+
+Then three lines: `CLEAN` or `SIMPLIFIED: n`; what the quality checks said when you re-ran
+them, or that you could not run them and why; and anything you deliberately left alone,
+with the reason.
+
+If the code is already simple, say so in one sentence and stop. A clean result is a real
+result, and padding it with stylistic preferences turns a simplification pass into churn.
