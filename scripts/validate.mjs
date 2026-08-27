@@ -18,7 +18,7 @@ const MIN_DESC = 80
 const SHARED_EXAMPLE_LIMIT = 3
 const MIN_SHOULD_FIRE = 3
 const MIN_SHOULD_NOT_FIRE = 2
-const RULES_MAX_LINES = 90
+const RULES_MAX_LINES = 100
 const RULES_MAX_BULLET = 100
 const MIN_EXAMPLE_LEN = 6 // tuned against the technical-writing / unslop-prose overlap
 

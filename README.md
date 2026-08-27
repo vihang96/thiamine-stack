@@ -130,6 +130,6 @@ Seven skills and three rules derive from `pstack` in
 
 ## Status
 
-Early, and in use. Twenty skills, eleven always-on rule sections, and a lint layer for
+Early, and in use. Twenty skills, twelve always-on rule sections, and a lint layer for
 TypeScript, Rust, and Python. The rule corpus stays small on purpose, since every line is
 paid on every request.
