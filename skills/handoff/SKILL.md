@@ -15,6 +15,27 @@ kept, resuming is reading one file. If it was not, resuming means mining transcr
 checking branches, and guessing at intent, which takes an hour and still misses the
 reasoning. Keep the record.
 
+## When the record is not worth keeping
+
+The record pays for itself when the work outlives the context holding it. Below that it is
+a file to maintain and a second copy that can disagree with the repository, and a skill
+that demands one for a twenty-minute task is a skill people stop running.
+
+Skip it when all three hold:
+
+- The work finishes in this session, and you can see where it ends.
+- You have decided nothing the code will not show. A choice visible in the diff is already
+  recorded, and the log is for the reasoning that leaves no trace.
+- Nobody else is going to pick this up.
+
+Start one the moment any of those stops being true: a compaction warning, a second session
+arriving, an interruption, or the first decision you would have to explain later.
+Starting late costs a paragraph reconstructed from a context you still have. Starting never
+costs the hour in `playbooks/recall.md`.
+
+The cost is asymmetric, so lean toward keeping it. Keeping one you did not need costs a
+file. Skipping one you needed loses the reasoning, and the repository cannot give it back.
+
 ## Scope
 
 This skill owns the record of work in progress and how to rebuild it when it is missing.

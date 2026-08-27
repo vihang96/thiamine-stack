@@ -14,6 +14,27 @@ what it was supposed to do.
 This skill closes that gap. It runs after the code is written and before it lands, and it
 ends when the person whose name is on the change can explain it and agrees with it.
 
+## When there is no gap to close
+
+The walkthrough exists to close the gap between the change and what its owner understands.
+Where there is no gap, running the full pass spends their attention on a change they
+specified themselves.
+
+Skip to a single sentence when all three hold:
+
+- They specified the change at the level it was made. They named the line, and that line
+  changed.
+- It made no decisions. No choice between two shapes, no assumption, no tradeoff taken.
+- It exposes nothing new to anyone else. No new endpoint, flag, or exported type, and no
+  behaviour a caller depends on.
+
+The sentence still says what changed and what you ran, because "done" on its own is the
+claim `rules/RULES.md` forbids.
+
+Two things never scale down. Confirm a decision you made and they did not, however small
+the diff, since they are the one review will ask. And anything outward-facing goes through
+`playbooks/socialize.md`, which cannot be taken back once sent.
+
 ## Explain, do not quiz
 
 Testing recall is the wrong instrument. "Do you understand the retry logic" is
