@@ -17,9 +17,9 @@ Prompts that must load this skill, and near-misses that must not.
 ## Should not fire
 
 - address the review comments on my PR. That is the inbound direction, in
-  `multi-repo-mechanics`, playbook `triage-review-comments.md`.
+  `land-a-change`, playbook `triage-review-comments.md`.
 - is this ready to merge. Checks, conflicts, and the pull request state, so
-  `multi-repo-mechanics`, playbook `shippable.md`.
+  `land-a-change`, playbook `shippable.md`.
 - walk me through what you built. Whether the owner can explain their own change, so
   `post-implementation`.
 - write the plan for this migration. Authoring rather than judging, so

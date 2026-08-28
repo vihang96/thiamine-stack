@@ -2,7 +2,7 @@
 name: fan-out-work
 description: "Runs several subagents in parallel from one session and converges what they return into one coherent change. Use when work splits into units that can run at once, when spawning subagents to investigate or write code in parallel, when a change spans several repos that can be worked simultaneously, and when parallel results need checking for duplication and contradiction before they land."
 owns: "parallelism inside one session: the cut, the brief, the drain, and converging the results"
-see_also: [working-alongside, multi-repo-mechanics, pre-implementation, consistency, coherence-reviewer, interrogate]
+see_also: [working-alongside, land-a-change, pre-implementation, consistency, coherence-reviewer, interrogate]
 ---
 
 # Fan out work
@@ -34,7 +34,7 @@ This skill owns parallelism the parent controls: subagents it spawned, in one se
 or another person already working in the same repo. The difference is authority. Here one
 agent decided the cut, so interference is a planning mistake rather than a discovery.
 
-`multi-repo-mechanics` owns the worktree and branch mechanics each lane runs inside, and
+`land-a-change` owns the worktree and branch mechanics each lane runs inside, and
 the pull request at the end. `pre-implementation` owns whether the work was understood and
 sequenced at all, and its `plan-the-work` playbook is where a fan-out is decided on.
 

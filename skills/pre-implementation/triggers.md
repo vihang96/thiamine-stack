@@ -22,12 +22,12 @@ Prompts that must load this skill, and near-misses that must not.
 
 - fix the typo in this error message. A change with nothing to find out.
 - rename this function. Ordinary work, already understood.
-- get this PR green. That is multi-repo-mechanics, and the deciding is done.
+- get this PR green. That is land-a-change, and the deciding is done.
 - review this diff for bugs. The language standards own code review.
 - clean up the worktrees. Workspace mechanics, not deciding what to build.
 
-## Fires alongside multi-repo-mechanics
+## Fires alongside land-a-change
 
 A change that spans repos needs a plan and then worktrees. This skill decides what is being
-built and in what order. `multi-repo-mechanics` sets up the worktrees and carries the pull
+built and in what order. `land-a-change` sets up the worktrees and carries the pull
 requests. The handoff is the plan.

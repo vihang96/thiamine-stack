@@ -1,4 +1,4 @@
-# Trigger examples: multi-repo-mechanics
+# Trigger examples: land-a-change
 
 Prompts that must load this skill, and near-misses that must not.
 

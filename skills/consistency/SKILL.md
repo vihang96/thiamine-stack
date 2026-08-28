@@ -2,7 +2,7 @@
 name: consistency
 description: "Finds the answer a codebase already has for a concern before adding another one, and records the decision when there is none. Use when introducing a pattern, choosing a library or a store, starting a new service, styling a new surface, or when a codebase has grown several answers to one question."
 owns: "how many answers a concern is allowed, and where that decision is written down"
-see_also: [pre-implementation, multi-repo-mechanics, working-alongside, fan-out-work]
+see_also: [pre-implementation, land-a-change, working-alongside, fan-out-work]
 ---
 
 # Consistency
@@ -82,7 +82,7 @@ A workspace of sibling services is where divergence is cheapest to create and mo
 expensive to live with. Nothing stops one service picking a different store, a different
 error shape, or a different spacing scale, and no compiler ever notices.
 
-`multi-repo-mechanics` establishes that one change spans several repos on one branch. This skill
+`land-a-change` establishes that one change spans several repos on one branch. This skill
 adds what those pieces owe each other: the two sides of a change answer a shared question the
 same way, or the difference is deliberate and written down. A service change and its contract
 change that disagree about how an error is represented have shipped the fork rather than the

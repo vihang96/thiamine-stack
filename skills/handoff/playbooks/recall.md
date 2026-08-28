@@ -7,7 +7,7 @@ Reconstruction is the expensive path. Before starting, check for a record: read
 `<workspace>/.handoff-*.md`. If one exists, read it and go to step 5.
 
 1. Classify first. A specific session to resume, with a branch and a worktree, is
-   `multi-repo-mechanics` and its `session-pickup` playbook. This is for loading context
+   `land-a-change` and its `session-pickup` playbook. This is for loading context
    across several sessions before acting. If the user already stated where things stand,
    use that and skip the mining.
 

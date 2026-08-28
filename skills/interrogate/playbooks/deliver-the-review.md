@@ -56,7 +56,7 @@ one, or handing findings to the agent that wrote the code.
 10. Mechanics, when it is a pull request. `gh pr review --comment` or `--request-changes`
     with a body, and `gh pr comment` for a follow-up. Where the harness's diff review can
     post inline findings itself, let it, and add the verdict and the unchecked areas as a
-    top-level comment. `multi-repo-mechanics` owns everything else about the pull request,
+    top-level comment. `land-a-change` owns everything else about the pull request,
     and its `triage-review-comments` playbook is what the author runs when your review
     lands.
 
