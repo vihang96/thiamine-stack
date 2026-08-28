@@ -52,12 +52,17 @@ PR", and at the end of any change that is ready for review.
    This names a bar, not a number. Where the person you are working for has a length
    preference, theirs is the number, and `capture-preferences` owns recording it.
 
-5. Open ready, not draft. Several tools default to draft, including `gh stack submit`
+5. Check the person, not just the code. Opening a pull request hands the change to people
+   who did not write it. The person whose name is on the PR should be able to explain it or agree to the
+   decisions you made. That is `post-implementation`. Run it, or say that all three of its
+   skip conditions hold.
+
+6. Open ready, not draft. Several tools default to draft, including `gh stack submit`
    unless you pass `--open`. Check with `gh pr view` after creating rather than assuming,
    and run the host's ready command if one opened as a draft. A draft requests review from
    nobody, so it sits until someone notices.
 
-6. Do not start watching checks yet. Post the URLs and finish the other repos first.
+7. Do not start watching checks yet. Post the URLs and finish the other repos first.
    Driving one PR to green while another is unopened spends checks on a state that is
    about to change.
 

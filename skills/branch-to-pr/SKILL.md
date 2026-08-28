@@ -2,7 +2,7 @@
 name: branch-to-pr
 description: "Decides where a change lands and carries it from there to a pull request ready for approval, in one repo or several. Use before the first edit of any change that will be committed, when work touches more than one service, when creating or cleaning up worktrees, when pausing or resuming a session, when opening or stacking pull requests, when checks are failing or a pull request needs to go green, or when addressing or triaging review comments."
 owns: "where a change lands, the worktree lifecycle, and the git side of stopping and resuming, in one repo or many"
-see_also: [handoff, fan-out-work, working-alongside, interrogate]
+see_also: [pre-implementation, handoff, fan-out-work, working-alongside, interrogate, post-implementation]
 ---
 
 # Branch to PR
@@ -27,6 +27,22 @@ checkout.
       feat-partial-refunds         same branch name, paired change
   inventory/
 ```
+
+## Before the worktree
+
+This is usually the first skill loaded in a change, so it is the last point where deciding
+what to build is still cheap.
+
+Load `pre-implementation` when any of these holds:
+
+- The change touches more than one repo.
+- You cannot name the files you are about to change.
+- The request names a solution rather than the problem behind it.
+- It is a bug you have not reproduced.
+- It needs a choice between two shapes a reader would notice.
+
+For most changes none of them holds. Say which files you are about to change, then set up
+the worktree.
 
 ## Conventions
 
