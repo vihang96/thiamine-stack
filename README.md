@@ -52,12 +52,6 @@ skill only loads when the agent recognises the situation, so the session most li
 collide with someone is the one that never loaded the skill. At session start a hook reads
 the workspace board and puts what is in flight into context, whether or not the skill fires.
 
-Where a change lands is the same problem. `branch-to-pr` asks to be used before the first
-edit, which is the moment a prompt says least about it: the request is about the task, not
-about the branch. So a hook tests the condition rather than the wording. An edit arriving
-while HEAD is the default branch is denied once per repo per session, naming the skill. The
-condition is the same fact in every repo, which a list of anticipated phrasings is not.
-
 ## Alongside skills and agents you already have
 
 Nothing shadows your own. Plugin skills and agents are namespaced, so thiamine's are
