@@ -1,7 +1,7 @@
 ---
 name: handoff
-description: "Keeps a durable record of work in progress so a new session can continue it, and reconstructs that record from transcripts and live state when none was kept. Use when starting work that will span sessions, when recording a decision or a deviation mid-build, when context is about to be cleared or compacted, and for catch me up or where did I leave off."
-owns: "the record of work in progress, and reconstructing it when none was kept"
+description: "Keeps a durable record of work in progress so a new session can continue it, reconstructs that record from transcripts and live state when none was kept, and prunes it once the work it describes has landed. Use when starting work that will span sessions, when recording a decision or a deviation mid-build, when context is about to be cleared or compacted, when a workspace has accumulated records or one has stopped being true, and for catch me up or where did I leave off."
+owns: "the record of work in progress, reconstructing it when none was kept, and retiring it when the work lands"
 see_also: [branch-to-pr, continual-learning, reflect, working-alongside, experimentation]
 ---
 
@@ -67,7 +67,7 @@ directory that gets swept, and gitignored, since it is working state rather than
 deliverable.
 
 Two parts. A header holding current state, rewritten as it changes. A log below it,
-appended and never edited.
+appended as you go and edited only when its change lands.
 
 ```markdown
 # Add retention policies to workspaces
@@ -91,12 +91,21 @@ The header answers where things stand. The log answers why they stand there, whi
 part nobody can reconstruct and the part that stops the next session re-deciding what this
 one already settled.
 
+A record on a default branch is the second shape, for work that keeps landing in one repo
+without a branch of its own. Same file, same two parts. It ends differently. A per-change
+record is deleted when its change lands. A long-lived one is pruned instead, because nothing
+else ever retires the entries inside it.
+
 ## Playbooks
 
 | Situation | Playbook |
 | --- | --- |
 | Mid-build, something was decided or the plan changed | `playbooks/build-log.md` |
 | Resuming with no record, or one that stopped being true | `playbooks/recall.md` |
+| A change landed, or the workspace has accumulated records | `playbooks/prune-the-record.md` |
+
+`sh scripts/records.sh <workspace-root>` says which records still describe work that
+exists. It reports and never deletes.
 
 Stopping cleanly and picking back up are `branch-to-pr`, which handles the commits
 and the drift.
@@ -105,8 +114,9 @@ and the drift.
 
 - Write the record at the end. A log written from memory at the end is a summary, and the
   decisions it forgot are the ones that mattered.
-- Keep it after the work lands. Delete it with the branch. A record that outlives its change
-  is read as current by the next person who finds it.
+- Keep it after the work lands. A record that outlives its change is read as current. Delete
+  it with the branch, which `branch-to-pr` does in `worktree-cleanup`, and find the ones
+  nobody deleted with `scripts/records.sh`.
 - Put it in the commit. It is scaffolding for the work, and `rules/RULES.md` says to delete
   scaffolding when the work lands rather than shipping it.
 - Reconstruct when a record exists. Read it first, then verify it against the repository,

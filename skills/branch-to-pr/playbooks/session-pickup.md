@@ -3,10 +3,11 @@
 **Reconstruct state from the workspace before touching anything.** For "pick up where I
 left off", "what was I working on", and starting on a change someone else paused.
 
-1. Read the record if there is one. `<workspace>/.handoff-*.md`. It is the only source for
-   intent, and intent is the part the repository cannot tell you. Where none exists, the
-   `handoff` skill reconstructs one, which is slower and less complete, so do not skip
-   looking first.
+1. Read the record if there is one. `sh scripts/records.sh <workspace-root>`, in the
+   `handoff` skill, lists them and flags the ones whose change already landed. It is the only
+   source for intent, and intent is the part the repository cannot tell you. Where none
+   exists, the `handoff` skill reconstructs one, which is slower and less complete, so do not
+   skip looking first.
 
 2. Audit. `sh scripts/audit.sh <workspace-root>`. Group the output by branch name, because
    one change spans repos and the branch is what ties them together. A branch appearing in

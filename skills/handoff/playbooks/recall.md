@@ -3,8 +3,10 @@
 **Rebuild the working context, then hand back a brief.** For "catch me up", "what was I
 working on", and resuming when no record was kept or the one that exists stopped being true.
 
-Reconstruction is the expensive path. Before starting, check for a record: read
-`<workspace>/.handoff-*.md`. If one exists, read it and go to step 5.
+Reconstruction is the expensive path. Before starting, check for a record.
+`sh scripts/records.sh <workspace-root>` lists them with the state of each branch. Read the
+`live` and `default` ones and go to step 5. A `merged` or `no-branch` one is history, so read
+it for the reasoning and retire it with `playbooks/prune-the-record.md`.
 
 1. Classify first. A specific session to resume, with a branch and a worktree, is
    `branch-to-pr` and its `session-pickup` playbook. This is for loading context

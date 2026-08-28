@@ -46,5 +46,9 @@ accumulated more than you can account for.
 6. Delete the local branch only when its worktree is gone and it is merged. A branch with
    no worktree costs nothing, so leaving it is fine.
 
+7. Delete the handoff record with the branch. It is `<workspace>/.handoff-<branch>.md`, at
+   the workspace root, so nothing you removed above took it with it. Run `handoff`'s
+   `prune-the-record` playbook first. A landed change can leave a constraint worth keeping.
+
 **Reply:** a table of what was removed and what was kept with the reason, and the count
-before and after. Name anything you forced.
+before and after. Name anything you forced, and name the records you deleted.
