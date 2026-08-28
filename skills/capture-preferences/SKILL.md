@@ -1,6 +1,6 @@
 ---
 name: capture-preferences
-description: "Captures how a person likes to work as a skill agents load and follow: response style, autonomy, verification posture, delegation. Use when the same correction about how rather than what has come up again, and for automate me, capture my working style, or make a mode skill for me."
+description: "Captures how a person likes to work as a skill agents load and follow: response style, autonomy, verification posture, delegation. Use for automate me, capture my working style, or make a mode skill, and when a preference should not have to be repeated every session."
 owns: "the record of one person's taste and habits, as instructions an agent follows"
 see_also: [reflect, continual-learning, thiamine-author]
 ---

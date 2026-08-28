@@ -1,6 +1,6 @@
 ---
 name: unslop-rust
-description: "Rejects low-evidence Rust: unwrap, swallowed errors, undocumented unsafe, tautological tests, meta design docs, and C-shaped code ported into Rust. Use when reading or editing any .rs file, when reviewing a Rust diff, or when a Cargo crate is being set up."
+description: "Rejects low-evidence Rust: unwrap, swallowed errors, undocumented unsafe, tautological tests, meta design docs, and C-shaped code ported into Rust. Use when reading or editing any .rs file, when reviewing a Rust diff, when fighting the borrow checker into compiling, or when a Cargo crate is being set up."
 owns: "Rust correctness and API discipline, meaning what the compiler and the type system have to prove"
 see_also: [unslop-prose]
 ---

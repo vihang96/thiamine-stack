@@ -1,6 +1,6 @@
 ---
 name: pre-implementation
-description: "Prepares work before any code is written: understanding the code that exists, finding the blast radius, and sorting unknowns into what to observe and what to ask. Use when starting a feature, a bug fix, a performance push, or a migration, when asked to mock something up, and whenever a request names a solution rather than a problem."
+description: "Prepares work before any code is written: understanding the code that exists, working out what breaks if you change it, and sorting unknowns into what to observe and what to ask. Use when starting a feature, a bug fix, a migration, or a performance push, for plan this out and mock something up, and whenever a request names a solution rather than a problem."
 owns: "the phase before the first commit: what to build, what is unknown, and in what order"
 see_also: [land-a-change, fan-out-work, working-alongside, experimentation]
 ---

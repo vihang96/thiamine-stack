@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: "Keeps a durable record of work in progress so a new session can continue it, and reconstructs it from transcripts and live state when none was kept. Use when context is about to compact, when starting work that will span sessions, and for catch me up or where did I leave off."
+description: "Keeps a durable record of work in progress so a new session can continue it, and reconstructs it from transcripts and live state when none was kept. Use before clearing or compacting context, when work will span sessions or days, when recording a decision mid-build, and for catch me up or where did I leave off."
 owns: "the record of work in progress, and reconstructing it when none was kept"
 see_also: [land-a-change, continual-learning, reflect, working-alongside, experimentation]
 ---

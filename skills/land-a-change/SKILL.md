@@ -1,6 +1,6 @@
 ---
 name: land-a-change
-description: "Carries a change from no branch yet to a pull request ready for approval. Use before the first edit of any change that will be committed, when triaging review comments or driving checks green, and when creating, resuming, or cleaning up worktrees. One repo or several."
+description: "Carries a change from no branch yet to a pull request ready for approval. Use before the first edit of any change that will be committed, when addressing review comments or getting a pull request green, and when creating, resuming, or cleaning up worktrees. One repo or several, stacked or single."
 owns: "where a change lands, the worktree lifecycle, and the git side of stopping and resuming, in one repo or many"
 see_also: [handoff, fan-out-work, working-alongside, interrogate]
 ---

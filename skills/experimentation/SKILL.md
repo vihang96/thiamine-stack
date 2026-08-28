@@ -1,6 +1,6 @@
 ---
 name: experimentation
-description: "Runs a sustained improvement loop against a measured objective, generating hypotheses from clustered failures and pruning what stops paying. Use for hill climbing, for tuning prompts or a system against a score, and for any run of many attempts where a number decides."
+description: "Runs a sustained improvement loop against a number: separates the one metric being moved from the ones that must only be held, generates hypotheses from clustered failures, and prunes what stops paying. Use for hill climbing, for driving an error or failure rate down, and for any run of many attempts where a score decides."
 owns: "the sustained improvement loop: competing objectives, hypothesis generation, pruning, and convergence"
 requires: [pre-implementation]
 see_also: [fan-out-work, handoff, consistency, curator]
