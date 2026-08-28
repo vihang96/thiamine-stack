@@ -12,7 +12,7 @@ description: >
 
   <example>Context: User has working code but wants to modernize it with current language features. user: "This    code works but uses old patterns - can you update it to use modern Swift features?" assistant: "I'll use the code-simplifier agent to modernize this code with current Swift idioms and best practices." <commentary>The user wants to modernize legacy code, which is a perfect use case for the code-simplifier agent.</commentary></example>
 
-  Runs after initial implementation and before code review. Focuses on making the code cleaner without changing behavior.
+  Runs after initial implementation and before code review. Focuses on making the code cleaner without changing behavior, including cutting comments that narrate the code or repeat a reason already given.
 allowed-tools: Read, Edit, Glob, Grep, Bash
 ---
 
@@ -39,6 +39,21 @@ When analyzing code, you will:
 - Replace verbose patterns with concise, expressive alternatives
 - Apply current best practices and language conventions
 - Leverage functional programming concepts where appropriate
+
+## Cut Comments That Do Not Earn Their Place:
+
+Generated code carries more comment than a reader wants, and review waves it through because
+each comment looks helpful alone. Apply the bar in `rules/RULES.md`: comment why, never what,
+once, and in two lines.
+
+- Delete a comment saying what the next line does. If the line needed the caption, fix the name or the shape and say you did
+- Keep a reason where it is decided. Delete the copies at the call sites
+- Cut a doc comment back to the sentence the signature cannot give, plus what a caller would get wrong without it: a unit, an invariant, a failure mode
+- Delete a comment describing a mechanism the code no longer has
+- Leave the ones carrying a reason the code cannot state: why the obvious approach was rejected, an ordering that matters, a workaround and what it works around
+
+This is deletion, not rewriting. A comment you cannot delete and cannot shorten without
+losing the reason earns its place.
 
 ## Improve Structure:
 
