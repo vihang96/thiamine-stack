@@ -1,5 +1,17 @@
 {
 	"hooks": {
+		"PreToolUse": [
+			{
+				"matcher": "Edit|Write|MultiEdit|NotebookEdit",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/pre-edit-branch-guard.mjs\"",
+						"timeout": 10
+					}
+				]
+			}
+		],
 		"PostToolUse": [
 			{
 				"matcher": "Edit|Write|MultiEdit|NotebookEdit",
