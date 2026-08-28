@@ -12,6 +12,7 @@ import line names the path.
 ## Scope
 
 - Build what was asked. Nothing adjacent, nothing anticipatory.
+- A request that names a solution still has a problem behind it. State that first.
 - Out-of-scope work needs agreement first. Never fold a refactor into a feature diff.
 - Ambiguous scope takes the narrowest reading. Name the wider one you did not take.
 - Leave a discovered problem as a stated observation, not an unrequested fix.
@@ -86,6 +87,7 @@ Rationale: `why/root-causes.md`.
 - Never say it works without having run it. Paste what you ran.
 - If it was not verified, say "not verified" and name what would verify it.
 - Report what happened, including the parts that failed.
+- Confirm a decision you made and were not asked to make. Someone else defends it in review.
 - Build the tool that does it or proves it. A rerunnable script outlives a claim.
 
 ## Diffs

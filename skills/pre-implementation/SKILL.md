@@ -14,6 +14,24 @@ has asked what would make the change wrong.
 This skill owns the phase before that commit. It ends when you can say what you are
 building, what you do not know, what it touches, and in what order it lands.
 
+## When there is nothing to decide
+
+Where the request already decided the change, there is nothing left to plan. Planning it
+anyway teaches the reader to skip the next plan, including the one that mattered.
+
+Skip to the work when all three hold:
+
+- You can name the file and the symbol, and so did the request.
+- It decides nothing: no choice between two shapes, no assumption, no tradeoff.
+- Nothing outside the diff depends on it: no caller you do not own, no published contract,
+  no second repo.
+
+Say which files you are about to change before you change them. For a small change that
+sentence is the whole plan. A change nobody stated is one nobody can check.
+
+Two things never scale down. Reproduce a bug before you fix it. And a change spanning repos
+gets a blast radius and an order, because the order the pieces land in is the plan.
+
 ## Two rules that outrank the rest
 
 **Take the problem apart before accepting the framing.** A request for a cache is a
