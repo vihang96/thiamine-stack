@@ -53,8 +53,7 @@ PR", and at the end of any change that is ready for review.
    preference, theirs is the number, and `capture-preferences` owns recording it.
 
 5. Check the person, not just the code. Opening a pull request hands the change to people
-   who did not write it, and that cannot be taken back. The steps above say the code is
-   ready. They do not say the person whose name is on it can explain it or agreed to the
+   who did not write it. The person whose name is on the PR should be able to explain it or agree to the
    decisions you made. That is `post-implementation`. Run it, or say that all three of its
    skip conditions hold.
 
