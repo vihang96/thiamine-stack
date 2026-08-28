@@ -10,6 +10,8 @@ Prompts that must load this skill, and near-misses that must not.
 - we decided to pass the policy in at enqueue time instead, note that
 - this is going to take a few days, keep track as we go
 - where did I leave off
+- clean up the handoff notes, most of them are from PRs that merged
+- this record has entries from three changes ago, half of it is not true any more
 
 ## Should not fire
 
@@ -18,6 +20,8 @@ Prompts that must load this skill, and near-misses that must not.
 
 - what did I ask you to do earlier in this session. Already in context.
 - summarize this conversation. A summary is not a record of work in progress.
+- remove the worktrees whose work has landed. That is `branch-to-pr`, playbook
+  `worktree-cleanup`. Deleting the record is one of its steps.
 - pick up the branch in orders/tree/feat-retention. One known session with a worktree, so
   that is branch-to-pr.
 - remember that I prefer tabs. A durable fact about the user, so continual-learning.
