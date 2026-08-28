@@ -70,8 +70,7 @@ Rationale: `why/root-causes.md`.
 
 ## Comments and docs
 
-- Comment why, never what. If the code needs narration, fix the code.
-- Comment only where the code cannot say it itself, and keep it short.
+- Comment why, never what, and keep it short. If the code needs narration, fix the code.
 - Describe what the code does now. A deleted mechanism and a history are not documentation.
 - No README, CHANGELOG entry, or summary doc unless it was requested.
 - No decorative headers, banner comments, or emoji.
