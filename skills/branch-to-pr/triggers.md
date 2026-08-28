@@ -1,4 +1,4 @@
-# Trigger examples: multi-repo-mechanics
+# Trigger examples: branch-to-pr
 
 Prompts that must load this skill, and near-misses that must not.
 

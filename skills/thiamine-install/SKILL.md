@@ -1,6 +1,6 @@
 ---
 name: thiamine-install
-description: Installs or updates the thiamine engineering standards across coding harnesses (Claude Code, Codex, Cursor) by symlinking skills and wiring the rules file into each harness's global instructions. Use when setting up thiamine on a new machine, adding a harness, wiring thiamine into a specific repo, or when a harness is not picking up thiamine skills or rules.
+description: "Installs, updates, or removes the thiamine engineering standards across coding harnesses (Claude Code, Codex, Cursor) by symlinking skills and wiring the rules file into each harness's global instructions. Use when setting up thiamine on a new machine, adding a harness, wiring thiamine into a repo, or when a harness is not picking up thiamine skills or rules."
 ---
 
 # Install thiamine

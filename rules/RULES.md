@@ -90,6 +90,7 @@ Rationale: `why/root-causes.md`.
 
 ## Diffs
 
+- Decide where a change lands before the first edit, not at commit time.
 - One concern per commit. Refactor and behavior change do not travel together.
 - Write the commit message in the repo's convention. Check the repo before guessing.
 - Keep the subject short and imperative. Put the why in the body, and only when needed.

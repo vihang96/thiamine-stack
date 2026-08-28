@@ -1,11 +1,11 @@
 ---
-name: multi-repo-mechanics
-description: "Decides where a change lands and carries it from there to a pull request ready for approval, in one repo or several. Use before the first edit of any change that will be committed, when work touches more than one service, when creating or cleaning up worktrees, when pausing or resuming a session, when opening or stacking pull requests, when driving checks green, or when triaging review comments."
+name: branch-to-pr
+description: "Decides where a change lands and carries it from there to a pull request ready for approval, in one repo or several. Use before the first edit of any change that will be committed, when work touches more than one service, when creating or cleaning up worktrees, when pausing or resuming a session, when opening or stacking pull requests, when checks are failing or a pull request needs to go green, or when addressing or triaging review comments."
 owns: "where a change lands, the worktree lifecycle, and the git side of stopping and resuming, in one repo or many"
 see_also: [handoff, fan-out-work, working-alongside, interrogate]
 ---
 
-# Multi-repo mechanics
+# Branch to PR
 
 The first decision in any change is where it lands, and it is made before the first edit
 rather than at commit time. The answer is a branch, in a worktree per repo the change
@@ -45,8 +45,8 @@ from, and the one directory whose state is never a surprise. Work happens in wor
 ## Scope
 
 This skill owns where a change lands, the worktree lifecycle, and handing work between
-sessions. A single-repo change is in scope. The name says multi-repo because that is the
-harder case, not because one repo is somebody else's.
+sessions. Most changes touch one repo and the mechanics are the same; a change spanning
+several is the harder case, not a different skill.
 
 It does not own committing, pushing, or opening a pull request. Whatever the harness
 provides for those still applies.

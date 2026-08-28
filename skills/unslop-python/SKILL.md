@@ -1,6 +1,6 @@
 ---
 name: unslop-python
-description: "Rejects low-evidence Python: Any in signatures, bare except, mutable default arguments, commented-out code, print in shipped code, and tests that assert on mocks. Assumes uv and ruff. Use when reading or editing any .py file, when reviewing a Python diff, or when setting up a Python project."
+description: "Rejects low-evidence Python: Any in signatures, bare except, mutable default arguments, commented-out code, print in shipped code, and tests that assert on mocks. Assumes uv and ruff. Use when reading or editing any .py file, when reviewing a Python diff, or when setting up a Python project or adding a dependency."
 owns: "Python correctness and API discipline, and the uv and ruff toolchain this stack assumes"
 see_also: [unslop-prose]
 ---

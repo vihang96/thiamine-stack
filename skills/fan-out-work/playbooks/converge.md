@@ -45,13 +45,13 @@ done per lane.
 
 3. Land in the order the cut recorded, not the order the lanes finished. Where a lane
    publishes a contract another consumes, the contract lands first, whatever finished first.
-   `multi-repo-mechanics` owns the pull requests and the checks from here.
+   `branch-to-pr` owns the pull requests and the checks from here.
 
 4. Verify the integrated behaviour as its own unit, with its own brief and its own verdict.
    Every lane passing does not mean the whole works, and as a phase at the end of a
    fan-out this is the check that never happens. Give it an owner.
 
-5. Clean up. Remove the worktrees the fan-out created, per `multi-repo-mechanics`, and
+5. Clean up. Remove the worktrees the fan-out created, per `branch-to-pr`, and
    delete the fan-out's own working files. Check the audit for anything flagged dirty or
    unpushed first, because a lane that half-finished holds work in exactly one place.
 

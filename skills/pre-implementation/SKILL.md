@@ -1,8 +1,8 @@
 ---
 name: pre-implementation
-description: "Prepares work before any code is written: sorting unknowns into what to observe and what to ask, understanding the code that exists, sketching a prototype to settle a design or a domain question, choosing the metric a performance push is measured by, finding the blast radius, and sequencing the steps across repos. Use when starting a feature, a bug fix, a performance push, or a migration, when asked to mock something up, and whenever a request names a solution rather than a problem."
+description: "Prepares work before any code is written: sorting unknowns into what to observe and what to ask, understanding the code that exists, sketching a prototype to settle a design or a domain question, choosing the metric a performance push is measured by, finding the blast radius of what breaks if you change it, and sequencing the steps across repos. Use when starting a feature, a bug fix, a performance push, or a migration, for plan this out or mock something up, and whenever a request names a solution rather than a problem."
 owns: "the phase before the first commit: what to build, what is unknown, and in what order"
-see_also: [multi-repo-mechanics, fan-out-work, working-alongside, experimentation]
+see_also: [branch-to-pr, fan-out-work, working-alongside, experimentation]
 ---
 
 # Pre-implementation
@@ -29,7 +29,7 @@ acceptable, what the deadline is.
 
 ## Scope
 
-This skill owns deciding what to build and in what order. `multi-repo-mechanics` takes it
+This skill owns deciding what to build and in what order. `branch-to-pr` takes it
 from there, starting at worktree setup and running through to the pull request. The language
 standards own the code itself.
 

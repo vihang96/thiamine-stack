@@ -19,11 +19,11 @@ Prompts that must load this skill, and near-misses that must not.
 - what did I ask you to do earlier in this session. Already in context.
 - summarize this conversation. A summary is not a record of work in progress.
 - pick up the branch in orders/tree/feat-retention. One known session with a worktree, so
-  that is multi-repo-mechanics.
+  that is branch-to-pr.
 - remember that I prefer tabs. A durable fact about the user, so continual-learning.
 - what does this function do. That is investigation, in pre-implementation.
 
-## Fires alongside multi-repo-mechanics
+## Fires alongside branch-to-pr
 
 Stopping and resuming touch both. This skill owns what the record says. That one owns the
 commits in each worktree and checking whether the base moved while you were gone.
