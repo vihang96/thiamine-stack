@@ -1,6 +1,6 @@
 ---
 name: interrogate
-description: "Reviews an artifact somebody else produced, a human or an agent, and returns feedback precise enough to act on: a plan, a design, a diff, a pull request, or an agent's report. Decides what earns a finding, ranks what is left, stops before the nits, and says plainly when there is nothing to report. Use when reviewing a PR or a diff, when asked to critique or stress test a plan, when checking whether an agent's work is what it claims, and for review this, tear this apart, or find the blind spots."
+description: "Reviews an artifact somebody else produced, human or agent: a plan, a design, a diff, a pull request, or an agent's report. Use when reviewing a PR or a diff, when critiquing or stress testing a plan, when checking whether an agent's work is what it claims, and for review this or find the blind spots."
 owns: "judging an artifact someone else produced, and the feedback that goes back to them"
 see_also: [fan-out-work, land-a-change, post-implementation, pre-implementation, unslop-prose, adversarial-reviewer]
 ---

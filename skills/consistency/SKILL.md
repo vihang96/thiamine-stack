@@ -1,6 +1,6 @@
 ---
 name: consistency
-description: "Finds the answer a codebase already has for a concern before adding another one, and records the decision when there is none. Use when introducing a pattern, choosing a library or a store, starting a new service, styling a new surface, or when a codebase has grown several answers to one question."
+description: "Finds the answer a codebase already has for a concern before adding another one, and records the decision when there is none. Use when introducing a pattern, choosing a library or a store, or when a codebase has grown several answers to one question."
 owns: "how many answers a concern is allowed, and where that decision is written down"
 see_also: [pre-implementation, land-a-change, working-alongside, fan-out-work]
 ---

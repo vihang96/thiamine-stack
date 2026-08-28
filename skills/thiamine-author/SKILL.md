@@ -1,6 +1,6 @@
 ---
 name: thiamine-author
-description: Authors or revises a thiamine skill, agent, command, or rule from the repo templates, picking the right artifact type and shape and validating it before finishing. Use when adding to or changing the thiamine stack, when asked to "add a skill, rule, or command" for engineering standards, when a recurring correction should become a permanent standard, or when an audit or a session has produced an edit to land.
+description: "Authors or revises a thiamine skill, agent, command, or rule from the repo templates, picking the right artifact type and validating it before finishing. Use when adding to or changing the thiamine stack, when a recurring correction should become a permanent standard, or when an audit or a session has produced an edit to land."
 requires: [thiamine-install]
 see_also: [maintain-skills]
 ---

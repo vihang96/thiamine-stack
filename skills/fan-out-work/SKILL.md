@@ -1,6 +1,6 @@
 ---
 name: fan-out-work
-description: "Runs several subagents in parallel from one session and converges what they return into one coherent change. Use when work splits into units that can run at once, when spawning subagents to investigate or write code in parallel, when a change spans several repos that can be worked simultaneously, and when parallel results need checking for duplication and contradiction before they land."
+description: "Runs several subagents in parallel from one session and converges what they return into one coherent change. Use when spawning subagents to investigate or write code at the same time, when a change spans repos that can be worked simultaneously, and when parallel results need checking before they land."
 owns: "parallelism inside one session: the cut, the brief, the drain, and converging the results"
 see_also: [working-alongside, land-a-change, pre-implementation, consistency, coherence-reviewer, interrogate]
 ---
