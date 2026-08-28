@@ -40,7 +40,7 @@ preferences, which is what the observation step below exists to stop.
      findings, and the language standards own the code-level half of this.
    - **Order across repos.** Where the change spans repos, the repo publishing a contract
      lands first and the consumer names its number. A plan that lists the work without the
-     order has not been sequenced, and `land-a-change` owns the mechanics.
+     order has not been sequenced, and `branch-to-pr` owns the mechanics.
    - **Work nobody asked for.** A refactor riding along, a config knob with no caller.
 
 4. Ask for the observation rather than winning the argument. Where a step rests on how the

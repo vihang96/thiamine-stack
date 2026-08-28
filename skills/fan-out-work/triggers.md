@@ -18,7 +18,7 @@ Prompts that must load this skill, and near-misses that must not.
 - someone else is already working in this repo, is it safe for me to start. That is
   `working-alongside`, which owns work the session did not spawn.
 - create the worktrees for this change. The worktree lifecycle is
-  `land-a-change`.
+  `branch-to-pr`.
 - plan this change into steps. Sequencing is `pre-implementation`, and it routes here only
   if the steps turn out to be independent.
 - review this diff for bugs. The language standards own code review, whoever wrote it.

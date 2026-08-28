@@ -3,7 +3,7 @@
  * PreToolUse hook. Stops the first edit that would land on a repo's default branch.
  *
  * Skill invocation is discretionary: the agent reads a name and a one-line description,
- * mid-list among every other skill the harness loaded, and decides. `land-a-change` says
+ * mid-list among every other skill the harness loaded, and decides. `branch-to-pr` says
  * to use it "before the first edit of any change that will be committed", which is the
  * hardest trigger point there is. At that moment the prompt is about the task, not about
  * where the task lands, so nothing in the wording suggests the skill.
@@ -120,7 +120,7 @@ try {
 				permissionDecision: 'deny',
 				permissionDecisionReason:
 					`This edit would land on ${branch}, the default branch of ${repo}. Decide where the ` +
-					`change goes before editing: load the thiamine:land-a-change skill, which puts it on a ` +
+					`change goes before editing: load the thiamine:branch-to-pr skill, which puts it on a ` +
 					`branch in a worktree. If main is genuinely right for this edit, say why and make it ` +
 					`again. This fires once per repo per session and will not stop the retry.`,
 			},

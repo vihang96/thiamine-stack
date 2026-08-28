@@ -13,14 +13,14 @@ Prompts that must load this skill, and near-misses that must not.
 
 ## Should not fire
 
-- is this ready to merge. That is the shippable playbook in land-a-change.
+- is this ready to merge. That is the shippable playbook in branch-to-pr.
 - how does the guide approval flow work. Understanding code you did not just write is
   investigation, in pre-implementation.
-- get this PR green. Checks, so land-a-change.
+- get this PR green. Checks, so branch-to-pr.
 - write the API reference for this module. Authoring a document, so technical-writing.
 - remember that the team prefers short messages. A durable fact, so continual-learning.
 
-## Fires alongside land-a-change
+## Fires alongside branch-to-pr
 
 Both run at the end. This one asks whether the person understands and agrees. That one asks
 whether the code is ready. Both have to be yes, and green checks on a change nobody can

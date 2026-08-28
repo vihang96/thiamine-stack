@@ -9,7 +9,7 @@
 # about that costs somebody their work.
 #
 # For what is on disk rather than what was announced, use the audit script in
-# land-a-change. This answers who is on it; that one answers what exists.
+# branch-to-pr. This answers who is on it; that one answers what exists.
 set -eu
 
 root="${1:-$PWD}"

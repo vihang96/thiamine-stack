@@ -2,7 +2,7 @@
 name: interrogate
 description: "Reviews an artifact somebody else produced, human or agent: a plan, a design, a diff, a pull request, or an agent's report. Use when reviewing a PR or a diff before merging, when asked to tear a plan apart or stress test a design, and when checking whether an agent's work is what it claims."
 owns: "judging an artifact someone else produced, and the feedback that goes back to them"
-see_also: [fan-out-work, land-a-change, post-implementation, pre-implementation, unslop-prose, adversarial-reviewer]
+see_also: [fan-out-work, branch-to-pr, post-implementation, pre-implementation, unslop-prose, adversarial-reviewer]
 ---
 
 # Interrogate
@@ -70,7 +70,7 @@ cannot trace inside the file in front of you, stop and take the long path.
 This skill owns the outbound direction: judging somebody else's artifact and returning
 feedback on it.
 
-- `land-a-change` owns the inbound direction, in its `triage-review-comments`
+- `branch-to-pr` owns the inbound direction, in its `triage-review-comments`
   playbook. Comments arriving on your own change are classified there, not here.
 - `post-implementation` owns whether the person who owns a change can explain and defend
   it. That is a different question from whether the change is any good.

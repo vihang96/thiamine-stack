@@ -18,7 +18,7 @@ Prompts that must load this skill, and near-misses that must not.
 - this helper is copy-pasted in four files. That is duplication, and rules/RULES.md Reuse
   owns it.
 - rename this variable for clarity. Nothing about a pattern.
-- get this PR green. That is land-a-change.
+- get this PR green. That is branch-to-pr.
 - what does this function do. That is investigation, in pre-implementation.
 - make this query faster. Performance, unless it turns out the answer is a different store.
 

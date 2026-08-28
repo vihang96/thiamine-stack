@@ -1,11 +1,11 @@
 ---
-name: land-a-change
+name: branch-to-pr
 description: "Carries a change from no branch yet to a pull request ready for approval. Use before the first edit of any change that will be committed, when addressing review comments or getting a pull request green, and when creating, resuming, or cleaning up worktrees. One repo or several, stacked or single."
 owns: "where a change lands, the worktree lifecycle, and the git side of stopping and resuming, in one repo or many"
 see_also: [handoff, fan-out-work, working-alongside, interrogate]
 ---
 
-# Land a change
+# Branch to PR
 
 The first decision in any change is where it lands, and it is made before the first edit
 rather than at commit time. The answer is a branch, in a worktree per repo the change

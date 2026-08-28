@@ -2,7 +2,7 @@
 name: working-alongside
 description: "Decides whether work about to start will clash with work another session or another person already has in flight, then starts it, starts it expecting merge conflicts, or arms it to begin when the other work lands. Use when another session is already running on the repo, when asking whether it is safe to start now, and when a change has to wait for another one to land first."
 owns: "starting work while other sessions already have work in flight: the announcement, the overlap judgement, and waiting on a predicate"
-see_also: [fan-out-work, land-a-change, handoff, consistency, pre-implementation]
+see_also: [fan-out-work, branch-to-pr, handoff, consistency, pre-implementation]
 ---
 
 # Working alongside
@@ -23,7 +23,7 @@ another machine, another person.
 `fan-out-work` owns the opposite case, where one agent spawned the parallel work itself and
 therefore knows the cut. If you decided the split, that skill applies and this one does not.
 
-`land-a-change` owns worktrees, branches, and the pull request. It already refuses a
+`branch-to-pr` owns worktrees, branches, and the pull request. It already refuses a
 second worktree on one branch, which is the one place a hard stop is correct, and its
 `audit.sh` reports what exists on disk. This skill adds who is on it and whether starting is
 safe.
@@ -74,7 +74,7 @@ session sweeps up the other's edits, and the announcement that both sessions dut
 wrote does not change that.
 
 Where you find yourself in a shared tree, either move to a worktree per unit, per
-`land-a-change`, or hold to path-scoped commits on both sides and never stage by
+`branch-to-pr`, or hold to path-scoped commits on both sides and never stage by
 wildcard. Say which of the two you are relying on, because a careful session that announced
 and then read this skill will otherwise believe it is covered.
 
@@ -97,7 +97,7 @@ where waiting beats starting.
 
 ## Procedure
 
-1. **Look before starting.** Run `scripts/lanes.sh`, and `land-a-change`'s
+1. **Look before starting.** Run `scripts/lanes.sh`, and `branch-to-pr`'s
    `audit.sh` for what is on disk. Fetch, so pushed branches from other machines are
    visible.
 

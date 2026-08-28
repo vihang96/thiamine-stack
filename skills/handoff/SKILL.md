@@ -2,7 +2,7 @@
 name: handoff
 description: "Keeps a durable record of work in progress so a new session can continue it, and reconstructs it from transcripts and live state when none was kept. Use before clearing or compacting context, when work will span sessions or days, when recording a decision mid-build, and for catch me up or where did I leave off."
 owns: "the record of work in progress, and reconstructing it when none was kept"
-see_also: [land-a-change, continual-learning, reflect, working-alongside, experimentation]
+see_also: [branch-to-pr, continual-learning, reflect, working-alongside, experimentation]
 ---
 
 # Handoff
@@ -40,7 +40,7 @@ file. Skipping one you needed loses the reasoning, and the repository cannot giv
 
 This skill owns the record of work in progress and how to rebuild it when it is missing.
 
-`land-a-change` owns the git side of stopping and resuming, which is committing work
+`branch-to-pr` owns the git side of stopping and resuming, which is committing work
 in each worktree and checking what moved underneath you. Its `pause-safely` and
 `session-pickup` playbooks do that and use the record defined here.
 
@@ -98,7 +98,7 @@ one already settled.
 | Mid-build, something was decided or the plan changed | `playbooks/build-log.md` |
 | Resuming with no record, or one that stopped being true | `playbooks/recall.md` |
 
-Stopping cleanly and picking back up are `land-a-change`, which handles the commits
+Stopping cleanly and picking back up are `branch-to-pr`, which handles the commits
 and the drift.
 
 ## Do not

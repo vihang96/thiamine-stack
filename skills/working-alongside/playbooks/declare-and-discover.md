@@ -12,7 +12,7 @@ anything.** For starting a unit of work in a workspace where other sessions may 
    git -C <repo> branch -r --sort=-committerdate | head
    ```
 
-   Add the audit from `land-a-change` for what exists on disk. A worktree with no
+   Add the audit from `branch-to-pr` for what exists on disk. A worktree with no
    board entry is normal and means somebody worked without announcing, which is the case
    the fetch and the audit exist to cover.
 

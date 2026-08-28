@@ -16,9 +16,9 @@ Prompts that must load this skill, and near-misses that must not.
 
 - spawn three agents to do these pieces in parallel. That is `fan-out-work`, which owns
   work this session decided to split.
-- which worktrees have uncommitted work. The audit belongs to `land-a-change`.
+- which worktrees have uncommitted work. The audit belongs to `branch-to-pr`.
 - what was I working on before the weekend. Resuming your own work is `handoff`.
 - there are two ways of returning errors in here now. That is `consistency`, whatever
   caused the fork.
 - resolve these merge conflicts. Ordinary git work, whoever created the conflict.
-- get this PR green. Checks belong to `land-a-change`.
+- get this PR green. Checks belong to `branch-to-pr`.

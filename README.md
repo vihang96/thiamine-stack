@@ -52,7 +52,7 @@ skill only loads when the agent recognises the situation, so the session most li
 collide with someone is the one that never loaded the skill. At session start a hook reads
 the workspace board and puts what is in flight into context, whether or not the skill fires.
 
-Where a change lands is the same problem. `land-a-change` asks to be used before the first
+Where a change lands is the same problem. `branch-to-pr` asks to be used before the first
 edit, which is the moment a prompt says least about it: the request is about the task, not
 about the branch. So a hook tests the condition rather than the wording. An edit arriving
 while HEAD is the default branch is denied once per repo per session, naming the skill. The
@@ -105,7 +105,7 @@ thiamine agent do the same job, keep one, and if you keep yours, say in the inst
 
 | Skill | Why |
 | --- | --- |
-| `land-a-change` | Where a change lands, in one repo or several. Worktrees, pull requests, checks, and review comments, through to ready for approval. |
+| `branch-to-pr` | Where a change lands, in one repo or several. Worktrees, pull requests, checks, and review comments, through to ready for approval. |
 | `fan-out-work` | One agent, several subagents, one result. The cut, the brief, and making the pieces add up. |
 | `working-alongside` | Another session is already in the repo. Whether to start, start and expect conflicts, or wait. |
 | `handoff` | Context does not survive a session ending. Keeps the record that does. |
