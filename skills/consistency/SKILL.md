@@ -1,6 +1,6 @@
 ---
 name: consistency
-description: "Finds the answer a codebase already has for a concern before adding another one, and writes the ADR when there is none. Use when introducing a pattern, choosing a library or a database, asking how other services here already do it, or when a repo has grown several answers to one question."
+description: "Finds the answer a codebase already has for a concern before adding another one, and records the decision in an ADR when there is none. Use when introducing a pattern, choosing a library, a database, or a store, starting a new service, styling a new surface, asking how other services here already do it, or when a codebase has grown several answers to one question."
 owns: "how many answers a concern is allowed, and where that decision is written down"
 see_also: [pre-implementation, branch-to-pr, working-alongside, fan-out-work]
 ---

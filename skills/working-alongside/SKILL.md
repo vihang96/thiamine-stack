@@ -1,6 +1,6 @@
 ---
 name: working-alongside
-description: "Decides whether work about to start will clash with work another session or another person already has in flight, then starts it, starts it expecting merge conflicts, or arms it to begin when the other work lands. Use when another session is already running on the repo, when asking whether it is safe to start now, and when a change has to wait for another one to land first."
+description: "Decides whether work about to start will clash or interfere with work another session or another person already has in flight, then starts it, starts it expecting merge conflicts, or arms it to begin when the other work lands. Use when another session is already running on the repo, when opening a second session, when asking whether it is safe to start work someone else may already be in, and when a change has to wait for another one to land first."
 owns: "starting work while other sessions already have work in flight: the announcement, the overlap judgement, and waiting on a predicate"
 see_also: [fan-out-work, branch-to-pr, handoff, consistency, pre-implementation]
 ---
