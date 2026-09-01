@@ -50,10 +50,15 @@ once, and in two lines.
 - Keep a reason where it is decided. Delete the copies at the call sites
 - Cut a doc comment back to the sentence the signature cannot give, plus what a caller would get wrong without it: a unit, an invariant, a failure mode
 - Delete a comment describing a mechanism the code no longer has
-- Leave the ones carrying a reason the code cannot state: why the obvious approach was rejected, an ordering that matters, a workaround and what it works around
+- Leave the ones carrying a reason the code cannot state, and name which reason it is:
+  `rejected-alternative`, `ordering`, `workaround`, `unit-or-invariant`, `failure-mode`
 
 This is deletion, not rewriting. A comment you cannot delete and cannot shorten without
 losing the reason earns its place.
+
+The default is deletion, and keeping costs a row in the ledger below under one of those five
+categories. A comment you cannot file under one of them is one you kept because it was
+written, not because a reader needs it.
 
 ## Improve Structure:
 
@@ -93,9 +98,21 @@ WAS       what made it complex, in a clause
 NOW       the technique applied
 ```
 
+Then the comment ledger, one line of counts over every comment the diff added or touched,
+and one row per comment you kept. Cut comments get no row:
+
+```
+COMMENTS  added n, kept n, cut n
+KEPT      path:line   category   the reason, in a clause
+```
+
+Ledger rows do not count against the 200 words. A pass reporting no comments over a diff
+that added some has not looked at them.
+
 Then three lines: `CLEAN` or `SIMPLIFIED: n`; what the quality checks said when you re-ran
 them, or that you could not run them and why; and anything you deliberately left alone,
 with the reason.
 
-If the code is already simple, say so in one sentence and stop. A clean result is a real
-result, and padding it with stylistic preferences turns a simplification pass into churn.
+If the code is already simple, say so in one sentence, give the ledger, and stop. A clean
+result is a real result, and padding it with stylistic preferences turns a simplification
+pass into churn.
