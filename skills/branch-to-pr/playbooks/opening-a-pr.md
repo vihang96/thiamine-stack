@@ -21,7 +21,10 @@ PR", and at the end of any change that is ready for review.
    Check whether the repo squash-merges before assuming the title matters more than the
    commits. Where it merges commits as they are, the individual messages are what ship.
 
-4. Write the description in these sections, dropping any that would be empty:
+4. Draft the description as one bullet per section, dropping any that would be empty.
+   Then expand only the bullets a reviewer could not act on as written. Writing it long
+   and cutting it back does not work, because by the second read you have a reason for
+   every sentence you wrote.
 
    - `## Why` the intent, and why this approach rather than another
    - `## Scope` facts from the diff, naming real symbols and paths, and both sides of a
@@ -32,37 +35,44 @@ PR", and at the end of any change that is ready for review.
 
    Never `## Summary` or `## Test plan` boilerplate. Apply the `unslop-prose` and
    `technical-writing` skills to the title and body, because both are prose a person reads
-   under time pressure. Apply them by running them, not by having read them. Knowing the
-   rules and having applied them feel identical from the inside, and only one of them
-   changes the text.
+   under time pressure. They own word choice, punctuation, and structure. Apply them by
+   running them, not by having read them. Knowing the rules and having applied them feel
+   identical from the inside, and only one of them changes the text.
 
-   Keep it short enough to be read in full before the diff is opened. A description a
-   reviewer skims is worse than a shorter one, because the parts they skip are the parts you
-   most wanted read. A couple of sentences a section is usually right, and a section that
-   needs a paragraph is often a change that needs splitting.
+5. Cut it to length, as the last edit before you open. This is its own pass. Neither writing
+   skill shortens, and `technical-writing` adds words where a sentence needs an article or a
+   named actor, so the length is only true once they have run.
 
-   The description is for reviewing, not for justifying. That is the distinction that
-   controls the length. Cut whatever argues that the work was good: the bugs you found on the
-   way, the alternatives you weighed, the tests you are pleased with. Those belong in the
-   commits or nowhere. What earns a place is what changed, what is risky, and what you ran.
+   The bar is what a reviewer reads in full before opening the diff. A couple of sentences a
+   section is usually right, and a section that needs a paragraph is often a change that needs
+   splitting. A description a reviewer skims is worse than a shorter one, because the parts
+   they skip are the parts you most wanted read.
+
+   The description is for reviewing, not for justifying. That is what controls the length. Cut
+   whatever argues that the work was good: the bugs you found on the way, the alternatives you
+   weighed, the tests you are pleased with. Those belong in the commits or nowhere. What earns
+   a place is what changed, what is risky, and what you ran.
 
    The test is whether a reviewer could say, after reading it, what to look at hardest. When
    they could not, the problem is which facts you chose rather than how many.
 
-   This names a bar, not a number. Where the person you are working for has a length
-   preference, theirs is the number, and `capture-preferences` owns recording it.
+   The number is 250 words of prose, not counting fenced code. A PostToolUse hook counts the
+   body after `gh pr create` and reports the count when it is over, so a description that got
+   past you costs a `gh pr edit` rather than a reviewer's afternoon. Where the person you are
+   working for prefers a different number, theirs wins, `capture-preferences` owns recording
+   it, and `THIAMINE_PR_BODY_MAX_WORDS` carries it to the hook.
 
-5. Check the person, not just the code. Opening a pull request hands the change to people
+6. Check the person, not just the code. Opening a pull request hands the change to people
    who did not write it. The person whose name is on the PR should be able to explain it or agree to the
    decisions you made. That is `post-implementation`. Run it, or say that all three of its
    skip conditions hold.
 
-6. Open ready, not draft. Several tools default to draft, including `gh stack submit`
+7. Open ready, not draft. Several tools default to draft, including `gh stack submit`
    unless you pass `--open`. Check with `gh pr view` after creating rather than assuming,
    and run the host's ready command if one opened as a draft. A draft requests review from
    nobody, so it sits until someone notices.
 
-7. Do not start watching checks yet. Post the URLs and finish the other repos first.
+8. Do not start watching checks yet. Post the URLs and finish the other repos first.
    Driving one PR to green while another is unopened spends checks on a state that is
    about to change.
 
