@@ -25,6 +25,7 @@
 import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
+import { positiveInt } from './nudge-state.mjs'
 
 /** Milliseconds any one detector may spend. A session start that waits is worse than a quiet one. */
 const DETECT_TIMEOUT = 2500
@@ -185,13 +186,20 @@ export const SIGNALS = [
 
 const envKey = (name) => `THIAMINE_SIGNAL_${name.replaceAll('-', '_').toUpperCase()}`
 
-export function firstSignal(ctx, fired = {}) {
+/**
+ * The first signal that fires, or null. Skips anything switched off, needing a tool this
+ * machine lacks, or still inside its cooldown. `signals` is a seam for the tests, which need
+ * a condition whose tool is genuinely absent.
+ */
+export function firstSignal(ctx, fired = {}, signals = SIGNALS) {
 	if (process.env.THIAMINE_SIGNALS === '0') return null
 
-	const cooldown =
-		Number(process.env.THIAMINE_SIGNAL_COOLDOWN_HOURS || DEFAULT_COOLDOWN_HOURS) * 3_600_000
+	// A mistyped override falls back to the default rather than to NaN, which compares false
+	// against every elapsed time and turns the cooldown off without saying so.
+	const hours = positiveInt(process.env.THIAMINE_SIGNAL_COOLDOWN_HOURS, DEFAULT_COOLDOWN_HOURS)
+	const cooldown = hours * 3_600_000
 
-	for (const signal of SIGNALS) {
+	for (const signal of signals) {
 		if (process.env[envKey(signal.name)] === '0') continue
 		if ((signal.needs ?? []).some((tool) => !hasTool(tool))) continue
 

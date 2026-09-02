@@ -15,7 +15,7 @@ import path from 'node:path'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { bashWrites } from './bash-target.mjs'
-import { firstSignal, SIGNALS } from './signals.mjs'
+import { firstSignal, hasTool, SIGNALS } from './signals.mjs'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const tmp = (prefix) => fs.mkdtempSync(path.join(os.tmpdir(), prefix))
@@ -333,6 +333,27 @@ test('a signal needing a tool the machine lacks is absent, not broken', () => {
 		}
 	} finally {
 		process.env.PATH = saved
+	}
+})
+
+test('needs gates a signal before its detector runs', () => {
+	const fake = (needs) => [{ name: 'fake', invoke: '/x', needs, detect: () => ({ key: 'k', says: 'fired' }) }]
+
+	assert.equal(hasTool('thiamine-no-such-binary'), false)
+	assert.equal(firstSignal({ cwd: '.' }, {}, fake(['thiamine-no-such-binary'])), null)
+	assert.equal(firstSignal({ cwd: '.' }, {}, fake(['git']))?.says, 'fired')
+})
+
+test('a mistyped cooldown override falls back instead of silently switching the cooldown off', () => {
+	const dir = repo()
+	fs.writeFileSync(path.join(dir, 'f.txt'), 'changed\n')
+	git(dir, 'checkout', '-q', '-b', 'feat/typo')
+	const fired = { 'unlanded-work': { key: 'feat/typo:none', firedAtMs: Date.now() } }
+	try {
+		process.env.THIAMINE_SIGNAL_COOLDOWN_HOURS = 'twenty'
+		assert.equal(firstSignal({ cwd: dir }, fired), null, 'still inside the default cooldown')
+	} finally {
+		delete process.env.THIAMINE_SIGNAL_COOLDOWN_HOURS
 	}
 })
 
