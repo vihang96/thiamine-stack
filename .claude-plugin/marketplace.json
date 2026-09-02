@@ -27,14 +27,7 @@
 				"scope-control"
 			],
 			"category": "development",
-			"tags": [
-				"anti-slop",
-				"engineering-standards",
-				"skills",
-				"hooks",
-				"linting",
-				"code-review"
-			]
+			"tags": ["anti-slop", "engineering-standards", "skills", "hooks", "linting", "code-review"]
 		}
 	]
 }
