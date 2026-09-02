@@ -7,13 +7,18 @@
  * rather than denies, so the correction is a `gh pr edit` seconds after the PR opens.
  *
  * Fenced code blocks do not count. A pasted test run under ## Verification is evidence.
+ *
+ * It matches the invocation only in the command, never in a heredoc body. Prose that mentions
+ * `gh pr edit` is prose, and counting the file it was written into reports a word count for a
+ * pull request nobody touched.
  */
 import fs from 'node:fs'
 import path from 'node:path'
 import { positiveInt } from './nudge-state.mjs'
 
 const DEFAULT_MAX_WORDS = 250
-const GH_PR_WRITE = /\bgh\s+pr\s+(?:create|edit)\b/
+/** `gh pr create|edit`, and the REST path a token without `read:org` scope has to use. */
+const GH_PR_WRITE = /\bgh\s+pr\s+(?:create|edit)\b|\bgh\s+api\b[\s\S]*?\bpulls\/\d+\b/
 
 /** The heredoc form an agent reaches for on a multi-line body: --body "$(cat <<'EOF' ... EOF)". */
 function fromHeredoc(cmd) {
@@ -51,7 +56,9 @@ try {
 	if (event.tool_name !== 'Bash') process.exit(0)
 
 	const cmd = event.tool_input?.command ?? ''
-	if (!GH_PR_WRITE.test(cmd)) process.exit(0)
+	const bodyStart = cmd.search(/<<-?\s*['"]?[A-Za-z_]/)
+	const invocation = bodyStart === -1 ? cmd : cmd.slice(0, bodyStart)
+	if (!GH_PR_WRITE.test(invocation)) process.exit(0)
 
 	const body =
 		fromHeredoc(cmd) ?? fromBodyFile(cmd, event.cwd || process.cwd()) ?? fromBodyFlag(cmd)
