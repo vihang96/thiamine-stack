@@ -69,7 +69,8 @@ const currentPr = (cwd, fields) => {
 }
 
 /** The `Where:` line of a handoff record names the branch its work lives on. */
-const branchOf = (record) => record.match(/^Where:.*?\b((?:feat|fix|chore|docs|refactor)\/[\w./-]+)/m)?.[1]
+const branchOf = (record) =>
+	record.match(/^Where:.*?\b((?:feat|fix|chore|docs|refactor)\/[\w./-]+)/m)?.[1]
 
 export const SIGNALS = [
 	{
@@ -81,7 +82,13 @@ export const SIGNALS = [
 			const changed = git(cwd, 'status', '--porcelain', '--untracked-files=no')
 			if (!changed) return null
 
-			const upstream = git(cwd, 'rev-parse', '--abbrev-ref', '--symbolic-full-name', `${branch}@{upstream}`)
+			const upstream = git(
+				cwd,
+				'rev-parse',
+				'--abbrev-ref',
+				'--symbolic-full-name',
+				`${branch}@{upstream}`,
+			)
 			const configured = git(cwd, 'config', '--get', `branch.${branch}.remote`)
 			const head = git(cwd, 'symbolic-ref', '--short', 'refs/remotes/origin/HEAD')
 
@@ -89,7 +96,8 @@ export const SIGNALS = [
 			// `git worktree add -b` points a new branch at origin/HEAD, so it reads as tracked
 			// while `git push` would target the default branch.
 			let why = null
-			if (!upstream && configured) why = ['gone', 'whose upstream is gone, so its pull request has already merged']
+			if (!upstream && configured)
+				why = ['gone', 'whose upstream is gone, so its pull request has already merged']
 			else if (!upstream) why = ['none', 'which has no upstream']
 			else if (head && upstream === head && branch !== head.replace(/^origin\//, ''))
 				why = ['default', `which tracks ${upstream} rather than a branch of its own`]

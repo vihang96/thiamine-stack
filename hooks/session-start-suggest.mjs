@@ -18,7 +18,15 @@
  * mid-session on purpose: a hook that talks during a task is why people stop reading hooks,
  * and that decision outranks the extra timeliness speaking there would buy.
  */
-import { blankState, PASSES, positiveInt, readState, readStdin, stateFile, writeState } from './nudge-state.mjs'
+import {
+	blankState,
+	PASSES,
+	positiveInt,
+	readState,
+	readStdin,
+	stateFile,
+	writeState,
+} from './nudge-state.mjs'
 import { firstSignal } from './signals.mjs'
 
 const envKey = (name, suffix) => `THIAMINE_${name.replaceAll('-', '_').toUpperCase()}_${suffix}`

@@ -299,7 +299,10 @@ test('stale-handoff fires on a record naming a branch that is gone', () => {
 		path.join(dir, '.handoff-feat-retention.md'),
 		'# work\n\nWhere: repo/tree/feat-retention, branch feat/retention at abc1234.\n',
 	)
-	assert.match(signal('stale-handoff').detect({ cwd: dir }).says, /feat\/retention, which no longer exists/)
+	assert.match(
+		signal('stale-handoff').detect({ cwd: dir }).says,
+		/feat\/retention, which no longer exists/,
+	)
 
 	git(dir, 'checkout', '-q', '-b', 'feat/retention')
 	assert.equal(signal('stale-handoff').detect({ cwd: dir }), null, 'the branch is back')
@@ -311,7 +314,10 @@ test('triage-due fires when a watermark is past its cadence, and never on an unc
 
 	const triage = path.join(dir, '.thiamine', 'triage')
 	fs.mkdirSync(triage, { recursive: true })
-	fs.writeFileSync(path.join(triage, 'sources.tsv'), 'name\tkind\tlocator\tinterval\nsentry\terror-tracker\torg/api\tdaily\n')
+	fs.writeFileSync(
+		path.join(triage, 'sources.tsv'),
+		'name\tkind\tlocator\tinterval\nsentry\terror-tracker\torg/api\tdaily\n',
+	)
 	assert.match(signal('triage-due').detect({ cwd: dir }).says, /never been swept/)
 
 	const mark = path.join(triage, 'sentry.watermark')
@@ -337,7 +343,9 @@ test('a signal needing a tool the machine lacks is absent, not broken', () => {
 })
 
 test('needs gates a signal before its detector runs', () => {
-	const fake = (needs) => [{ name: 'fake', invoke: '/x', needs, detect: () => ({ key: 'k', says: 'fired' }) }]
+	const fake = (needs) => [
+		{ name: 'fake', invoke: '/x', needs, detect: () => ({ key: 'k', says: 'fired' }) },
+	]
 
 	assert.equal(hasTool('thiamine-no-such-binary'), false)
 	assert.equal(firstSignal({ cwd: '.' }, {}, fake(['thiamine-no-such-binary'])), null)
