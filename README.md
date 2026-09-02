@@ -52,6 +52,11 @@ skill only loads when the agent recognises the situation, so the session most li
 collide with someone is the one that never loaded the skill. At session start a hook reads
 the workspace board and puts what is in flight into context, whether or not the skill fires.
 
+The same hook routes from other conditions it can observe, one entry per condition in
+`hooks/signals.mjs`: work sitting on a branch with nowhere to land, a handoff record whose
+branch is gone, a triage sweep past its cadence. It says at most one line per session, and a
+condition that needs a tool the machine does not have is simply absent.
+
 ## Alongside skills and agents you already have
 
 Nothing shadows your own. Plugin skills and agents are namespaced, so thiamine's are

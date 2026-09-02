@@ -6,6 +6,9 @@
  *
  * The state lives under the harness's own project directory rather than in the user's
  * repo, because it is bookkeeping about sessions rather than a deliverable.
+ *
+ * It also records which state signals have already spoken, and for which condition, so an
+ * ignored nudge does not become a nag. `signals.mjs` owns what those conditions are.
  */
 import fs from 'node:fs'
 import os from 'node:os'
@@ -49,15 +52,22 @@ export function stateFile(projectDir) {
 export function blankState() {
 	const passes = {}
 	for (const p of PASSES) passes[p.name] = { turns: 0, lastRunAtMs: 0 }
-	return { version: 2, transcriptMtimeMs: null, passes }
+	return { version: 3, transcriptMtimeMs: null, passes, signals: {} }
 }
 
 export function readState(file) {
 	try {
 		const parsed = JSON.parse(fs.readFileSync(file, 'utf8'))
-		if (parsed.version !== 2) return null
+		// Version 2 held no signals. Migrating beats discarding: throwing the file away resets
+		// the turn counters, and the next session start suggests a pass that just ran.
+		if (parsed.version === 2) {
+			parsed.version = 3
+			parsed.signals = {}
+		}
+		if (parsed.version !== 3) return null
 		// A pass added after this file was written starts from zero rather than crashing.
 		for (const p of PASSES) parsed.passes[p.name] ??= { turns: 0, lastRunAtMs: 0 }
+		parsed.signals ??= {}
 		return parsed
 	} catch {
 		return null
