@@ -3,9 +3,9 @@
  *
  *   node --test hooks/
  *
- * The Bash cases are the ones worth having. A guard matched on the Edit tools alone reads as
- * working right up until a session writes with `cat >`, and nothing here failed before,
- * because nothing here was tested.
+ * The Bash cases are the ones worth having. A guard that matches only the Edit tools reads as
+ * working right up to the moment a session writes with `cat >`. Nothing caught that, because
+ * nothing tested it.
  */
 import assert from 'node:assert/strict'
 import { execFileSync, spawnSync } from 'node:child_process'
@@ -147,7 +147,7 @@ test('branch guard denies once per repo per session', () => {
 		__home: home,
 	}
 	assert.equal(decisionOf(runHook('pre-edit-branch-guard.mjs', event)), 'deny')
-	assert.equal(runHook('pre-edit-branch-guard.mjs', event), '', 'the retry is the agent’s call')
+	assert.equal(runHook('pre-edit-branch-guard.mjs', event), '', "the retry is the agent's call")
 })
 
 /** A stand-in thiamine checkout: the two markers findRoot looks for, and a validator that fails. */

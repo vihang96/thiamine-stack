@@ -3,7 +3,7 @@
  *
  * The guards beside this file matched `Edit|Write|MultiEdit|NotebookEdit` only, so an agent
  * writing through `cat > file <<EOF`, `tee`, or `sed -i` passed both of them untouched. That
- * is not an exotic path: it is what a bash-first session does for every edit it makes.
+ * is not an exotic path. It is what a bash-first session does for every edit it makes.
  *
  * Two answers, because the callers need different things. `writes` decides whether anything
  * was written at all. `paths` is best effort, for the caller that wants precision, and it is

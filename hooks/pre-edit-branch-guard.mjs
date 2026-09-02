@@ -20,8 +20,8 @@
  *
  * Two conditions carry that argument, not one. An edit on the default branch is the obvious
  * case. An edit on a branch whose remote was deleted is the same failure wearing a feature
- * branch's name: the pull request merged, the branch went with it, and the next edit lands
- * on work that is already history.
+ * branch's name. The pull request merged, the branch went with it, and the next edit lands on
+ * work that is already history.
  *
  * It reads the tool input for a path, and falls back to sniffing a Bash command, because a
  * bash-first session writes files with `cat >` and never touches the Edit tool at all.

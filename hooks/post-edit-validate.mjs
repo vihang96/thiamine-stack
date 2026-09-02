@@ -11,9 +11,9 @@
  * skill is legitimately absent from the README until the author gets there, and a hook
  * that objects to every intermediate state gets turned off.
  *
- * It also runs after a Bash command that writes a file. Matching the Edit tools alone meant
- * a bash-first session, which writes with `cat >` and `sed -i`, edited the whole stack
- * without the validator running once.
+ * It also runs after a Bash command that writes a file. A bash-first session writes with
+ * `cat >` and `sed -i`, so matching the Edit tools alone let it edit the whole stack without
+ * the validator running once.
  */
 import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
@@ -58,8 +58,8 @@ try {
 
 	/**
 	 * A file where the tool named one, otherwise whatever a Bash command wrote. A write with
-	 * no extractable path, such as a heredoc into python, is attributed to the session's own
-	 * directory: the validator takes no arguments, so the repo is all it needs.
+	 * no extractable path, such as a heredoc into python, belongs to the session's own
+	 * directory. The validator takes no arguments, so the repo is all it needs.
 	 */
 	let file = null
 	if (EDITS.has(event.tool_name)) {

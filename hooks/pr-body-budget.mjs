@@ -8,9 +8,9 @@
  *
  * Fenced code blocks do not count. A pasted test run under ## Verification is evidence.
  *
- * The invocation is matched only in the command, never in a heredoc body. Prose that
- * mentions `gh pr edit` is prose, and counting the file it was being written into reports a
- * word count for a pull request nobody touched.
+ * It matches the invocation only in the command, never in a heredoc body. Prose that mentions
+ * `gh pr edit` is prose, and counting the file it was written into reports a word count for a
+ * pull request nobody touched.
  */
 import fs from 'node:fs'
 import path from 'node:path'
