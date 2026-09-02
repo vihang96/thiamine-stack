@@ -15,7 +15,8 @@ import path from 'node:path'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { bashWrites } from './bash-target.mjs'
-import { firstSignal, hasTool, SIGNALS } from './signals.mjs'
+import { hasTool, PASSES } from './nudge-state.mjs'
+import { firstSignal, SIGNALS } from './signals.mjs'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const tmp = (prefix) => fs.mkdtempSync(path.join(os.tmpdir(), prefix))
@@ -412,4 +413,70 @@ test('the suggest hook prints one line for a signal and records it', () => {
 
 	const again = runHook('session-start-suggest.mjs', { cwd: dir }, home)
 	assert.equal(again, '', 'the same condition does not speak twice')
+})
+
+/** A pass by name, so a test names the cadence it is about rather than a list index. */
+const pass = (name) => PASSES.find((p) => p.name === name)
+const noRun = { lastRunAtMs: 0, minutesSince: Infinity }
+
+test('every pass declares a due measure and a slash command that exists', () => {
+	for (const p of PASSES) {
+		assert.equal(typeof p.due, 'function', `${p.name} has no due()`)
+		assert.match(p.invoke, /^\/thiamine:[a-z-]+$/)
+		assert.ok(fs.existsSync(path.join(HERE, '..', 'skills', p.invoke.split(':')[1], 'SKILL.md')))
+	}
+})
+
+test('the mining passes still wait for turns and for elapsed time', () => {
+	const cl = pass('continual-learning')
+	assert.equal(
+		cl.due({ name: 'continual-learning', turns: 9, ...noRun }),
+		null,
+		'under the turn bar',
+	)
+	assert.match(cl.due({ name: 'continual-learning', turns: 10, ...noRun }).says, /10 turns/)
+	assert.equal(
+		cl.due({ name: 'continual-learning', turns: 50, lastRunAtMs: Date.now(), minutesSince: 5 }),
+		null,
+		'it ran five minutes ago',
+	)
+})
+
+test('capture-preferences waits for a body of work, not for a session', () => {
+	const cp = pass('capture-preferences')
+	assert.equal(cp.due({ name: 'capture-preferences', turns: 40, ...noRun }), null)
+	assert.match(cp.due({ name: 'capture-preferences', turns: 60, ...noRun }).says, /how you work/)
+})
+
+test('maintain-skills counts commits, and is absent where there is nothing to audit', () => {
+	const bare = repo()
+	assert.equal(
+		pass('maintain-skills').due({ name: 'maintain-skills', turns: 999, cwd: bare, ...noRun }),
+		null,
+		'a repo with no agent-facing context has no drift to find',
+	)
+
+	fs.mkdirSync(path.join(bare, 'skills'))
+	fs.writeFileSync(path.join(bare, 'skills', 'x.md'), 'x\n')
+	for (let i = 0; i < 3; i++) git(bare, 'commit', '-q', '--allow-empty', '-m', `c${i}`)
+
+	const ctx = { name: 'maintain-skills', turns: 999, cwd: bare, ...noRun }
+	assert.equal(pass('maintain-skills').due(ctx), null, 'four commits is under the default bar')
+
+	try {
+		process.env.THIAMINE_MAINTAIN_SKILLS_MIN_COMMITS = '4'
+		const hit = pass('maintain-skills').due(ctx)
+		assert.match(hit.says, /commits have landed and no pass has ever run here/)
+		assert.ok(hit.overdue >= 1)
+	} finally {
+		delete process.env.THIAMINE_MAINTAIN_SKILLS_MIN_COMMITS
+	}
+
+	const recent = { ...ctx, lastRunAtMs: Date.now(), minutesSince: 10 }
+	assert.equal(pass('maintain-skills').due(recent), null, 'it ran ten minutes ago')
+})
+
+test('a pass whose measure throws does not take the session start down', () => {
+	const out = runHook('session-start-suggest.mjs', { cwd: '/nonexistent-path-for-a-hook-test' })
+	assert.equal(out, '')
 })

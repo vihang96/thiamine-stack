@@ -22,40 +22,12 @@
  * Set THIAMINE_SIGNALS=0 to silence all of them, or THIAMINE_SIGNAL_<NAME>=0 for one, with
  * the name upper-cased and hyphens as underscores.
  */
-import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
-import { positiveInt } from './nudge-state.mjs'
-
-/** Milliseconds any one detector may spend. A session start that waits is worse than a quiet one. */
-const DETECT_TIMEOUT = 2500
+import { capture, hasTool, positiveInt } from './nudge-state.mjs'
 
 /** Hours a fired condition stays quiet, so an ignored nudge does not become a nag. */
 export const DEFAULT_COOLDOWN_HOURS = 20
-
-const found = new Map()
-
-/** Cached, because a session start asks about the same executable twice. */
-export function hasTool(name) {
-	if (!found.has(name)) {
-		found.set(name, capture('sh', ['-c', `command -v ${name}`], process.cwd()) !== null)
-	}
-	return found.get(name)
-}
-
-/** Trimmed stdout, or null: a detector must never be the reason a session start fails. */
-export function capture(cmd, args, cwd) {
-	try {
-		return execFileSync(cmd, args, {
-			cwd,
-			encoding: 'utf8',
-			timeout: DETECT_TIMEOUT,
-			stdio: ['ignore', 'pipe', 'ignore'],
-		}).trim()
-	} catch {
-		return null
-	}
-}
 
 const git = (cwd, ...args) => capture('git', args, cwd)
 
