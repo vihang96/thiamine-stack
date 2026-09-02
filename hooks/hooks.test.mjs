@@ -15,6 +15,7 @@ import path from 'node:path'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { bashWrites } from './bash-target.mjs'
+import { firstSignal, hasTool, SIGNALS } from './signals.mjs'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const tmp = (prefix) => fs.mkdtempSync(path.join(os.tmpdir(), prefix))
@@ -247,4 +248,168 @@ test('pr body budget ignores an invocation named inside a heredoc body', () => {
 		},
 	})
 	assert.equal(out, '', 'prose mentioning the command is prose, not a pull request body')
+})
+
+const signal = (name) => SIGNALS.find((s) => s.name === name)
+
+test('unlanded-work fires on a branch with no upstream and stays quiet once pushed', () => {
+	const dir = repo()
+	assert.equal(signal('unlanded-work').detect({ cwd: dir }), null, 'a clean tree says nothing')
+
+	fs.writeFileSync(path.join(dir, 'f.txt'), 'changed\n')
+	git(dir, 'checkout', '-q', '-b', 'feat/x')
+	const hit = signal('unlanded-work').detect({ cwd: dir })
+	assert.match(hit.says, /1 modified file\(s\) are sitting on feat\/x, which has no upstream/)
+	assert.equal(hit.key, 'feat/x:none')
+
+	const bare = tmp('thiamine-remote-')
+	git(bare, 'init', '--bare', '-b', 'main')
+	git(dir, 'remote', 'add', 'origin', bare)
+	git(dir, 'push', '-q', '-u', 'origin', 'feat/x')
+	assert.equal(signal('unlanded-work').detect({ cwd: dir }), null, 'it has somewhere to land now')
+
+	git(dir, 'push', '-q', 'origin', '--delete', 'feat/x')
+	git(dir, 'fetch', '-q', '--prune', 'origin')
+	assert.equal(signal('unlanded-work').detect({ cwd: dir }).key, 'feat/x:gone')
+})
+
+test('unlanded-work fires on a branch tracking the default branch, which is what worktree add -b leaves', () => {
+	const dir = repo()
+	const bare = tmp('thiamine-remote-')
+	git(bare, 'init', '--bare', '-b', 'main')
+	git(dir, 'remote', 'add', 'origin', bare)
+	git(dir, 'push', '-q', '-u', 'origin', 'main')
+	git(dir, 'remote', 'set-head', 'origin', 'main')
+
+	// What `git worktree add -b feat/z <path> origin/main` configures.
+	git(dir, 'checkout', '-q', '-b', 'feat/z', '--track', 'origin/main')
+	fs.writeFileSync(path.join(dir, 'f.txt'), 'changed\n')
+
+	const hit = signal('unlanded-work').detect({ cwd: dir })
+	assert.equal(hit.key, 'feat/z:default')
+	assert.match(hit.says, /tracks origin\/main rather than a branch of its own/)
+
+	git(dir, 'push', '-q', '-u', 'origin', 'feat/z')
+	assert.equal(signal('unlanded-work').detect({ cwd: dir }), null, 'now it has its own branch')
+})
+
+test('stale-handoff fires on a record naming a branch that is gone', () => {
+	const dir = repo()
+	fs.writeFileSync(
+		path.join(dir, '.handoff-feat-retention.md'),
+		'# work\n\nWhere: repo/tree/feat-retention, branch feat/retention at abc1234.\n',
+	)
+	assert.match(
+		signal('stale-handoff').detect({ cwd: dir }).says,
+		/feat\/retention, which no longer exists/,
+	)
+
+	git(dir, 'checkout', '-q', '-b', 'feat/retention')
+	assert.equal(signal('stale-handoff').detect({ cwd: dir }), null, 'the branch is back')
+})
+
+test('triage-due fires when a watermark is past its cadence, and never on an unconfigured repo', () => {
+	const dir = repo()
+	assert.equal(signal('triage-due').detect({ cwd: dir }), null)
+
+	const triage = path.join(dir, '.thiamine', 'triage')
+	fs.mkdirSync(triage, { recursive: true })
+	fs.writeFileSync(
+		path.join(triage, 'sources.tsv'),
+		'name\tkind\tlocator\tinterval\nsentry\terror-tracker\torg/api\tdaily\n',
+	)
+	assert.match(signal('triage-due').detect({ cwd: dir }).says, /never been swept/)
+
+	const mark = path.join(triage, 'sentry.watermark')
+	fs.writeFileSync(mark, '2026-09-01\n')
+	assert.equal(signal('triage-due').detect({ cwd: dir }), null, 'swept just now')
+
+	const old = Date.now() - 3 * 86_400_000
+	fs.utimesSync(mark, old / 1000, old / 1000)
+	assert.match(signal('triage-due').detect({ cwd: dir }).says, /3 day\(s\) ago/)
+})
+
+test('a signal needing a tool the machine lacks is absent, not broken', () => {
+	const dir = repo()
+	const saved = process.env.PATH
+	try {
+		process.env.PATH = '/nonexistent'
+		for (const s of SIGNALS.filter((s) => (s.needs ?? []).includes('gh'))) {
+			assert.equal(s.detect({ cwd: dir }), null, `${s.name} must not throw without gh`)
+		}
+	} finally {
+		process.env.PATH = saved
+	}
+})
+
+test('needs gates a signal before its detector runs', () => {
+	const fake = (needs) => [
+		{ name: 'fake', invoke: '/x', needs, detect: () => ({ key: 'k', says: 'fired' }) },
+	]
+
+	assert.equal(hasTool('thiamine-no-such-binary'), false)
+	assert.equal(firstSignal({ cwd: '.' }, {}, fake(['thiamine-no-such-binary'])), null)
+	assert.equal(firstSignal({ cwd: '.' }, {}, fake(['git']))?.says, 'fired')
+})
+
+test('a mistyped cooldown override falls back instead of silently switching the cooldown off', () => {
+	const dir = repo()
+	fs.writeFileSync(path.join(dir, 'f.txt'), 'changed\n')
+	git(dir, 'checkout', '-q', '-b', 'feat/typo')
+	const fired = { 'unlanded-work': { key: 'feat/typo:none', firedAtMs: Date.now() } }
+	try {
+		process.env.THIAMINE_SIGNAL_COOLDOWN_HOURS = 'twenty'
+		assert.equal(firstSignal({ cwd: dir }, fired), null, 'still inside the default cooldown')
+	} finally {
+		delete process.env.THIAMINE_SIGNAL_COOLDOWN_HOURS
+	}
+})
+
+test('firstSignal respects the cooldown for the same condition and speaks for a new one', () => {
+	const dir = repo()
+	fs.writeFileSync(path.join(dir, 'f.txt'), 'changed\n')
+	git(dir, 'checkout', '-q', '-b', 'feat/y')
+
+	const hit = firstSignal({ cwd: dir })
+	assert.equal(hit.name, 'unlanded-work')
+
+	const fired = { 'unlanded-work': { key: hit.key, firedAtMs: Date.now() } }
+	assert.equal(firstSignal({ cwd: dir }, fired), null, 'same condition, inside the cooldown')
+
+	const stale = { 'unlanded-work': { key: hit.key, firedAtMs: Date.now() - 21 * 3_600_000 } }
+	assert.ok(firstSignal({ cwd: dir }, stale), 'the cooldown has expired')
+
+	const other = { 'unlanded-work': { key: 'feat/z:none', firedAtMs: Date.now() } }
+	assert.ok(firstSignal({ cwd: dir }, other), 'a different condition gets its own line')
+})
+
+test('firstSignal is silenced per signal and altogether by env', () => {
+	const dir = repo()
+	fs.writeFileSync(path.join(dir, 'f.txt'), 'changed\n')
+	git(dir, 'checkout', '-q', '-b', 'feat/off')
+	try {
+		process.env.THIAMINE_SIGNAL_UNLANDED_WORK = '0'
+		assert.equal(firstSignal({ cwd: dir })?.name, undefined, 'that one is off')
+		delete process.env.THIAMINE_SIGNAL_UNLANDED_WORK
+		process.env.THIAMINE_SIGNALS = '0'
+		assert.equal(firstSignal({ cwd: dir }), null, 'all of them are off')
+	} finally {
+		delete process.env.THIAMINE_SIGNAL_UNLANDED_WORK
+		delete process.env.THIAMINE_SIGNALS
+	}
+})
+
+test('the suggest hook prints one line for a signal and records it', () => {
+	const dir = repo()
+	fs.writeFileSync(path.join(dir, 'f.txt'), 'changed\n')
+	git(dir, 'checkout', '-q', '-b', 'feat/printed')
+	const home = tmp('thiamine-home-')
+
+	const out = runHook('session-start-suggest.mjs', { cwd: dir }, home)
+	assert.match(out, /sitting on feat\/printed/)
+	assert.match(out, /\/thiamine:branch-to-pr/)
+	assert.equal(out.split('\n').length, 1, 'one line, whatever else is true')
+
+	const again = runHook('session-start-suggest.mjs', { cwd: dir }, home)
+	assert.equal(again, '', 'the same condition does not speak twice')
 })
