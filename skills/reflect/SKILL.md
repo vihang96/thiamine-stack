@@ -177,7 +177,7 @@ A captured recipe that omits these is a story about a session:
 Hand the edit to `thiamine-author`, which owns shape, dependency declaration, and the
 description. Say whether each item is new or an edit.
 
-### 6. Present before applying
+### 6. Present the stack's edits, apply the repo's own
 
 Three lists, and the user approves row by row. One sentence per cell, readable in five
 seconds.
@@ -196,10 +196,16 @@ The pattern, what was hit, and the mechanism that would catch it.
 Rejected is not padding. It is how the user sees what was considered and disagrees with a
 call. An audit that reports only its accepted rows hides its own judgment.
 
-Wait for approval on Accepted. These edits change how every future session behaves in every
-repo the stack reaches, which is a larger blast radius than any single session's learnings
-justify spending unreviewed. Backlog items are filed rather than approved; they are not
-edits.
+Wait for approval on Accepted where the edit lands in the stack. Those edits change how
+every future session behaves in every repo the stack reaches, which is a larger blast radius
+than one session's learnings justify spending unreviewed.
+
+Where the artifact belongs to the repo being worked on, its `CLAUDE.md`, its `AGENTS.md`, or
+a local skill, write it. Its reach is that repo, the diff is reviewed there like any other
+change, and holding it for a yes hands the work back to whoever delegated it. Present it in
+the same three lists, then say what you wrote. `rules/why/asking.md` draws the line.
+
+Backlog items are filed rather than approved; they are not edits.
 
 ### 7. Land it
 

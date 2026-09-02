@@ -81,6 +81,7 @@ thiamine agent do the same job, keep one, and if you keep yours, say in the inst
 
 | Skill | Why |
 | --- | --- |
+| `signal-to-task` | A signal from a running system is not yet a task. Carries an error, a trace, or a complaint from arrival to a verdict, and files the ones that earn work. |
 | `pre-implementation` | Most bad implementations are correct answers to the wrong question. Sorts unknowns into what to observe and what to ask, then plans. |
 | `consistency` | The second answer to a concern costs more than its merits. Finds what the codebase already does before adding another way. |
 | `experimentation` | Improvement by measurement. One objective moved, the rest held as guards, hypotheses from the failures, and pruning. |
@@ -152,6 +153,6 @@ Seven skills and three rules derive from `pstack` in
 
 ## Status
 
-Early, and in use. Twenty skills, twelve always-on rule sections, and a lint layer for
+Early, and in use. 21 skills, 13 always-on rule sections, and a lint layer for
 TypeScript, Rust, and Python. The rule corpus stays small on purpose, since every line is
 paid on every request.
