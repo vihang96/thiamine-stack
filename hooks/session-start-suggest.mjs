@@ -9,14 +9,14 @@
  * One line even when several are due. Two suggestions at startup is one more than anybody
  * acts on, and the second teaches the reader to skip the first.
  *
- * Two kinds of thing compete for that one line, and a signal wins. A pass is bookkeeping
- * measured in turns, and it will still be true tomorrow; a signal is a condition in the repo
- * right now, and it names the skill that answers it. The cooldown in `signals.mjs` is what
+ * Two things compete for that one line, and a signal wins. A pass is bookkeeping measured in
+ * turns, and it will still be true tomorrow. A signal is a condition in the repo right now,
+ * and it names the skill that answers it. The cooldown in `signals.mjs` is what
  * stops a standing condition holding the line forever, so a pass still gets its turn.
  *
  * This is the only place a signal is allowed to speak. `stop-count-turns` stays silent
- * mid-session on purpose: a hook that talks during a task is why people stop reading hooks,
- * and that decision outranks the extra timeliness speaking there would buy.
+ * mid-session on purpose. A hook that talks during a task is why people stop reading hooks,
+ * and that decision outranks the timeliness that speaking there would buy.
  */
 import {
 	blankState,

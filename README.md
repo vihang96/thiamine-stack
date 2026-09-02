@@ -55,7 +55,7 @@ the workspace board and puts what is in flight into context, whether or not the 
 The same hook routes from other conditions it can observe, one entry per condition in
 `hooks/signals.mjs`: work sitting on a branch with nowhere to land, a handoff record whose
 branch is gone, a triage sweep past its cadence. It says at most one line per session, and a
-condition that needs a tool the machine does not have is simply absent.
+condition that needs a tool the machine does not have is absent rather than broken.
 
 ## Alongside skills and agents you already have
 

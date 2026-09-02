@@ -2,17 +2,17 @@
  * State the stack can route from, without being told a skill's name.
  *
  * A skill fires when the agent recognises the situation from a description, which needs the
- * user's phrasing to resemble the trigger. A condition in the repo does not: uncommitted work
- * on a branch that cannot be pushed is the same fact in every repo, in any phrasing, and the
+ * user's phrasing to resemble the trigger. A condition in the repo does not. Uncommitted work
+ * on a branch that cannot be pushed is the same fact in every repo, in any phrasing, and
  * `pre-edit-branch-guard` beside this file already makes that argument for one condition.
  *
- * Adding a signal is one entry in the list below. Nothing else changes: the presenter ranks,
- * budgets, and records whatever is here, so a signal cannot forget the one-per-session
+ * Adding a signal is one entry in the list below, and nothing else changes. The presenter
+ * ranks, budgets, and records whatever is here, so a signal cannot forget the one-per-session
  * discipline or the cooldown by being written carelessly.
  *
  * Every detector answers in the same shape and is allowed to answer nothing. A signal that
  * needs a tool the machine does not have, or a command that fails, is absent rather than
- * broken: `needs` is checked before `detect` runs, and `capture` swallows a non-zero exit.
+ * broken. `needs` is checked before `detect` runs, and `capture` swallows a non-zero exit.
  * A stack that only works with `gh` installed and authenticated is a stack that works on one
  * machine.
  *
@@ -92,7 +92,7 @@ export const SIGNALS = [
 			const configured = git(cwd, 'config', '--get', `branch.${branch}.remote`)
 			const head = git(cwd, 'symbolic-ref', '--short', 'refs/remotes/origin/HEAD')
 
-			// Three ways work has nowhere of its own to land, and the third is the one that bites:
+			// Three ways work has nowhere of its own to land, and the third is the one that bites.
 			// `git worktree add -b` points a new branch at origin/HEAD, so it reads as tracked
 			// while `git push` would target the default branch.
 			let why = null
@@ -196,8 +196,8 @@ const envKey = (name) => `THIAMINE_SIGNAL_${name.replaceAll('-', '_').toUpperCas
 
 /**
  * The first signal that fires, or null. Skips anything switched off, needing a tool this
- * machine lacks, or still inside its cooldown. `signals` is a seam for the tests, which need
- * a condition whose tool is genuinely absent.
+ * machine lacks, or still inside its cooldown. `signals` is a parameter so a test can pass a
+ * condition whose tool is genuinely absent.
  */
 export function firstSignal(ctx, fired = {}, signals = SIGNALS) {
 	if (process.env.THIAMINE_SIGNALS === '0') return null
