@@ -122,6 +122,7 @@ For pull request state rather than worktree state:
 ```sh
 sh scripts/pr-status.sh <branch> <workspace-root>           # one branch, every repo
 sh scripts/pr-status.sh --stack <branch> <workspace-root>   # the stack, bottom first
+node scripts/watch-checks.mjs <repo-root>                   # every open PR, and the default branch
 ```
 
 It names every failing check. A change spanning repos is as ready as its worst repo, and a

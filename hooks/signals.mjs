@@ -24,7 +24,18 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { capture, hasTool, positiveInt } from './nudge-state.mjs'
+
+/** The checks watcher, which `drive-ci-green` and a cron entry also run. */
+const WATCH_CHECKS = path.join(
+	path.dirname(fileURLToPath(import.meta.url)),
+	'..',
+	'skills',
+	'branch-to-pr',
+	'scripts',
+	'watch-checks.mjs',
+)
 
 /** Hours a fired condition stays quiet, so an ignored nudge does not become a nag. */
 export const DEFAULT_COOLDOWN_HOURS = 20
@@ -136,16 +147,19 @@ export const SIGNALS = [
 		invoke: '/thiamine:branch-to-pr',
 		needs: ['gh'],
 		detect: ({ cwd }) => {
-			const pr = currentPr(cwd, 'statusCheckRollup')
-			if (!pr) return null
+			// One gatherer, two callers. A cron entry runs this script with `--new` and dedupes on
+			// its own ledger; here the cooldown below is the dedupe, so it asks for current state.
+			const out = capture(process.execPath, [WATCH_CHECKS, '--json', cwd], cwd)
+			if (!out) return null
 
-			const failed = (pr.statusCheckRollup ?? []).filter(
-				(c) => c.conclusion === 'FAILURE' || c.state === 'FAILURE',
-			)
-			if (failed.length === 0) return null
+			const red = JSON.parse(out)
+			if (red.length === 0) return null
+
+			const [first] = red
+			const rest = red.length > 1 ? ` and ${red.length - 1} more` : ''
 			return {
-				key: `${pr.number}:${failed.length}`,
-				says: `#${pr.number} has ${failed.length} failing check(s)`,
+				key: red.map((item) => `${item.what}@${item.sha}`).join('|'),
+				says: `${first.what} is failing ${first.checks.join(', ')}${rest}`,
 			}
 		},
 	},
