@@ -1,6 +1,6 @@
 ### Standing sweep
 
-**Pull only what is new, disposition it, then advance the watermark.** For "triage the
+**Pull only what is new, give every item a verdict, then advance the watermark.** For "triage the
 error queue", "check the feedback channel", a recurring sweep on a schedule, and the first
 pass over a source nobody has read.
 
@@ -22,10 +22,10 @@ makes the watermark safe.
    ```
 
    If the file does not exist, ask which sources count and write it. One question, once,
-   beats a sweep whose scope nobody agreed.
+   beats a sweep whose scope nobody agreed to.
 
-2. Pull what each kind is good for. The trap column is the one that matters,
-   because each source lies in its own way.
+2. Pull what each kind is good for. The trap column is the one that matters, because each
+   source lies in its own way.
 
    | Kind | Pull | Fingerprint from | The trap |
    | --- | --- | --- | --- |
@@ -36,12 +36,12 @@ makes the watermark safe.
    | Run queue | failed and stuck runs, and exceptions nobody has answered | the failing step plus the error class | a customer-visible failure hides here behind an ordinary-looking retry |
    | CI | jobs failing on the default branch, and flakes by rate | the test id plus the assertion | a flake is a signal about the test, and a real one about the code. Do not merge them |
 
-3. Cap the read. Take the top N by cost per kind and say what N was and what you left, rather
-   than reading everything and running out of context halfway with no record. Delegate a
-   large pull to a subagent and keep the reduced list in the main thread
+3. Cap the read. Take the top N by cost per kind, then say what N was and what you left.
+   Reading everything and running out of context halfway leaves no record of either.
+   Delegate a large pull to a subagent and keep the reduced list in the main thread
    (`fan-out-work`).
 
-4. Disposition each item before touching the watermark, per `playbooks/route-it.md` and
+4. Give every item a verdict before touching the watermark, per `playbooks/route-it.md` and
    `playbooks/file-the-task.md`. Then advance the watermark to the newest item you gave a
    verdict to, not to now. Both halves matter: advancing early loses everything unread,
    and never advancing makes the next sweep a re-read.
@@ -53,10 +53,10 @@ makes the watermark safe.
 6. Schedule it to match the source. An error tracker on a deploy day is worth a daily pass;
    a feedback channel weekly; a tracker's triage state whenever the sprint boundary is. In
    Claude Code, run it on a recurring interval with the built-in `loop` (a slash command it
-   ships) or a cron entry; elsewhere, a person running it each morning is a fine mechanism.
+   ships) or a cron entry; elsewhere, a person running it each morning works too.
    State the interval in `sources.tsv` so it is a decision rather than a habit.
 
-7. Say when to stop looping. A sweep with an empty delta three runs running means the
+7. Say when to stop looping. A sweep with an empty delta three times in a row means the
    interval is too short or the source is quiet. Widen the interval or drop the source from
    the file, and say which.
 

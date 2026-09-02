@@ -22,7 +22,7 @@ whichever viewer you like this year.
    Parse large artifacts in a subagent and keep only the reduced finding in the main thread
    (`fan-out-work`). A capture that fills the context window costs the rest of the triage.
 
-3. Narrow to the cause by the shape of the question:
+3. Narrow to the cause. What you look for depends on the symptom:
 
    - Slow, single process: self time, not total. Total time up the stack tells you which
      entry point, self time tells you what to fix.

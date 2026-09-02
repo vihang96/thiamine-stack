@@ -22,10 +22,10 @@ first. Volume has to collapse before severity means anything.
    question, more text than a context window. Give it the events and the fingerprints, take
    back the clusters, and keep the raw events out of the main thread.
 
-4. Attach the four numbers each item needs before it can be ranked. Count in the window, how
+4. Attach the four numbers an item needs before you can rank it. Count in the window, how
    many distinct users or tenants, first seen, and the trend against the previous window.
 
-   First seen is the one people skip and the one that carries the most: an item first seen
+   First seen is the one people skip and the one that says the most: an item first seen
    the day of a release is a regression with a suspect attached, and an item first seen
    fourteen months ago is a tolerated cost that something just made visible.
 
@@ -38,9 +38,9 @@ first. Volume has to collapse before severity means anything.
    system may be unchanged and the instrument new. Check what changed on the measuring side
    before filing a task about the measured side.
 
-7. Say what you read. How many events, how many items, and where you stopped. Clustering
-   claims coverage by construction, so a sweep that read the top forty of nine thousand has
-   to say so.
+7. Say what you read. How many events, how many items, and where you stopped. A cluster list
+   reads as complete even when it is not, so a sweep that read the top forty of nine thousand
+   has to say so.
 
 **Reply:** the items, each with its fingerprint, count, distinct users, first seen, and
 trend, ranked by what it costs to leave. Say how many events collapsed into them and how

@@ -4,14 +4,13 @@
 leaking, or wedged right now", an intermittent fault nothing has captured, and any item
 where the code reads fine and the behaviour is wrong.
 
-The process running in front of you is the only witness that can be asked a question. Code
-answers what should happen; the process answers what is.
+The process running in front of you is the only witness you can question. Code answers what
+should happen. The process answers what is.
 
 1. Capture the signal that matches the symptom, on the machine or service where it is
-   happening. A CPU
-   profile for something spinning, a heap snapshot pair for a leak, a trace for latency,
-   thread or stack dumps for a wedge, the connection and lock tables for a database that has
-   stopped. A real artifact, not a guess about which one would have been interesting.
+   happening. A CPU profile for something spinning, a heap snapshot pair for a leak, a trace
+   for latency, thread or stack dumps for a wedge, the connection and lock tables for a
+   database that has stopped. A real artifact, not a guess about which one would have been interesting.
 
    Two things to record with it, because they are gone the moment you look away: the load and
    the deploy version at capture time, and whether the symptom was occurring while you

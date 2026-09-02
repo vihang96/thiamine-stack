@@ -18,7 +18,7 @@ or in a convention already written down. A change ready to land arrived instead 
 request for permission to land it, which is a round trip bought with somebody else's
 attention.
 
-An agent that asks too little makes a call that was never its own, and the cost surfaces
+An agent that asks too little makes a call that was never its own, and the cost arrives
 later. Thirty tickets in a shared tracker on a schedule. A message posted in a channel
 under someone else's name. A rule that changes every future session in every repo. A column
 dropped with no rollback. None of these look expensive at the moment they are done, and
@@ -46,8 +46,8 @@ severity, because a reversible mistake costs a revert and an irreversible one co
 person's morning. And a question is only worth asking once it is specific: the recommendation
 plus what changes if the answer differs, not "how should I do this".
 
-The axis is reach, not artifact type. The same edit is two decisions depending on how many
-repos read it afterwards. A rule in the shared stack reaches every session in every repo, and
+The line follows reach, not artifact type. The same edit is two decisions depending on how
+many repos read it afterwards. A rule in the shared stack reaches every session in every repo, and
 one afternoon of evidence cannot be the review for that. A skill living in the repo being
 worked on reaches that repo, arrives in its diff, and gets reviewed there, so write it, land
 it, and say what you wrote. `maintain-skills` runs that pass in the working repo. Edits to

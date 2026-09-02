@@ -33,8 +33,8 @@ you drop. An item with no verdict is not a decision deferred, it is a decision t
 sweep has to make again at full price. The record is what makes the queue shrink.
 
 **Volume is not severity.** Four thousand events from one retry loop are one item. One
-event that wrote a row into the wrong tenant is the top item. Count to size the thing, rank
-by what it costs to leave it.
+event that wrote a row into the wrong tenant is the top item. Count to size it. Rank by what it costs to
+leave.
 
 **A task carries the evidence or it is not a task.** The claim, the artifact, the source
 location, the fingerprint. And the words are for someone who has never seen this code:
@@ -56,7 +56,7 @@ This skill owns the signal until it becomes a task, a merge, a watch, or a drop.
 - `experimentation` owns a sustained run against a metric. A filed performance task with a
   target and thirty attempts ahead of it belongs there, not in another sweep.
 - `handoff` owns the record of the session. The ledger below is a record of the queue.
-- `curator` does the clustering when there is more than fits in one context. `fan-out-work`
+- `curator` does the clustering when there is more of it than fits in one context. `fan-out-work`
   owns subagents in general; forensics uses one to keep a large capture out of the main
   thread.
 
@@ -70,7 +70,7 @@ behind is a feeling.
 
 | Verdict | When | What leaves |
 | --- | --- | --- |
-| `fix now` | shipped behaviour is broken, data is at risk, or the fix is smaller than the task describing it would be | a change, via `pre-implementation` then `branch-to-pr` |
+| `fix now` | shipped behaviour is broken, data is at risk, or the fix takes less time than writing the task would | a change, via `pre-implementation` then `branch-to-pr` |
 | `file` | real, ours, worth someone's day, but not this hour | a task carrying the evidence |
 | `merge` | the same fingerprint as an item already open | a note on that item with the new count and window, and nothing new filed |
 | `watch` | real, below the bar, or self-healing | a trip condition and a re-check date in the ledger |
@@ -88,7 +88,7 @@ An error nobody sees still costs something, and the cost is usually indirect: it
 error that matters, it burns a retry budget, it is the reason the real signal was missed at
 3am. Rank by what it costs to leave, not by who noticed.
 
-Three shapes that earn a task with nobody complaining:
+Shapes that earn a task with nobody complaining:
 
 - An error that fires on every run, and is therefore invisible. Constant noise reads as
   background, and the queue is now unsearchable.
@@ -124,7 +124,7 @@ halfway and advanced first has dropped everything it had not read, and nothing s
 
 1. **Pull what is new since the watermark**, per `playbooks/standing-sweep.md`. On a first
    pass against a queue nobody has triaged, the watermark is the start of the window you
-   choose, and you say which window you took.
+   choose. Say which window you took.
 
 2. **Fingerprint and cluster**, per `playbooks/cluster-the-queue.md`. Raw events become a
    short list of items with counts, windows, and trends. Volume collapses here or it

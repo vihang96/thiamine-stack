@@ -36,7 +36,7 @@ need is in the task or the task is a re-run of your afternoon.
 
 4. Cut the language to a stranger's vocabulary. This is a separate pass and it is where most
    tickets fail. `unslop-prose` and `technical-writing` own the words, and applying them
-   means running them, not having read them. Three things specifically:
+   means running them, not having read them. Specifically:
 
    - Expand the shorthand once. Internal names, service nicknames, and acronyms get their
      full form the first time or a link.
