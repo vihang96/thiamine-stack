@@ -197,3 +197,30 @@ test('post-edit validate runs for a write it cannot name, and stays quiet otherw
 	})
 	assert.equal(elsewhere, '', 'a write outside the watched directories is not its business')
 })
+const longBody = `${'word '.repeat(300)}`
+
+test('pr body budget counts a body the invocation is actually writing', () => {
+	const create = runHook('pr-body-budget.mjs', {
+		tool_name: 'Bash',
+		tool_input: { command: `gh pr create --title x --body "$(cat <<'EOF'\n${longBody}\nEOF\n)"` },
+	})
+	assert.match(contextOf(create), /against a 250 word budget/)
+
+	const rest = runHook('pr-body-budget.mjs', {
+		tool_name: 'Bash',
+		tool_input: {
+			command: `gh api --method PATCH repos/o/r/pulls/15 -f body="$(cat <<'EOF'\n${longBody}\nEOF\n)"`,
+		},
+	})
+	assert.match(contextOf(rest), /against a 250 word budget/, 'the REST path writes a body too')
+})
+
+test('pr body budget ignores an invocation named inside a heredoc body', () => {
+	const out = runHook('pr-body-budget.mjs', {
+		tool_name: 'Bash',
+		tool_input: {
+			command: `cat > .handoff-main.md <<'EOF'\ngh pr edit fails without read:org scope. ${longBody}\nEOF`,
+		},
+	})
+	assert.equal(out, '', 'prose mentioning the command is prose, not a pull request body')
+})
