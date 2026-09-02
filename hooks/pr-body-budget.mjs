@@ -56,9 +56,9 @@ try {
 	if (event.tool_name !== 'Bash') process.exit(0)
 
 	const cmd = event.tool_input?.command ?? ''
-	// Everything up to the first heredoc opener is command; the rest is data.
-	const opener = cmd.search(/<<-?\s*['"]?[A-Za-z_]/)
-	if (!GH_PR_WRITE.test(opener === -1 ? cmd : cmd.slice(0, opener))) process.exit(0)
+	const bodyStart = cmd.search(/<<-?\s*['"]?[A-Za-z_]/)
+	const invocation = bodyStart === -1 ? cmd : cmd.slice(0, bodyStart)
+	if (!GH_PR_WRITE.test(invocation)) process.exit(0)
 
 	const body =
 		fromHeredoc(cmd) ?? fromBodyFile(cmd, event.cwd || process.cwd()) ?? fromBodyFlag(cmd)

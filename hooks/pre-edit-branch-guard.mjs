@@ -99,8 +99,7 @@ function targetOf(event) {
 
 	const { writes, paths } = bashWrites(event.tool_input?.command ?? '')
 	if (!writes) return null
-	if (paths.length === 0) return event.cwd ? path.join(event.cwd, '.') : null
-	return path.isAbsolute(paths[0]) ? paths[0] : path.join(event.cwd ?? '.', paths[0])
+	return paths.length > 0 ? path.resolve(event.cwd ?? '.', paths[0]) : (event.cwd ?? null)
 }
 
 /**
@@ -149,8 +148,7 @@ try {
 	// Where origin/HEAD is set it decides, including when it names something unconventional.
 	// Where it is not, main and master are the only guess worth making.
 	const onDefault = defaultBranch ? branch === defaultBranch : fallback
-	const spent = !onDefault && upstreamGone(dir, branch)
-	if (!onDefault && !spent) allow()
+	if (!onDefault && !upstreamGone(dir, branch)) allow()
 
 	const projectDir = event.cwd || process.env.CLAUDE_PROJECT_DIR || repo
 	const file = stateFile(projectDir)
@@ -158,16 +156,18 @@ try {
 	if (alreadyWarned(file, sessionId, repo)) allow()
 	recordWarned(file, sessionId, repo)
 
+	const lands = onDefault
+		? `This edit would land on ${branch}, the default branch of ${repo}. `
+		: `This edit would land on ${branch} in ${repo}, whose remote branch is gone, so its pull ` +
+			`request has already merged and these commits are history. `
+
 	process.stdout.write(
 		`${JSON.stringify({
 			hookSpecificOutput: {
 				hookEventName: 'PreToolUse',
 				permissionDecision: 'deny',
 				permissionDecisionReason:
-					(onDefault
-						? `This edit would land on ${branch}, the default branch of ${repo}. `
-						: `This edit would land on ${branch} in ${repo}, whose remote branch is gone, so its ` +
-							`pull request has already merged and these commits are history. `) +
+					lands +
 					`Decide where the change goes before editing: load the thiamine:branch-to-pr skill, ` +
 					`which puts it on a branch in a worktree. If this branch is genuinely right for this ` +
 					`edit, say why and make it again. This fires once per repo per session and will not ` +

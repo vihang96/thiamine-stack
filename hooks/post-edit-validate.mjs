@@ -56,31 +56,24 @@ function findRoot(fromDir) {
 try {
 	const event = JSON.parse(fs.readFileSync(0, 'utf8'))
 
-	/**
-	 * A file where the tool named one, otherwise whatever a Bash command wrote. A write with
-	 * no extractable path, such as a heredoc into python, belongs to the session's own
-	 * directory. The validator takes no arguments, so the repo is all it needs.
-	 */
 	let file = null
 	if (EDITS.has(event.tool_name)) {
 		file = event.tool_input?.file_path ?? null
 	} else if (event.tool_name === 'Bash') {
 		const { writes, paths } = bashWrites(event.tool_input?.command ?? '')
 		if (!writes) done()
-		file = paths.length > 0 ? paths[0] : null
+		file = paths[0] ?? null
 	}
 	if (!file && !event.cwd) done()
 
-	const resolved = file
-		? path.resolve(event.cwd ?? '.', file)
-		: path.resolve(event.cwd)
-
-	const root = findRoot(file ? path.dirname(resolved) : resolved)
+	// A write with no extractable path, such as a heredoc into python, belongs to the session's
+	// own directory. The validator takes no arguments, so the repo is all it needs.
+	const resolved = file ? path.resolve(event.cwd ?? '.', file) : null
+	const root = findRoot(resolved ? path.dirname(resolved) : event.cwd)
 	if (!root) done()
 
-	// A named file outside the watched directories is not this validator's business. A write
-	// with no path has nothing to filter on, and the run is cheap enough to take anyway.
-	if (file) {
+	// A write with no path has nothing to filter on, and the run is cheap enough to take anyway.
+	if (resolved) {
 		const rel = path.relative(root, resolved)
 		const watched = rel === 'README.md' || WATCHED.includes(rel.split(path.sep)[0])
 		if (!watched) done()

@@ -21,11 +21,11 @@ const tmp = (prefix) => fs.mkdtempSync(path.join(os.tmpdir(), prefix))
 const git = (cwd, ...args) => execFileSync('git', args, { cwd, encoding: 'utf8' }).trim()
 
 /** A fresh HOME per run, so a hook's state file never touches the real one. */
-function runHook(name, event) {
+function runHook(name, event, home = tmp('thiamine-home-')) {
 	const result = spawnSync('node', [path.join(HERE, name)], {
 		input: JSON.stringify(event),
 		encoding: 'utf8',
-		env: { ...process.env, HOME: event.__home ?? tmp('thiamine-home-') },
+		env: { ...process.env, HOME: home },
 	})
 	assert.equal(result.status, 0, `${name} exited ${result.status}: ${result.stderr}`)
 	return result.stdout.trim()
@@ -33,6 +33,8 @@ function runHook(name, event) {
 
 const decisionOf = (out) =>
 	out ? JSON.parse(out).hookSpecificOutput?.permissionDecision : undefined
+const reasonOf = (out) =>
+	out ? JSON.parse(out).hookSpecificOutput?.permissionDecisionReason : undefined
 const contextOf = (out) => (out ? JSON.parse(out).hookSpecificOutput?.additionalContext : undefined)
 
 function repo() {
@@ -80,7 +82,7 @@ test('branch guard denies a Bash write on the default branch', () => {
 		session_id: 'bash-on-main',
 	})
 	assert.equal(decisionOf(out), 'deny')
-	assert.match(JSON.parse(out).hookSpecificOutput.permissionDecisionReason, /default branch/)
+	assert.match(reasonOf(out), /default branch/)
 })
 
 test('branch guard still denies an Edit on the default branch', () => {
@@ -133,7 +135,7 @@ test('branch guard denies on a branch whose remote was deleted, and allows one t
 		session_id: 'gone-upstream',
 	})
 	assert.equal(decisionOf(gone), 'deny')
-	assert.match(JSON.parse(gone).hookSpecificOutput.permissionDecisionReason, /remote branch is gone/)
+	assert.match(reasonOf(gone), /remote branch is gone/)
 })
 
 test('branch guard denies once per repo per session', () => {
@@ -144,10 +146,13 @@ test('branch guard denies once per repo per session', () => {
 		tool_input: { command: HEREDOC_WRITE },
 		cwd: dir,
 		session_id: 'once',
-		__home: home,
 	}
-	assert.equal(decisionOf(runHook('pre-edit-branch-guard.mjs', event)), 'deny')
-	assert.equal(runHook('pre-edit-branch-guard.mjs', event), '', "the retry is the agent's call")
+	assert.equal(decisionOf(runHook('pre-edit-branch-guard.mjs', event, home)), 'deny')
+	assert.equal(
+		runHook('pre-edit-branch-guard.mjs', event, home),
+		'',
+		"the retry is the agent's call",
+	)
 })
 
 /** A stand-in thiamine checkout: the two markers findRoot looks for, and a validator that fails. */
@@ -197,7 +202,8 @@ test('post-edit validate runs for a write it cannot name, and stays quiet otherw
 	})
 	assert.equal(elsewhere, '', 'a write outside the watched directories is not its business')
 })
-const longBody = `${'word '.repeat(300)}`
+
+const longBody = 'word '.repeat(300)
 
 test('pr body budget counts a body the invocation is actually writing', () => {
 	const create = runHook('pr-body-budget.mjs', {
