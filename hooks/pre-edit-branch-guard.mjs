@@ -48,7 +48,10 @@ const git = (cwd, args) =>
  */
 function nearestExistingDir(target) {
 	const resolved = path.resolve(target)
-	let dir = fs.existsSync(resolved) && fs.statSync(resolved).isDirectory() ? resolved : path.dirname(resolved)
+	let dir =
+		fs.existsSync(resolved) && fs.statSync(resolved).isDirectory()
+			? resolved
+			: path.dirname(resolved)
 	for (;;) {
 		if (fs.existsSync(dir)) return dir
 		const parent = path.dirname(dir)
@@ -60,7 +63,10 @@ function nearestExistingDir(target) {
 function defaultBranchOf(cwd) {
 	try {
 		// origin/HEAD is the authoritative answer where it is set.
-		return git(cwd, ['symbolic-ref', '--short', 'refs/remotes/origin/HEAD']).replace(/^origin\//, '')
+		return git(cwd, ['symbolic-ref', '--short', 'refs/remotes/origin/HEAD']).replace(
+			/^origin\//,
+			'',
+		)
 	} catch {
 		return null
 	}
@@ -68,7 +74,13 @@ function defaultBranchOf(cwd) {
 
 /** Claude Code names a project directory after its absolute path, with slashes as dashes. */
 const stateFile = (projectDir) =>
-	path.join(os.homedir(), '.claude', 'projects', projectDir.replaceAll('/', '-'), '.thiamine-branch-guard.json')
+	path.join(
+		os.homedir(),
+		'.claude',
+		'projects',
+		projectDir.replaceAll('/', '-'),
+		'.thiamine-branch-guard.json',
+	)
 
 function alreadyWarned(file, sessionId, repo) {
 	try {

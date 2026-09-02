@@ -26,10 +26,12 @@ const TEE = /\btee\s+(?:-a\s+)?(?:'([^']+)'|"([^"]+)"|([^\s'"|&;()-][^\s'"|&;()]
 const SED_IN_PLACE = /\bsed\b[^|;&]*?\s-i[^|;&]*?\s(?:'([^']+)'|"([^"]+)"|([^\s'"|&;()]+))\s*$/gm
 
 /** A heredoc into an interpreter. The written path is inside the body, not in the command. */
-const INTERPRETER_HEREDOC = /\b(?:python3?|node|ruby|perl|php|sh|bash|zsh)\b[^|;&\n]*<<-?\s*['"]?(\w+)/
+const INTERPRETER_HEREDOC =
+	/\b(?:python3?|node|ruby|perl|php|sh|bash|zsh)\b[^|;&\n]*<<-?\s*['"]?(\w+)/
 
 /** Without one of these in its body, a script is treated as read-only. */
-const BODY_WRITES = /\bopen\s*\([^)]*['"][wax]|writeFileSync|appendFileSync|\.write\(|Path\([^)]*\)\.write|>\s*['"]?[\w./-]+/
+const BODY_WRITES =
+	/\bopen\s*\([^)]*['"][wax]|writeFileSync|appendFileSync|\.write\(|Path\([^)]*\)\.write|>\s*['"]?[\w./-]+/
 
 /** /dev/null and an unexpanded variable are not files a guard has anything to say about. */
 const isRealTarget = (p) => Boolean(p) && !p.startsWith('/dev/') && !p.startsWith('$')
