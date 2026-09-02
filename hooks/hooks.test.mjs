@@ -250,7 +250,6 @@ test('pr body budget ignores an invocation named inside a heredoc body', () => {
 	assert.equal(out, '', 'prose mentioning the command is prose, not a pull request body')
 })
 
-/** A signal by name, so a test names the condition it is about rather than a list index. */
 const signal = (name) => SIGNALS.find((s) => s.name === name)
 
 test('unlanded-work fires on a branch with no upstream and stays quiet once pushed', () => {
@@ -326,11 +325,9 @@ test('triage-due fires when a watermark is past its cadence, and never on an unc
 
 test('a signal needing a tool the machine lacks is absent, not broken', () => {
 	const dir = repo()
-	const withoutGh = { ...process.env, PATH: '/nonexistent' }
 	const saved = process.env.PATH
 	try {
-		process.env.PATH = withoutGh.PATH
-		// Every gh-backed signal is skipped, and the local ones still answer.
+		process.env.PATH = '/nonexistent'
 		for (const s of SIGNALS.filter((s) => (s.needs ?? []).includes('gh'))) {
 			assert.equal(s.detect({ cwd: dir }), null, `${s.name} must not throw without gh`)
 		}

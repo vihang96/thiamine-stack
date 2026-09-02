@@ -58,14 +58,11 @@ export function blankState() {
 export function readState(file) {
 	try {
 		const parsed = JSON.parse(fs.readFileSync(file, 'utf8'))
-		// Version 2 held no signals. Migrating beats discarding: throwing the file away resets
-		// the turn counters, and the next session start suggests a pass that just ran.
-		if (parsed.version === 2) {
-			parsed.version = 3
-			parsed.signals = {}
-		}
+		// Migrating a version 2 file beats discarding it: throwing it away resets the turn
+		// counters, and the next session start suggests a pass that just ran.
+		if (parsed.version === 2) parsed.version = 3
 		if (parsed.version !== 3) return null
-		// A pass added after this file was written starts from zero rather than crashing.
+		// A pass or a field added after this file was written starts from zero rather than crashing.
 		for (const p of PASSES) parsed.passes[p.name] ??= { turns: 0, lastRunAtMs: 0 }
 		parsed.signals ??= {}
 		return parsed

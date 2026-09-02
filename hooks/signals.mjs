@@ -34,7 +34,7 @@ export const DEFAULT_COOLDOWN_HOURS = 20
 
 const found = new Map()
 
-/** Is this executable on PATH. Cached, because a session start asks the same question twice. */
+/** Cached, because a session start asks about the same executable twice. */
 export function hasTool(name) {
 	if (!found.has(name)) {
 		found.set(name, capture('sh', ['-c', `command -v ${name}`], process.cwd()) !== null)
@@ -42,11 +42,7 @@ export function hasTool(name) {
 	return found.get(name)
 }
 
-/**
- * Run something and return its trimmed stdout, or null. A detector reads state and must never
- * be the reason a session start fails, so every failure mode collapses to "no answer": a
- * missing binary, a non-zero exit, no repo, no auth, a field this version does not have.
- */
+/** Trimmed stdout, or null: a detector must never be the reason a session start fails. */
 export function capture(cmd, args, cwd) {
 	try {
 		return execFileSync(cmd, args, {
@@ -61,6 +57,15 @@ export function capture(cmd, args, cwd) {
 }
 
 const git = (cwd, ...args) => capture('git', args, cwd)
+
+/**
+ * The pull request for the checked-out branch, or null. Each caller asks for its own fields
+ * so a field this `gh` does not have only silences the signal that wanted it.
+ */
+const currentPr = (cwd, fields) => {
+	const out = capture('gh', ['pr', 'status', '--json', `number,${fields}`], cwd)
+	return out ? JSON.parse(out).currentBranch : null
+}
 
 /** The `Where:` line of a handoff record names the branch its work lives on. */
 const branchOf = (record) => record.match(/^Where:.*?\b((?:feat|fix|chore|docs|refactor)\/[\w./-]+)/m)?.[1]
@@ -89,10 +94,11 @@ export const SIGNALS = [
 				why = ['default', `which tracks ${upstream} rather than a branch of its own`]
 			if (!why) return null
 
+			const [tag, because] = why
 			const files = changed.split('\n').length
 			return {
-				key: `${branch}:${why[0]}`,
-				says: `${files} modified file(s) are sitting on ${branch}, ${why[1]}`,
+				key: `${branch}:${tag}`,
+				says: `${files} modified file(s) are sitting on ${branch}, ${because}`,
 			}
 		},
 	},
@@ -126,7 +132,7 @@ export const SIGNALS = [
 
 			const cadence = { daily: 1, weekly: 7 }
 			for (const line of fs.readFileSync(sources, 'utf8').split('\n').slice(1)) {
-				const [name, , , interval] = line.split(/\s{2,}|\t/).map((c) => c?.trim())
+				const [name, , , interval] = line.split(/\s{2,}|\t/).map((c) => c.trim())
 				if (!name || !cadence[interval]) continue
 
 				const mark = path.join(dir, `${name}.watermark`)
@@ -149,8 +155,7 @@ export const SIGNALS = [
 		invoke: '/thiamine:branch-to-pr',
 		needs: ['gh'],
 		detect: ({ cwd }) => {
-			const out = capture('gh', ['pr', 'status', '--json', 'number,statusCheckRollup'], cwd)
-			const pr = out ? JSON.parse(out).currentBranch : null
+			const pr = currentPr(cwd, 'statusCheckRollup')
 			if (!pr) return null
 
 			const failed = (pr.statusCheckRollup ?? []).filter(
@@ -168,8 +173,7 @@ export const SIGNALS = [
 		invoke: '/thiamine:branch-to-pr',
 		needs: ['gh'],
 		detect: ({ cwd }) => {
-			const out = capture('gh', ['pr', 'status', '--json', 'number,reviewDecision'], cwd)
-			const pr = out ? JSON.parse(out).currentBranch : null
+			const pr = currentPr(cwd, 'reviewDecision')
 			if (!pr || pr.reviewDecision !== 'CHANGES_REQUESTED') return null
 			return {
 				key: `${pr.number}:changes-requested`,
@@ -181,7 +185,6 @@ export const SIGNALS = [
 
 const envKey = (name) => `THIAMINE_SIGNAL_${name.replaceAll('-', '_').toUpperCase()}`
 
-/** The first signal that fires, or null. Skips anything switched off, unavailable, or cooling down. */
 export function firstSignal(ctx, fired = {}) {
 	if (process.env.THIAMINE_SIGNALS === '0') return null
 
