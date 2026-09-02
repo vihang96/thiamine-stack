@@ -3,7 +3,7 @@ name: maintain-skills
 description: "Runs a periodic pass over a repo's agent-facing context (rules, skills, AGENTS.md, CLAUDE.md) to find guidance that no longer matches the code, and routes each finding to a fix or a check. Use when asked to audit, refresh, or spring-clean the skills, when the feature map has outgrown what agents are told, when an agent followed stale guidance, or on a cadence after a batch of changes lands."
 disable-model-invocation: true
 owns: "whether the agent-facing context still describes the repo as it is now"
-see_also: [thiamine-author, consistency, reflect]
+see_also: [thiamine-author, consistency, reflect, branch-to-pr]
 ---
 
 # Maintain skills
@@ -109,13 +109,18 @@ Sort before fixing. The routing is the decision; the edit is mechanical.
 - **Not drift.** Say so and move on. A finding you cannot evidence is dropped, not softened
   into a suggestion.
 
-### 5. Present before applying
+### 5. Present the stack's edits, apply the repo's own
 
-Show the findings and their routing, then wait. Do not apply edits from an audit
-unprompted.
+Show the findings and their routing first, either way. What happens next depends on how far
+the artifact reaches.
 
-Context changes affect every future session in every repo the context reaches, so the blast
-radius of a bad audit edit is larger than the blast radius of the drift it was fixing.
+An edit to the stack waits. It changes every future session in every repo the stack reaches,
+so a bad audit edit has a larger blast radius than the drift it was fixing.
+
+An edit to this repo's own context does not wait. `CLAUDE.md`, `AGENTS.md`, and the local
+skills reach this repo, arrive in its diff, and get reviewed there like any other change.
+Apply them, land them through `branch-to-pr`, and report what changed.
+`rules/why/asking.md` draws the line by reach.
 
 ### 6. Land it
 

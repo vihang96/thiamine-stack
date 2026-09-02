@@ -2,7 +2,7 @@
 id: asking
 summary: Answer it by looking. Ask only what a person alone can settle, and where being wrong is expensive or hard to undo.
 enforced_by: review. Nothing mechanical separates a necessary question from work handed back.
-see_also: [pre-implementation, branch-to-pr, handoff]
+see_also: [pre-implementation, branch-to-pr, handoff, maintain-skills, reflect, thiamine-author]
 ---
 
 # Asking
@@ -37,7 +37,7 @@ made.
 | What the product should do, and which tradeoff is acceptable | Anything the code, `git log`, a test run, or a written convention answers |
 | Text that goes to other people under their name or the team's | A branch, a commit, a worktree, a draft, a prototype |
 | A write to a shared system others read, especially unattended or on a schedule | A pull request, which ends at ready for approval. The merge is theirs |
-| A change to how every future session behaves | A reversible change inside a change already agreed |
+| A change to the shared standard: thiamine's own rules, skills, and agents | A change to the worked repo's own context: its `CLAUDE.md`, `AGENTS.md`, and local skills |
 | Anything hard to undo: deleted data, a rotated credential, a publish, a merge | Naming, structure, and ordering inside the work |
 | Genuinely novel and high severity, where guessing is a coin flip | The narrow reading of an ambiguous scope, with the wider one named |
 
@@ -45,6 +45,13 @@ Two things make the difference practical. Reversibility is the first question, n
 severity, because a reversible mistake costs a revert and an irreversible one costs a
 person's morning. And a question is only worth asking once it is specific: the recommendation
 plus what changes if the answer differs, not "how should I do this".
+
+The axis is reach, not artifact type. The same edit is two decisions depending on how many
+repos read it afterwards. A rule in the shared stack reaches every session in every repo, and
+one afternoon of evidence cannot be the review for that. A skill living in the repo being
+worked on reaches that repo, arrives in its diff, and gets reviewed there, so write it, land
+it, and say what you wrote. `maintain-skills` runs that pass in the working repo. Edits to
+the stack itself go through `reflect` or `thiamine-author`, and those wait.
 
 ## When to override
 
