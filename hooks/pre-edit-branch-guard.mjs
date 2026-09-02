@@ -40,9 +40,15 @@ const FALLBACK_DEFAULTS = new Set(['main', 'master'])
 const git = (cwd, args) =>
 	execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim()
 
-/** Walk up to the nearest directory that exists: a Write may name a file and parents that do not. */
-function nearestExistingDir(filePath) {
-	let dir = path.dirname(path.resolve(filePath))
+/**
+ * The nearest existing directory at or above a target. A Write may name a file whose parents
+ * do not exist yet, and a Bash write with no extractable path is a directory already, so
+ * taking `dirname` unconditionally resolves the repo from one level too high and lets the
+ * write through.
+ */
+function nearestExistingDir(target) {
+	const resolved = path.resolve(target)
+	let dir = fs.existsSync(resolved) && fs.statSync(resolved).isDirectory() ? resolved : path.dirname(resolved)
 	for (;;) {
 		if (fs.existsSync(dir)) return dir
 		const parent = path.dirname(dir)

@@ -96,6 +96,17 @@ test('branch guard still denies an Edit on the default branch', () => {
 	assert.equal(decisionOf(out), 'deny')
 })
 
+test('branch guard denies a write it cannot name, on the default branch', () => {
+	const dir = repo()
+	const out = runHook('pre-edit-branch-guard.mjs', {
+		tool_name: 'Bash',
+		tool_input: { command: "python3 - <<'PY'\nopen('f.txt','w').write('x')\nPY" },
+		cwd: dir,
+		session_id: 'unnamed-write',
+	})
+	assert.equal(decisionOf(out), 'deny', 'the case that motivated the change is this one')
+})
+
 test('branch guard allows a Bash command that writes nothing', () => {
 	const dir = repo()
 	const out = runHook('pre-edit-branch-guard.mjs', {
@@ -194,6 +205,13 @@ test('post-edit validate runs for a write it cannot name, and stays quiet otherw
 		cwd: dir,
 	})
 	assert.equal(readOnly, '')
+
+	const notAnEdit = runHook('post-edit-validate.mjs', {
+		tool_name: 'BashOutput',
+		tool_input: { bash_id: '1' },
+		cwd: dir,
+	})
+	assert.equal(notAnEdit, '', 'a matcher of Bash also matches BashOutput, which edits nothing')
 
 	const elsewhere = runHook('post-edit-validate.mjs', {
 		tool_name: 'Bash',

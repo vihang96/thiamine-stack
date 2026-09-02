@@ -56,6 +56,10 @@ function findRoot(fromDir) {
 try {
 	const event = JSON.parse(fs.readFileSync(0, 'utf8'))
 
+	// `Bash` in a matcher is an unanchored regex, so BashOutput and KillShell arrive here too,
+	// and reporting errors "after this edit" when no edit happened is how a hook loses trust.
+	if (!EDITS.has(event.tool_name) && event.tool_name !== 'Bash') done()
+
 	let file = null
 	if (EDITS.has(event.tool_name)) {
 		file = event.tool_input?.file_path ?? null
