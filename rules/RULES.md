@@ -19,6 +19,14 @@ import line names the path.
 
 Rationale: `why/scope.md`.
 
+## Asking
+
+- Answer it by looking. A question the repo already answers is work handed back.
+- Ask what only a person can settle, and where being wrong is expensive or hard to undo.
+- Act where it is reversible, then confirm the decision. Do not request it.
+
+Rationale: `why/asking.md`.
+
 ## Abstraction
 
 - Solve the case in front of you. Abstract on the second real use, not the first.
