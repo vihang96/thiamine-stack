@@ -152,10 +152,15 @@ That is the only check that the description works, and no static check replaces 
 
 ```sh
 node scripts/validate.mjs
+node --test "hooks/**\/*.test.mjs" "skills/**\/*.test.mjs"   # if you touched either
 ```
 
 Errors must be zero. Read every warning, then either fix it or say why it is wrong.
 Never report finishing with warnings you have not read.
+
+The validator reads artifacts, so it says nothing about a hook or a script you changed.
+Those have tests, and a hook that stops firing fails nothing else: it just stops working,
+quietly, which is the failure that took three pull requests to notice.
 
 Then check the one thing the validator cannot. Describe out loud the situation that
 should trigger this artifact, and confirm that the description you wrote matches it.
