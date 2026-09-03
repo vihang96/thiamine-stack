@@ -28,9 +28,10 @@ while checkout is down is one you learn to skip when it matters.
 
 ## Scale to the queue
 
-One error somebody hands you is not a queue. Fingerprinting it, opening a ledger, and
-writing a verdict row costs more than reading the stack trace and fixing it, and a skill that
-demands the machinery for a single item is one people route around when the queue is real.
+One error somebody hands you is not a queue. Fingerprinting it, opening a ledger and writing
+a verdict row costs more than reading the stack trace and fixing it. A skill that demands the
+machinery for a single item is one people route around when the queue is real, and then it is
+not there for the case it was written for.
 
 Take the short path when all three hold:
 
@@ -45,8 +46,8 @@ with the evidence. `playbooks/file-the-task.md` still applies to the words, beca
 is read by a stranger either way.
 
 Two things never scale down. A signal going to a tracker on a schedule gets a fingerprint,
-because filing twice is the failure that reaches other people. And a drop stays a drop only
-if it is written down, or the next look pays for it again.
+because filing twice is the failure that reaches other people. And a drop counts only once
+written down, or the next look pays for it again.
 
 ## Three rules that outrank the rest
 
