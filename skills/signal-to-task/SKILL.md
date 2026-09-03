@@ -51,6 +51,11 @@ This skill owns the signal until it becomes a task, a merge, a watch, or a drop.
   justified filing.
 - `branch-to-pr` lands the fix. Its `triage-review-comments` playbook is a different
   inbound: comments on your own change, which arrive from a person who read your diff.
+  A failing check divides the same way. On work you are carrying, a red pull request or a
+  red default branch you just landed on is `drive-ci-green`, and its `watch-checks.mjs` is
+  what reports it. What is here is the queue nobody owns: flakes accumulating by rate, a job
+  that has failed for weeks in a repo you have no change in. The question there is whether it
+  earns a task at all, which is not a question about getting your own change green.
 - `interrogate` judges an artifact a person or an agent produced. A signal was produced by
   nobody, which is why it is here: there is no author, no intent, and no claim to check.
 - `experimentation` owns a sustained run against a metric. A filed performance task with a
