@@ -2,8 +2,8 @@
 /**
  * PostToolUse hook. Runs the stack's own validator after an artifact in it is edited.
  *
- * The mechanical half of maintenance needs no pass and no approval. It is a 30ms script
- * with a deterministic answer, so it should run at the moment the defect is introduced
+ * The mechanical half of maintenance needs no pass and no approval. It is a fast script with
+ * a deterministic answer, so it should run at the moment the defect is introduced
  * rather than wait for somebody to remember. An error found now costs one edit; the same
  * error found in a maintain-skills pass next month costs a reconstruction of why.
  *
