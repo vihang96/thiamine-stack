@@ -6,22 +6,21 @@
  *   node watch-checks.mjs --json [repo-root]    # the same answer as data
  *   node watch-checks.mjs --new [repo-root]     # only what has changed since it last reported
  *
- * Two callers, and they dedupe differently, which is why `--new` is a flag rather than the
- * default. A cron entry wants only what changed, so it stays quiet on the run that is still
- * red for the reason it was red an hour ago. A session-start hook has its own per-condition
- * cooldown and wants current state.
+ * `--new` is a flag rather than the default because the two callers dedupe differently: a cron
+ * entry wants only what changed, and the session-start hook has its own cooldown and wants
+ * current state.
  *
- * Exit 0 with no output is the real answer "nothing is failing". Exit 1 is this script being
- * unable to answer at all: no `gh`, no auth, not a repo. That distinction is the one
- * `pr-status.sh` and `audit.sh` beside this file already draw, because a silent zero and an
- * empty answer look identical in a scheduler's log.
+ * Exit 0 with no output is the answer "nothing is failing". Exit 1 is this script being unable
+ * to answer at all: no `gh`, no auth, not a repo. `pr-status.sh` and `audit.sh` beside it draw
+ * the same line, because a silent zero and an empty answer look identical in a scheduler's log.
  */
 import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 
 const args = process.argv.slice(2)
-const flags = new Set(args.filter((a) => a.startsWith('--')))
+const onlyNew = args.includes('--new')
+const asJson = args.includes('--json')
 const root = args.find((a) => !a.startsWith('--')) ?? process.cwd()
 
 const run = (cmd, cmdArgs) => {
@@ -65,16 +64,13 @@ const prs = run('gh', [
 ])
 if (prs === null) die('gh could not list pull requests, which usually means no auth for this repo')
 
-const red = []
-for (const pr of JSON.parse(prs)) {
-	const checks = failing(pr.statusCheckRollup)
-	if (checks.length === 0) continue
-	red.push({
+const red = JSON.parse(prs)
+	.map((pr) => ({
 		what: `#${pr.number} ${pr.headRefName}`,
 		sha: pr.headRefOid?.slice(0, 7) ?? '',
-		checks,
-	})
-}
+		checks: failing(pr.statusCheckRollup),
+	}))
+	.filter((item) => item.checks.length > 0)
 
 // The default branch has no pull request of its own, so its failures only show up here.
 const head = run('git', ['symbolic-ref', '--short', 'refs/remotes/origin/HEAD'])
@@ -101,25 +97,22 @@ if (defaultBranch) {
 }
 
 /**
- * What was reported last time, so `--new` can stay quiet. Keyed on the head sha as well as
- * the check names: the same PR failing the same check on a new commit is a new failure, and
- * a push that fixed nothing is not.
+ * Keyed on the head sha as well as the check names, so the same check failing on a new commit
+ * reads as a new failure and a push that fixed nothing does not.
  */
-const ledger = path.join(root, '.thiamine', 'watch-checks.json')
 const fingerprint = (item) => `${item.what}@${item.sha}:${item.checks.sort().join(',')}`
 
-let seen = {}
-if (flags.has('--new')) {
+let report = red
+if (onlyNew) {
+	const ledger = path.join(root, '.thiamine', 'watch-checks.json')
+	let seen
 	try {
 		seen = JSON.parse(fs.readFileSync(ledger, 'utf8'))
 	} catch {
 		seen = {}
 	}
-}
+	report = red.filter((item) => !seen[fingerprint(item)])
 
-const report = flags.has('--new') ? red.filter((item) => !seen[fingerprint(item)]) : red
-
-if (flags.has('--new')) {
 	const now = Object.fromEntries(red.map((item) => [fingerprint(item), Date.now()]))
 	fs.mkdirSync(path.dirname(ledger), { recursive: true })
 	fs.writeFileSync(ledger, `${JSON.stringify(now, null, 2)}\n`)
@@ -127,7 +120,7 @@ if (flags.has('--new')) {
 
 if (report.length === 0) process.exit(0)
 
-if (flags.has('--json')) {
+if (asJson) {
 	process.stdout.write(`${JSON.stringify(report)}\n`)
 } else {
 	for (const item of report) {

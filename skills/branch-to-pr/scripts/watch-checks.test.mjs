@@ -25,11 +25,7 @@ function repo() {
 	git(dir, 'config', 'user.email', 't@example.com')
 	git(dir, 'config', 'user.name', 'T')
 	git(dir, 'commit', '-q', '--allow-empty', '-m', 'init')
-	fs.mkdirSync(path.join(dir, '.git', 'refs', 'remotes', 'origin'), { recursive: true })
-	fs.writeFileSync(
-		path.join(dir, '.git', 'refs', 'remotes', 'origin', 'HEAD'),
-		'ref: refs/remotes/origin/main\n',
-	)
+	git(dir, 'symbolic-ref', 'refs/remotes/origin/HEAD', 'refs/remotes/origin/main')
 	return dir
 }
 
@@ -125,3 +121,4 @@ test('being unable to answer is exit 1 on stderr, not silence', () => {
 	assert.equal(notARepo.status, 1)
 	assert.match(notARepo.stderr, /not a git repository/)
 })
+
