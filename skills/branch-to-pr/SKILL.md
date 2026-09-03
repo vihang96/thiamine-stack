@@ -2,7 +2,7 @@
 name: branch-to-pr
 description: "Decides where a change lands and carries it from there to a pull request ready for approval, in one repo or several. Use before the first edit of any change that will be committed, when work touches more than one service, when creating or cleaning up worktrees, when pausing or resuming a session, when opening or stacking pull requests, when checks are failing or a pull request needs to go green, or when addressing or triaging review comments."
 owns: "where a change lands, the worktree lifecycle, and the git side of stopping and resuming, in one repo or many"
-see_also: [pre-implementation, handoff, fan-out-work, working-alongside, interrogate, post-implementation]
+see_also: [pre-implementation, handoff, fan-out-work, working-alongside, interrogate, post-implementation, signal-to-task]
 ---
 
 # Branch to PR
@@ -70,6 +70,11 @@ provides for those still applies.
 It does not own what a handoff record says either. The `handoff` skill defines that, and
 `pause-safely` and `session-pickup` use it. What stays here is the git side: the commit in
 each worktree, and checking whether the base moved while you were gone.
+
+It does not own a failing check that belongs to nobody. A red check on a change you are
+carrying is `drive-ci-green`, and `scripts/watch-checks.mjs` reports it. A queue of flakes,
+or a job that has failed for weeks where you have no change in flight, is a signal to triage
+rather than a change to get green. `signal-to-task` decides whether it earns work at all.
 
 It does not own running several changes at once. This skill carries one change, and each
 parallel lane runs it. `fan-out-work` owns lanes this session spawned, and

@@ -34,7 +34,7 @@ makes the watermark safe.
    | Tracker | items in the triage state, plus anything untouched past its age | the existing item is the fingerprint | a ticket already filed is a claim, not evidence. Check it before re-filing its cause |
    | Logs | error and warn aggregated by template, with counts and slope | the message with ids, uuids, and numbers stripped | volume follows traffic. Compare rates, never counts, across windows |
    | Run queue | failed and stuck runs, and exceptions nobody has answered | the failing step plus the error class | a customer-visible failure hides here behind an ordinary-looking retry |
-   | CI | jobs failing on the default branch, and flakes by rate | the test id plus the assertion | a flake is a signal about the test, and a real one about the code. Do not merge them |
+   | CI | flakes by rate, and a job failing where nobody has a change in flight | the test id plus the assertion | a flake is a signal about the test, and a real one about the code. Do not merge them. A red check on your own change is `drive-ci-green`, not this |
 
 3. Cap the read. Take the top N by cost per kind, then say what N was and what you left.
    Reading everything and running out of context halfway leaves no record of either.
