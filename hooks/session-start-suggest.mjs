@@ -50,13 +50,12 @@ try {
 	for (const pass of PASSES) {
 		const { turns, lastRunAtMs } = state.passes[pass.name]
 		const minutesSince = lastRunAtMs > 0 ? (Date.now() - lastRunAtMs) / 60_000 : Infinity
-		let hit = null
 		try {
-			hit = pass.due({ name: pass.name, turns, lastRunAtMs, minutesSince, cwd: projectDir })
+			const hit = pass.due({ name: pass.name, turns, lastRunAtMs, minutesSince, cwd: projectDir })
+			if (hit) due.push({ pass, ...hit })
 		} catch {
-			continue
+			// A measure that throws costs its own pass, not the session start.
 		}
-		if (hit) due.push({ pass, ...hit })
 	}
 
 	if (due.length === 0) process.exit(0)

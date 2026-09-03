@@ -415,9 +415,15 @@ test('the suggest hook prints one line for a signal and records it', () => {
 	assert.equal(again, '', 'the same condition does not speak twice')
 })
 
-/** A pass by name, so a test names the cadence it is about rather than a list index. */
-const pass = (name) => PASSES.find((p) => p.name === name)
-const noRun = { lastRunAtMs: 0, minutesSince: Infinity }
+/** Asks one pass whether it is due, with nothing having run before unless the case says so. */
+const due = (name, over) =>
+	PASSES.find((p) => p.name === name).due({
+		name,
+		turns: 0,
+		lastRunAtMs: 0,
+		minutesSince: Infinity,
+		...over,
+	})
 
 test('every pass declares a due measure and a slash command that exists', () => {
 	for (const p of PASSES) {
@@ -428,52 +434,42 @@ test('every pass declares a due measure and a slash command that exists', () => 
 })
 
 test('the mining passes still wait for turns and for elapsed time', () => {
-	const cl = pass('continual-learning')
+	assert.equal(due('continual-learning', { turns: 9 }), null, 'under the turn bar')
+	assert.match(due('continual-learning', { turns: 10 }).says, /10 turns/)
 	assert.equal(
-		cl.due({ name: 'continual-learning', turns: 9, ...noRun }),
-		null,
-		'under the turn bar',
-	)
-	assert.match(cl.due({ name: 'continual-learning', turns: 10, ...noRun }).says, /10 turns/)
-	assert.equal(
-		cl.due({ name: 'continual-learning', turns: 50, lastRunAtMs: Date.now(), minutesSince: 5 }),
+		due('continual-learning', { turns: 50, lastRunAtMs: Date.now(), minutesSince: 5 }),
 		null,
 		'it ran five minutes ago',
 	)
 })
 
 test('capture-preferences waits for a body of work, not for a session', () => {
-	const cp = pass('capture-preferences')
-	assert.equal(cp.due({ name: 'capture-preferences', turns: 40, ...noRun }), null)
-	assert.match(cp.due({ name: 'capture-preferences', turns: 60, ...noRun }).says, /how you work/)
+	assert.equal(due('capture-preferences', { turns: 40 }), null)
+	assert.match(due('capture-preferences', { turns: 60 }).says, /how you work/)
 })
 
 test('maintain-skills counts commits, and is absent where there is nothing to audit', () => {
 	const bare = repo()
-	assert.equal(
-		pass('maintain-skills').due({ name: 'maintain-skills', turns: 999, cwd: bare, ...noRun }),
-		null,
-		'a repo with no agent-facing context has no drift to find',
-	)
+	// Turns are banked well past every other pass's bar, to show this one does not count them.
+	const audit = (over) => due('maintain-skills', { turns: 999, cwd: bare, ...over })
+	assert.equal(audit(), null, 'a repo with no agent-facing context has no drift to find')
 
 	fs.mkdirSync(path.join(bare, 'skills'))
 	fs.writeFileSync(path.join(bare, 'skills', 'x.md'), 'x\n')
 	for (let i = 0; i < 3; i++) git(bare, 'commit', '-q', '--allow-empty', '-m', `c${i}`)
 
-	const ctx = { name: 'maintain-skills', turns: 999, cwd: bare, ...noRun }
-	assert.equal(pass('maintain-skills').due(ctx), null, 'four commits is under the default bar')
+	assert.equal(audit(), null, 'four commits is under the default bar')
 
 	try {
 		process.env.THIAMINE_MAINTAIN_SKILLS_MIN_COMMITS = '4'
-		const hit = pass('maintain-skills').due(ctx)
+		const hit = audit()
 		assert.match(hit.says, /commits have landed and no pass has ever run here/)
 		assert.ok(hit.overdue >= 1)
 	} finally {
 		delete process.env.THIAMINE_MAINTAIN_SKILLS_MIN_COMMITS
 	}
 
-	const recent = { ...ctx, lastRunAtMs: Date.now(), minutesSince: 10 }
-	assert.equal(pass('maintain-skills').due(recent), null, 'it ran ten minutes ago')
+	assert.equal(audit({ lastRunAtMs: Date.now(), minutesSince: 10 }), null, 'it ran ten minutes ago')
 })
 
 test('a pass whose measure throws does not take the session start down', () => {

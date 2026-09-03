@@ -18,11 +18,7 @@ import path from 'node:path'
 /** Milliseconds any one probe may spend. A session start that waits is worse than a quiet one. */
 const PROBE_TIMEOUT = 2500
 
-/**
- * Trimmed stdout, or null: nothing here may be the reason a session start fails. Every failure
- * mode collapses to no answer, including a missing binary, no repo, no auth, and a flag this
- * version of the tool does not have.
- */
+/** Trimmed stdout, or null: a probe must never be the reason a session start fails. */
 export function capture(cmd, args, cwd) {
 	try {
 		return execFileSync(cmd, args, {
@@ -45,6 +41,24 @@ export function hasTool(name) {
 	return tools.get(name)
 }
 
+/** One pass's bar, overridable with THIAMINE_<NAME>_<MEASURE>, hyphens as underscores. */
+const bar = (name, measure, fallback) => {
+	const key = `THIAMINE_${name.replaceAll('-', '_').toUpperCase()}_${measure}`
+	return positiveInt(process.env[key], fallback)
+}
+
+/** The default measure: turns of transcript, and enough wall-clock that a pass cannot repeat. */
+const byTurns =
+	(minTurns, minMinutes, says) =>
+	({ name, turns, minutesSince }) => {
+		const wantTurns = bar(name, 'MIN_TURNS', minTurns)
+		const wantMinutes = bar(name, 'MIN_MINUTES', minMinutes)
+		if (turns < wantTurns || minutesSince < wantMinutes) return null
+		// Rank by how far past its own bar a pass is, so the more neglected one wins rather
+		// than whichever happens to be first in the list.
+		return { says: says(turns), overdue: turns / wantTurns }
+	}
+
 /**
  * A pass runs when enough has accumulated behind it, and `due` decides what accumulates.
  *
@@ -61,24 +75,8 @@ export function hasTool(name) {
  * installed Claude Code plugin, where that is the skill's real name. The bare name does not
  * resolve there, and a suggestion naming a command that does not exist is worse than none.
  *
- * Adding a pass is one entry. Override any threshold with THIAMINE_<NAME>_MIN_TURNS or
- * _MIN_MINUTES, upper-cased with hyphens as underscores.
+ * Adding a pass is one entry, and nothing else changes.
  */
-const envKey = (name, suffix) => `THIAMINE_${name.replaceAll('-', '_').toUpperCase()}_${suffix}`
-
-/** The default measure: turns of transcript, and enough wall-clock that a pass cannot repeat. */
-const byTurns = (minTurns, minMinutes, says) => {
-	const measure = ({ name, turns, minutesSince }) => {
-		const wantTurns = positiveInt(process.env[envKey(name, 'MIN_TURNS')], minTurns)
-		const wantMinutes = positiveInt(process.env[envKey(name, 'MIN_MINUTES')], minMinutes)
-		if (turns < wantTurns || minutesSince < wantMinutes) return null
-		// Rank by how far past its own bar a pass is, so the more neglected one wins rather
-		// than whichever happens to be first in the list.
-		return { says: says(turns), overdue: turns / wantTurns }
-	}
-	return measure
-}
-
 export const PASSES = [
 	{
 		name: 'continual-learning',
@@ -106,22 +104,20 @@ export const PASSES = [
 		name: 'maintain-skills',
 		invoke: '/thiamine:maintain-skills',
 		due: ({ name, cwd, lastRunAtMs, minutesSince }) => {
+			// The elapsed-time gate is free, and everything below it costs a subprocess.
+			if (minutesSince < bar(name, 'MIN_MINUTES', 4320)) return null
+
 			// A repo with no agent-facing context has nothing to audit, so this pass is absent
 			// there rather than firing on every commit.
 			const root = capture('git', ['rev-parse', '--show-toplevel'], cwd)
 			if (!root) return null
-			const context = ['CLAUDE.md', 'AGENTS.md', 'skills', 'rules'].some((f) =>
-				fs.existsSync(path.join(root, f)),
-			)
-			if (!context) return null
-
-			const wantCommits = positiveInt(process.env[envKey(name, 'MIN_COMMITS')], 15)
-			const wantMinutes = positiveInt(process.env[envKey(name, 'MIN_MINUTES')], 4320)
-			if (minutesSince < wantMinutes) return null
+			const agentFacing = ['CLAUDE.md', 'AGENTS.md', 'skills', 'rules']
+			if (!agentFacing.some((f) => fs.existsSync(path.join(root, f)))) return null
 
 			const since = lastRunAtMs > 0 ? [`--since=${new Date(lastRunAtMs).toISOString()}`] : []
-			const landed = Number(capture('git', ['rev-list', '--count', 'HEAD', ...since], cwd) ?? 0)
-			if (!landed || landed < wantCommits) return null
+			const landed = positiveInt(capture('git', ['rev-list', '--count', 'HEAD', ...since], cwd), 0)
+			const wantCommits = bar(name, 'MIN_COMMITS', 15)
+			if (landed < wantCommits) return null
 
 			const window = lastRunAtMs > 0 ? 'since the last pass' : 'and no pass has ever run here'
 			return {
