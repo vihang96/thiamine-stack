@@ -1,7 +1,10 @@
 /**
  * Tests for watch-checks.mjs, with a stub `gh` on PATH.
  *
- *   node --test "**\/*.test.mjs"
+ *   node --test "hooks/**\/*.test.mjs" "skills/**\/*.test.mjs"
+ *
+ * Those two patterns rather than one `**`, because a `tree/` worktree is a checkout of another
+ * branch and sweeping it runs that branch's suite alongside this one.
  *
  * A watcher whose only test is "it ran against a repo with no CI" proves nothing. This repo
  * has no checks configured, so every real run here is silent for the wrong reason.
