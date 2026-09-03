@@ -58,9 +58,14 @@ Audit what changed, not everything. The last audit is the boundary, and git alre
 where it is:
 
 ```sh
-git log --oneline -1 --grep='maintain-skills'      # the last pass
-git diff --stat <that commit>..HEAD            # ground that moved since
+git log -1 --format=%h --grep='^Maintain-Skills-Pass:'   # the last pass, or nothing
+git diff --stat <that commit>..HEAD                      # ground that moved since
 ```
+
+The marker is a trailer and not a phrase, because a phrase matches any commit that mentions
+this skill. Grepping for `maintain-skills` on 09-03 returned a merge commit from the pull
+request that put the pass on a cadence, where no pass had run, so the window would have
+started from the wrong boundary and said nothing about it.
 
 If there is no previous pass, take the last month, or the whole corpus if it is small.
 Say which window you took.
@@ -124,8 +129,15 @@ Apply them, land them through `branch-to-pr`, and report what changed.
 
 ### 6. Land it
 
-Commit with `maintain-skills` in the message, so the next pass can find this one and fix its
-window from it. That sentence is the only state this skill keeps.
+Commit with a trailer, so the next pass can find this one and take its window from it:
+
+```
+Maintain-Skills-Pass: 2026-09-03
+```
+
+That trailer is the only state this skill keeps. Put it on the commit that lands the edits,
+or on an empty commit when the pass found nothing, because a pass that found nothing still
+moved the boundary.
 
 ## Verify
 
