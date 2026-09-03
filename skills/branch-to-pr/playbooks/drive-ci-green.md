@@ -14,6 +14,18 @@ Merging is the human's, after approval. This playbook ends at green, not at land
    It names each failing check. A change spanning repos is as green as its worst repo, so
    never report one repo green while another is red.
 
+   For every open pull request at once, rather than one branch, and for the default branch,
+   which has no pull request of its own:
+
+   ```sh
+   node scripts/watch-checks.mjs <repo-root>          # current state, quiet when green
+   node scripts/watch-checks.mjs --new <repo-root>    # only what changed since it last said
+   ```
+
+   `--new` is what a cron entry wants, since it stays quiet on a run still red for the reason
+   it was red an hour ago. A session start already reports the first failure it finds
+   without being asked.
+
 2. Fix the cause, not the symptom. Read the failing job's log before changing anything. A
    check that fails for a reason unrelated to the diff, such as a flaky integration test
    or a missing secret, is still worth naming, but it is not yours to paper over with a

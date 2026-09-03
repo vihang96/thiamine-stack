@@ -1,7 +1,7 @@
 /**
  * Tests for the hooks, run as the harness runs them: JSON on stdin, a decision on stdout.
  *
- *   node --test hooks/
+ *   node --test "hooks/**\/*.test.mjs" "skills/**\/*.test.mjs"
  *
  * The Bash cases are the ones worth having. A guard that matches only the Edit tools reads as
  * working right up to the moment a session writes with `cat >`. Nothing caught that, because
