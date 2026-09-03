@@ -6,9 +6,9 @@
  *   node watch-checks.mjs --json [repo-root]    # the same answer as data
  *   node watch-checks.mjs --new [repo-root]     # only what has changed since it last reported
  *
- * `--new` is a flag rather than the default because the two callers dedupe differently: a cron
- * entry wants only what changed, and the session-start hook has its own cooldown and wants
- * current state.
+ * `--new` is a flag rather than the default because the two callers dedupe differently. A cron
+ * entry wants only what changed. The session-start hook has its own cooldown and wants current
+ * state.
  *
  * Exit 0 with no output is the answer "nothing is failing". Exit 1 is this script being unable
  * to answer at all: no `gh`, no auth, not a repo. `pr-status.sh` and `audit.sh` beside it draw
@@ -50,10 +50,10 @@ if (!run('sh', ['-c', 'command -v gh'])) die('gh is not installed, so checks can
  * stop a merge as surely as a failure does.
  *
  * A check with no verdict yet is running, not failing. That is the one place the two scripts
- * differ on purpose: `pr-status.sh` reads a PENDING status context as not passing, which is
- * right for a snapshot of one branch and wrong for a watcher that would then fire on every
+ * differ on purpose. `pr-status.sh` reads a PENDING status context as not passing, which is
+ * right for a snapshot of one branch and wrong for a watcher, which would then fire on every
  * push. The rollup carries a conclusion for a workflow and a state for a status context, and
- * `gh run list` lower-cases the same words, hence the fold.
+ * `gh run list` lower-cases the same words, so everything is upper-cased before comparing.
  */
 const PASSING = new Set(['SUCCESS', 'NEUTRAL', 'SKIPPED'])
 const IN_FLIGHT = new Set(['PENDING', 'EXPECTED', 'QUEUED', 'IN_PROGRESS', 'WAITING', 'REQUESTED'])

@@ -3,7 +3,7 @@
  *
  *   node --test "**\/*.test.mjs"
  *
- * A watcher whose only test is "it ran against a repo with no CI" proves nothing: this repo
+ * A watcher whose only test is "it ran against a repo with no CI" proves nothing. This repo
  * has no checks configured, so every real run here is silent for the wrong reason.
  */
 import assert from 'node:assert/strict'

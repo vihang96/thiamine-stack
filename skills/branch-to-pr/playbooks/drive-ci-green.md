@@ -22,8 +22,8 @@ Merging is the human's, after approval. This playbook ends at green, not at land
    node scripts/watch-checks.mjs --new <repo-root>    # only what changed since it last said
    ```
 
-   `--new` is what a cron entry wants: it stays quiet on the run that is still red for the
-   reason it was red an hour ago. A session start already reports the first failure it finds
+   `--new` is what a cron entry wants, since it stays quiet on a run still red for the reason
+   it was red an hour ago. A session start already reports the first failure it finds
    without being asked.
 
 2. Fix the cause, not the symptom. Read the failing job's log before changing anything. A

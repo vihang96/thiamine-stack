@@ -140,7 +140,7 @@ export const SIGNALS = [
 		invoke: '/thiamine:branch-to-pr',
 		needs: ['gh'],
 		detect: ({ cwd }) => {
-			// No `--new`, because the cooldown below is this caller's dedupe: it wants current state.
+			// No `--new` here. The cooldown below is this caller's dedupe, so it wants current state.
 			const out = capture(process.execPath, [WATCH_CHECKS, '--json', cwd], cwd)
 			if (!out) return null
 
