@@ -26,6 +26,28 @@ An active incident is mitigation work: roll back, fail over, shed load, stop the
 Do that, and triage what is left afterwards. A skill that tells you to fingerprint a queue
 while checkout is down is one you learn to skip when it matters.
 
+## Scale to the queue
+
+One error somebody hands you is not a queue. Fingerprinting it, opening a ledger, and
+writing a verdict row costs more than reading the stack trace and fixing it, and a skill that
+demands the machinery for a single item is one people route around when the queue is real.
+
+Take the short path when all three hold:
+
+- **One item**, or few enough to hold in your head without a list.
+- **Someone is watching it.** A person handed it over and will read the answer, so nothing
+  has to survive until the next sweep.
+- **No schedule.** Nothing will re-read this source unattended, so there is nothing for a
+  fingerprint or a watermark to make safe.
+
+The short path is: say what it is, say what it costs to leave, and either fix it or file it
+with the evidence. `playbooks/file-the-task.md` still applies to the words, because the task
+is read by a stranger either way.
+
+Two things never scale down. A signal going to a tracker on a schedule gets a fingerprint,
+because filing twice is the failure that reaches other people. And a drop stays a drop only
+if it is written down, or the next look pays for it again.
+
 ## Three rules that outrank the rest
 
 **Every signal leaves with a verdict.** Including the boring ones, and including the ones
