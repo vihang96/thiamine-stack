@@ -74,7 +74,7 @@ each worktree, and checking whether the base moved while you were gone.
 It does not own a failing check that belongs to nobody. A red check on a change you are
 carrying is `drive-ci-green`, and `scripts/watch-checks.mjs` reports it. A queue of flakes,
 or a job that has failed for weeks where you have no change in flight, is a signal to triage
-rather than a change to get green, and `signal-to-task` owns deciding whether it earns work.
+rather than a change to get green. `signal-to-task` decides whether it earns work at all.
 
 It does not own running several changes at once. This skill carries one change, and each
 parallel lane runs it. `fan-out-work` owns lanes this session spawned, and
