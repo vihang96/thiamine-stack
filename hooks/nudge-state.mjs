@@ -97,7 +97,7 @@ export const PASSES = [
 		invoke: '/thiamine:capture-preferences',
 		// No mechanical signal says a correction about *how* to work has recurred, so this is a
 		// prompt to look after a body of work, not evidence that something is due. Hence the
-		// high bar: a fortnight of elapsed time as well as the turns.
+		// high bar, a fortnight of elapsed time as well as the turns.
 		due: byTurns(60, 20_160, (t) => `${t} turns have gone by without capturing how you work`),
 	},
 	{
@@ -143,7 +143,7 @@ export function blankState() {
 export function readState(file) {
 	try {
 		const parsed = JSON.parse(fs.readFileSync(file, 'utf8'))
-		// Migrating a version 2 file beats discarding it: throwing it away resets the turn
+		// Migrating a version 2 file beats discarding it. Throwing it away resets the turn
 		// counters, and the next session start suggests a pass that just ran.
 		if (parsed.version === 2) parsed.version = 3
 		if (parsed.version !== 3) return null
