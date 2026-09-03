@@ -47,6 +47,15 @@ holds the stack to its own standards; a hook runs it after every edit to an arti
 structural error surfaces in the same turn that caused it. `lint/<language>/` carries the
 rules a linter can enforce in your repos.
 
+The hooks and the skill scripts have tests, which is what a change to either has to pass:
+
+```sh
+node --test "hooks/**\/*.test.mjs" "skills/**\/*.test.mjs"
+```
+
+Two patterns rather than one `**`, because a `tree/` worktree is another branch's checkout
+and sweeping it runs that branch's suite alongside this one.
+
 A hook is also how the parallelism layer avoids depending on an agent choosing to look. A
 skill only loads when the agent recognises the situation, so the session most likely to
 collide with someone is the one that never loaded the skill. At session start a hook reads
