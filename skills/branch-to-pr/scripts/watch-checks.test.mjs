@@ -122,3 +122,34 @@ test('being unable to answer is exit 1 on stderr, not silence', () => {
 	assert.match(notARepo.stderr, /not a git repository/)
 })
 
+test('a cancelled or action-required check counts, matching what pr-status.sh calls failing', () => {
+	const pr = {
+		...failingPr,
+		statusCheckRollup: [
+			{ name: 'build', conclusion: 'CANCELLED' },
+			{ name: 'deploy', conclusion: 'ACTION_REQUIRED' },
+			{ name: 'lint', conclusion: 'SKIPPED' },
+		],
+	}
+	const out = runScript(repo(), stubGh({ prs: [pr] }))
+	assert.match(out.stdout, /build, deploy/)
+	assert.doesNotMatch(out.stdout, /lint/, 'skipped is passing, per the shared allowlist')
+})
+
+test('a check still running is not failing, which is where this differs from pr-status.sh', () => {
+	const pr = {
+		...failingPr,
+		statusCheckRollup: [
+			{ name: 'build', conclusion: null, status: 'IN_PROGRESS' },
+			{ context: 'ci/legacy', state: 'PENDING' },
+		],
+	}
+	const out = runScript(repo(), stubGh({ prs: [pr] }))
+	assert.equal(out.stdout, '', 'a watcher that fires on every push is one people mute')
+	assert.equal(out.status, 0)
+})
+
+test('a cancelled run on the default branch is reported too', () => {
+	const runs = [{ conclusion: 'cancelled', workflowName: 'ci', headSha: 'aaaaaaa1111' }]
+	assert.match(runScript(repo(), stubGh({ prs: [], runs })).stdout, /main \(no PR\) aaaaaaa: ci/)
+})

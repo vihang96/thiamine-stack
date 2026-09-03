@@ -44,12 +44,28 @@ const die = (why) => {
 if (!run('git', ['rev-parse', '--show-toplevel'])) die(`${root} is not a git repository`)
 if (!run('sh', ['-c', 'command -v gh'])) die('gh is not installed, so checks cannot be read')
 
-/** A rollup entry is failing whichever shape this gh version returns it in. */
+/**
+ * The allowlist `pr-status.sh` beside this file already uses, so the two agree on the word.
+ * Anything with a verdict outside it counts, including CANCELLED and ACTION_REQUIRED, which
+ * stop a merge as surely as a failure does.
+ *
+ * A check with no verdict yet is running, not failing. That is the one place the two scripts
+ * differ on purpose: `pr-status.sh` reads a PENDING status context as not passing, which is
+ * right for a snapshot of one branch and wrong for a watcher that would then fire on every
+ * push. The rollup carries a conclusion for a workflow and a state for a status context, and
+ * `gh run list` lower-cases the same words, hence the fold.
+ */
+const PASSING = new Set(['SUCCESS', 'NEUTRAL', 'SKIPPED'])
+const IN_FLIGHT = new Set(['PENDING', 'EXPECTED', 'QUEUED', 'IN_PROGRESS', 'WAITING', 'REQUESTED'])
+
+const isFailing = (verdict) => {
+	const word = (verdict ?? '').toUpperCase()
+	return Boolean(word) && !IN_FLIGHT.has(word) && !PASSING.has(word)
+}
+
 const failing = (rollup) =>
 	(rollup ?? [])
-		.filter(
-			(c) => c.conclusion === 'FAILURE' || c.state === 'FAILURE' || c.conclusion === 'TIMED_OUT',
-		)
+		.filter((c) => isFailing(c.conclusion || c.state))
 		.map((c) => c.name ?? c.context ?? 'check')
 
 const prs = run('gh', [
@@ -87,7 +103,7 @@ if (defaultBranch) {
 		'conclusion,displayTitle,headSha,workflowName',
 	])
 	const [last] = latest ? JSON.parse(latest) : []
-	if (last && (last.conclusion === 'failure' || last.conclusion === 'timed_out')) {
+	if (last && isFailing(last.conclusion)) {
 		red.push({
 			what: `${defaultBranch} (no PR)`,
 			sha: last.headSha?.slice(0, 7) ?? '',
