@@ -472,7 +472,28 @@ test('maintain-skills counts commits, and is absent where there is nothing to au
 	assert.equal(audit({ lastRunAtMs: Date.now(), minutesSince: 10 }), null, 'it ran ten minutes ago')
 })
 
-test('a pass whose measure throws does not take the session start down', () => {
-	const out = runHook('session-start-suggest.mjs', { cwd: '/nonexistent-path-for-a-hook-test' })
-	assert.equal(out, '')
+test('the pass with the most behind it is the one named at session start', () => {
+	const dir = repo()
+	const home = tmp('thiamine-home-')
+	const stateDir = path.join(home, '.claude', 'projects', dir.replaceAll('/', '-'))
+	fs.mkdirSync(stateDir, { recursive: true })
+	fs.writeFileSync(
+		path.join(stateDir, '.thiamine-nudge.json'),
+		JSON.stringify({
+			version: 3,
+			transcriptMtimeMs: Date.now(),
+			passes: {
+				'continual-learning': { turns: 50, lastRunAtMs: 0 },
+				reflect: { turns: 50, lastRunAtMs: 0 },
+			},
+			signals: {},
+		}),
+	)
+
+	// 50 turns is five times continual-learning's bar and a quarter over reflect's, so the
+	// ranking decides rather than the list order.
+	const out = runHook('session-start-suggest.mjs', { cwd: dir }, home)
+	assert.match(out, /50 turns of transcript have not been mined/)
+	assert.match(out, /\/thiamine:continual-learning/)
+	assert.equal(out.split('\n').length, 1)
 })
