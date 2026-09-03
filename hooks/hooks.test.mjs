@@ -15,7 +15,8 @@ import path from 'node:path'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { bashWrites } from './bash-target.mjs'
-import { firstSignal, hasTool, SIGNALS } from './signals.mjs'
+import { hasTool, PASSES } from './nudge-state.mjs'
+import { firstSignal, SIGNALS } from './signals.mjs'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const tmp = (prefix) => fs.mkdtempSync(path.join(os.tmpdir(), prefix))
@@ -412,4 +413,87 @@ test('the suggest hook prints one line for a signal and records it', () => {
 
 	const again = runHook('session-start-suggest.mjs', { cwd: dir }, home)
 	assert.equal(again, '', 'the same condition does not speak twice')
+})
+
+/** Asks one pass whether it is due, with nothing having run before unless the case says so. */
+const due = (name, over) =>
+	PASSES.find((p) => p.name === name).due({
+		name,
+		turns: 0,
+		lastRunAtMs: 0,
+		minutesSince: Infinity,
+		...over,
+	})
+
+test('every pass declares a due measure and a slash command that exists', () => {
+	for (const p of PASSES) {
+		assert.equal(typeof p.due, 'function', `${p.name} has no due()`)
+		assert.match(p.invoke, /^\/thiamine:[a-z-]+$/)
+		assert.ok(fs.existsSync(path.join(HERE, '..', 'skills', p.invoke.split(':')[1], 'SKILL.md')))
+	}
+})
+
+test('the mining passes still wait for turns and for elapsed time', () => {
+	assert.equal(due('continual-learning', { turns: 9 }), null, 'under the turn bar')
+	assert.match(due('continual-learning', { turns: 10 }).says, /10 turns/)
+	assert.equal(
+		due('continual-learning', { turns: 50, lastRunAtMs: Date.now(), minutesSince: 5 }),
+		null,
+		'it ran five minutes ago',
+	)
+})
+
+test('capture-preferences waits for a body of work, not for a session', () => {
+	assert.equal(due('capture-preferences', { turns: 40 }), null)
+	assert.match(due('capture-preferences', { turns: 60 }).says, /how you work/)
+})
+
+test('maintain-skills counts commits, and is absent where there is nothing to audit', () => {
+	const bare = repo()
+	// Turns are banked well past every other pass's bar, to show this one does not count them.
+	const audit = (over) => due('maintain-skills', { turns: 999, cwd: bare, ...over })
+	assert.equal(audit(), null, 'a repo with no agent-facing context has no drift to find')
+
+	fs.mkdirSync(path.join(bare, 'skills'))
+	fs.writeFileSync(path.join(bare, 'skills', 'x.md'), 'x\n')
+	for (let i = 0; i < 3; i++) git(bare, 'commit', '-q', '--allow-empty', '-m', `c${i}`)
+
+	assert.equal(audit(), null, 'four commits is under the default bar')
+
+	try {
+		process.env.THIAMINE_MAINTAIN_SKILLS_MIN_COMMITS = '4'
+		const hit = audit()
+		assert.match(hit.says, /commits have landed and no pass has ever run here/)
+		assert.ok(hit.overdue >= 1)
+	} finally {
+		delete process.env.THIAMINE_MAINTAIN_SKILLS_MIN_COMMITS
+	}
+
+	assert.equal(audit({ lastRunAtMs: Date.now(), minutesSince: 10 }), null, 'it ran ten minutes ago')
+})
+
+test('the pass with the most behind it is the one named at session start', () => {
+	const dir = repo()
+	const home = tmp('thiamine-home-')
+	const stateDir = path.join(home, '.claude', 'projects', dir.replaceAll('/', '-'))
+	fs.mkdirSync(stateDir, { recursive: true })
+	fs.writeFileSync(
+		path.join(stateDir, '.thiamine-nudge.json'),
+		JSON.stringify({
+			version: 3,
+			transcriptMtimeMs: Date.now(),
+			passes: {
+				'continual-learning': { turns: 50, lastRunAtMs: 0 },
+				reflect: { turns: 50, lastRunAtMs: 0 },
+			},
+			signals: {},
+		}),
+	)
+
+	// 50 turns is five times continual-learning's bar and a quarter over reflect's, so the
+	// ranking decides rather than the list order.
+	const out = runHook('session-start-suggest.mjs', { cwd: dir }, home)
+	assert.match(out, /50 turns of transcript have not been mined/)
+	assert.match(out, /\/thiamine:continual-learning/)
+	assert.equal(out.split('\n').length, 1)
 })

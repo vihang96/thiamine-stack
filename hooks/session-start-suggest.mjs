@@ -18,18 +18,8 @@
  * mid-session on purpose. A hook that talks during a task is why people stop reading hooks,
  * and that decision outranks the timeliness that speaking there would buy.
  */
-import {
-	blankState,
-	PASSES,
-	positiveInt,
-	readState,
-	readStdin,
-	stateFile,
-	writeState,
-} from './nudge-state.mjs'
+import { blankState, PASSES, readState, readStdin, stateFile, writeState } from './nudge-state.mjs'
 import { firstSignal } from './signals.mjs'
-
-const envKey = (name, suffix) => `THIAMINE_${name.replaceAll('-', '_').toUpperCase()}_${suffix}`
 
 try {
 	const event = readStdin()
@@ -55,26 +45,25 @@ try {
 	// Nothing has been written since the last look, so there is nothing new to mine.
 	if (state.transcriptMtimeMs === null) process.exit(0)
 
+	// Each pass decides for itself what has to accumulate, so this only asks and ranks.
 	const due = []
 	for (const pass of PASSES) {
 		const { turns, lastRunAtMs } = state.passes[pass.name]
-		const minTurns = positiveInt(process.env[envKey(pass.name, 'MIN_TURNS')], pass.minTurns)
-		const minMinutes = positiveInt(process.env[envKey(pass.name, 'MIN_MINUTES')], pass.minMinutes)
 		const minutesSince = lastRunAtMs > 0 ? (Date.now() - lastRunAtMs) / 60_000 : Infinity
-
-		if (turns >= minTurns && minutesSince >= minMinutes) {
-			// Rank by how far past its own bar a pass is, so the more neglected one wins
-			// rather than whichever happens to be first in the list.
-			due.push({ pass, turns, overdue: turns / minTurns })
+		try {
+			const hit = pass.due({ name: pass.name, turns, lastRunAtMs, minutesSince, cwd: projectDir })
+			if (hit) due.push({ pass, ...hit })
+		} catch {
+			// A measure that throws costs its own pass, not the session start.
 		}
 	}
 
 	if (due.length === 0) process.exit(0)
 	due.sort((a, b) => b.overdue - a.overdue)
-	const { pass, turns } = due[0]
+	const { pass, says } = due[0]
 
 	process.stdout.write(
-		`${pass.says(turns)}. Run ${pass.invoke} when the current task is done. Do not run it ` +
+		`${says}. Run ${pass.invoke} when the current task is done. Do not run it ` +
 			`now, and do not mention this again this session.\n`,
 	)
 } catch {
