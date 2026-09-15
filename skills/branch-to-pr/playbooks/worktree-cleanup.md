@@ -51,9 +51,9 @@ from git alone, when nobody polled.
    git -C "$repo" worktree prune
    ```
 
-   Change directory out of the worktree first. Removing the one you are standing in leaves
-   the shell with no working directory, and every command after it fails on something
-   unrelated to what you were doing.
+   Change directory out of the worktree first. Removing the one you are standing in leaves the
+   shell with no working directory. Every command after it then fails on something unrelated
+   to what you were doing.
 
    `worktree remove` refuses on a dirty tree, which is a safety net rather than an
    obstacle. Reach for `--force` only after step 4, and say that you did.

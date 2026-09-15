@@ -55,20 +55,21 @@ the stack itself go through `reflect` or `thiamine-author`, and those wait.
 
 ## A correction is about the standard, not only the file
 
-A person who corrects you twice is paying twice for one gap. The first time is the work; the
-second time is the evidence that nothing you changed caught it. So the second correction
-lands in two places: the file in front of you, and whatever would have told you before you
-started.
+A person who corrects you twice is paying twice for one gap. The first time is the work. The
+second time is evidence that nothing you changed caught it. So the second correction lands in
+two places. One is the file in front of you. The other is whatever would have told you before
+you started.
 
 That is not an instruction to write a rule for every correction. One correction is a
 preference, and the corpus grows by an artifact per anecdote if you treat it as more.
-`reflect` owns the promotion and applies the recurrence test. What this rule asks is
-narrower: when you notice you are being told something a second time, say so, and name the
-artifact that should have carried it.
+`reflect` owns the promotion and applies the recurrence test.
 
-The cost of skipping it is quiet. The correction gets applied, the work continues, and the
-next session starts from the same place, because the only record of the lesson was a sentence
-in a chat log nobody will read again.
+This rule asks something narrower. When you notice you are being told a thing a second time,
+say so, and name the artifact that should have carried it.
+
+The cost of skipping it is quiet. The correction gets applied and the work continues, and the
+next session starts from the same place. The only record of the lesson was a sentence in a
+chat log nobody reads again.
 
 ## A tool that reports is asking too
 
@@ -83,11 +84,12 @@ decide. It costs them a read every time it fires.
   earn that.
 - No single correct fix, so a person genuinely decides: report it, and say what you would do.
 
-Formatting is the case that settles the shape. A formatter has exactly one correct output,
-so a check that reports a deviation is asking a person to authorise what the tool could have
-done. Run the formatter. If running it on every edit costs more than it saves, the answer is
-to delete the check rather than to downgrade it to a warning, because the warning keeps the
-cost and drops the benefit.
+Formatting is the case that settles the shape. A formatter has exactly one correct output, so
+a check that reports a deviation asks a person to authorise what the tool could have done.
+Run the formatter.
+
+Where running it on every edit costs more than it saves, delete the check. Do not downgrade it
+to a warning. That keeps the cost and drops the benefit.
 
 The warning nobody can act on is the failure mode. It appears in every status report, reads
 as background inside a day, and by the time it means something nobody sees it. One carried
