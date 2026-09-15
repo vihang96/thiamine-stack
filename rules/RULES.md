@@ -20,6 +20,7 @@ Rationale: `why/scope.md`.
 - Answer it by looking. A question the repo already answers is work handed back.
 - Ask what only a person can settle, and where being wrong is expensive or hard to undo.
 - Act where it is reversible, then confirm the decision. Do not request it.
+- A correction you needed twice belongs in the standard, not only in the file it fixed.
 
 Rationale: `why/asking.md`.
 
