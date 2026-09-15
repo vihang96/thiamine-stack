@@ -25,7 +25,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { capture, hasTool, positiveInt, upstreamGone } from './nudge-state.mjs'
+import { capture, goneBranches, hasTool, positiveInt } from './nudge-state.mjs'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const WATCH_CHECKS = path.join(HERE, '..', 'skills', 'branch-to-pr', 'scripts', 'watch-checks.mjs')
@@ -94,8 +94,7 @@ export const SIGNALS = [
 		detect: ({ cwd }) => {
 			// Nothing else says a branch has landed: the branch, its worktree, and its handoff
 			// record all sit there looking like work still in progress.
-			const branches = lines(git(cwd, 'branch', '--format=%(refname:short)'))
-			const spent = branches.filter((branch) => upstreamGone(cwd, branch))
+			const spent = [...goneBranches(cwd)]
 			if (spent.length === 0) return null
 
 			const trees = lines(git(cwd, 'worktree', 'list', '--porcelain'))
