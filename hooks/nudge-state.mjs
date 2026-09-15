@@ -41,6 +41,28 @@ export function hasTool(name) {
 	return tools.get(name)
 }
 
+/**
+ * The branches pushed once and then deleted upstream, which is what a merge does where the
+ * remote deletes the branch. `%(upstream:track)` reports `[gone]` for exactly those: a branch
+ * with a live upstream and a branch that never had one both come back blank.
+ *
+ * One call for the whole repo. Asking per branch costs two subprocesses each, and both
+ * callers run at a moment where that is paid on every edit or every session start.
+ */
+export function goneBranches(cwd) {
+	const refs = capture(
+		'git',
+		['for-each-ref', '--format=%(refname:short)|%(upstream:track)', 'refs/heads'],
+		cwd,
+	)
+	return new Set(
+		(refs ?? '')
+			.split('\n')
+			.filter((line) => line.endsWith('|[gone]'))
+			.map((line) => line.slice(0, line.lastIndexOf('|'))),
+	)
+}
+
 /** One pass's bar, overridable with THIAMINE_<NAME>_<MEASURE>, hyphens as underscores. */
 const bar = (name, measure, fallback) => {
 	const key = `THIAMINE_${name.replaceAll('-', '_').toUpperCase()}_${measure}`

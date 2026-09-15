@@ -11,6 +11,8 @@ Prompts that must load this skill, and near-misses that must not.
 - write an ADR for this decision
 - how do other services here handle retries
 - I need to add pagination to this endpoint
+- I am adding a script that reports failing checks, does something here do that already
+- this new hook decides what counts as a failure, check nothing else already decides it
 - two agents are working on this at once, will they pick different error shapes
 
 ## Should not fire

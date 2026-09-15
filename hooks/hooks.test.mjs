@@ -497,3 +497,40 @@ test('the pass with the most behind it is the one named at session start', () =>
 	assert.match(out, /\/thiamine:continual-learning/)
 	assert.equal(out.split('\n').length, 1)
 })
+
+test('merged-unretired finds a landed branch nobody retired, and a worktree still holding one', () => {
+	const dir = repo()
+	const bare = tmp('thiamine-remote-')
+	git(bare, 'init', '--bare', '-b', 'main')
+	git(dir, 'remote', 'add', 'origin', bare)
+	git(dir, 'push', '-q', '-u', 'origin', 'main')
+
+	assert.equal(signal('merged-unretired').detect({ cwd: dir }), null, 'nothing has landed yet')
+
+	git(dir, 'checkout', '-q', '-b', 'feat/landed')
+	git(dir, 'commit', '-q', '--allow-empty', '-m', 'work')
+	git(dir, 'push', '-q', '-u', 'origin', 'feat/landed')
+	git(dir, 'checkout', '-q', 'main')
+	assert.equal(signal('merged-unretired').detect({ cwd: dir }), null, 'still open upstream')
+
+	git(dir, 'push', '-q', 'origin', '--delete', 'feat/landed')
+	git(dir, 'fetch', '-q', '--prune', 'origin')
+
+	const hit = signal('merged-unretired').detect({ cwd: dir })
+	assert.equal(hit.key, 'feat/landed')
+	assert.match(hit.says, /feat\/landed has landed and is still here/)
+
+	// A worktree is the expensive half to leave behind, so it is named first.
+	git(dir, 'worktree', 'add', '-q', path.join(dir, 'tree', 'landed'), 'feat/landed')
+	assert.match(signal('merged-unretired').detect({ cwd: dir }).says, /still holds a worktree/)
+})
+
+test('merged-unretired says nothing about a branch that never had a remote', () => {
+	const dir = repo()
+	git(dir, 'checkout', '-q', '-b', 'feat/local-only')
+	assert.equal(
+		signal('merged-unretired').detect({ cwd: dir }),
+		null,
+		'local by choice is not the same as spent',
+	)
+})

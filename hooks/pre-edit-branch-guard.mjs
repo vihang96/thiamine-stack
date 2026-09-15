@@ -33,6 +33,7 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { bashWrites } from './bash-target.mjs'
+import { goneBranches } from './nudge-state.mjs'
 
 /** A branch is "default" if the remote says so, else by the two conventional names. */
 const FALLBACK_DEFAULTS = new Set(['main', 'master'])
@@ -120,25 +121,6 @@ function targetOf(event) {
 	return paths.length > 0 ? path.resolve(event.cwd ?? '.', paths[0]) : (event.cwd ?? null)
 }
 
-/**
- * A branch that has a remote configured but no upstream ref left was pushed and then
- * deleted, which is what merging does with `delete_branch_on_merge`. A branch that never
- * had a remote is just local, and editing on it is the point.
- */
-function upstreamGone(cwd, branch) {
-	try {
-		git(cwd, ['config', '--get', `branch.${branch}.remote`])
-	} catch {
-		return false
-	}
-	try {
-		git(cwd, ['rev-parse', '--verify', '--quiet', `${branch}@{upstream}`])
-		return false
-	} catch {
-		return true
-	}
-}
-
 const allow = () => process.exit(0)
 
 try {
@@ -166,7 +148,7 @@ try {
 	// Where origin/HEAD is set it decides, including when it names something unconventional.
 	// Where it is not, main and master are the only guess worth making.
 	const onDefault = defaultBranch ? branch === defaultBranch : fallback
-	if (!onDefault && !upstreamGone(dir, branch)) allow()
+	if (!onDefault && !goneBranches(dir).has(branch)) allow()
 
 	const projectDir = event.cwd || process.env.CLAUDE_PROJECT_DIR || repo
 	const file = stateFile(projectDir)

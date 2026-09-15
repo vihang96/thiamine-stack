@@ -25,7 +25,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { capture, hasTool, positiveInt } from './nudge-state.mjs'
+import { capture, goneBranches, hasTool, positiveInt } from './nudge-state.mjs'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const WATCH_CHECKS = path.join(HERE, '..', 'skills', 'branch-to-pr', 'scripts', 'watch-checks.mjs')
@@ -34,6 +34,7 @@ const WATCH_CHECKS = path.join(HERE, '..', 'skills', 'branch-to-pr', 'scripts', 
 export const DEFAULT_COOLDOWN_HOURS = 20
 
 const git = (cwd, ...args) => capture('git', args, cwd)
+const lines = (out) => (out ?? '').split('\n').filter(Boolean)
 
 /**
  * The pull request for the checked-out branch, or null. Each caller asks for its own fields
@@ -88,12 +89,34 @@ export const SIGNALS = [
 		},
 	},
 	{
+		name: 'merged-unretired',
+		invoke: '/thiamine:branch-to-pr',
+		detect: ({ cwd }) => {
+			// Nothing else says a branch has landed: the branch, its worktree, and its handoff
+			// record all sit there looking like work still in progress.
+			const spent = [...goneBranches(cwd)]
+			if (spent.length === 0) return null
+
+			const trees = lines(git(cwd, 'worktree', 'list', '--porcelain'))
+				.filter((line) => line.startsWith('branch '))
+				.map((line) => line.replace('branch refs/heads/', ''))
+			const held = spent.filter((branch) => trees.includes(branch))
+
+			const what = held.length > 0 ? `${held[0]}, which still holds a worktree` : spent[0]
+			const rest = spent.length > 1 ? ` and ${spent.length - 1} more` : ''
+			return {
+				key: spent.sort().join('|'),
+				says: `${what} has landed and is still here${rest}`,
+			}
+		},
+	},
+	{
 		name: 'stale-handoff',
 		invoke: '/thiamine:handoff',
 		detect: ({ cwd }) => {
 			const root = git(cwd, 'rev-parse', '--show-toplevel')
 			if (!root) return null
-			const live = new Set((git(cwd, 'branch', '--format=%(refname:short)') ?? '').split('\n'))
+			const live = new Set(lines(git(cwd, 'branch', '--format=%(refname:short)')))
 
 			for (const file of fs.readdirSync(root).filter((f) => /^\.handoff-.*\.md$/.test(f))) {
 				const branch = branchOf(fs.readFileSync(path.join(root, file), 'utf8'))

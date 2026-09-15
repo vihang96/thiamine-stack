@@ -152,7 +152,9 @@ kind type name shape thing artifact skill agent command rule detail payload trig
 const REPO_DIRS = new Set(
 	fs
 		.readdirSync(ROOT, { withFileTypes: true })
-		.filter((e) => e.isDirectory())
+		// `tree/` holds gitignored worktrees, so it exists in one checkout and not the next.
+		// Leaving it in makes a `tree/...` reference an error on one machine, invisible on another.
+		.filter((e) => e.isDirectory() && e.name !== 'tree')
 		.map((e) => e.name),
 )
 // Subdirectories an artifact may point into with a path relative to itself. A path whose

@@ -4,6 +4,17 @@
 else.** For "clean up the worktrees", after a change lands, and when the workspace has
 accumulated more than you can account for.
 
+Whether a change landed is a question you can answer, not news you wait for. Poll it for the
+branches this session opened, and retire what has merged without being asked to:
+
+```sh
+gh pr view <branch> --json state,mergeCommit
+```
+
+A merged pull request leaves a branch, a worktree, and a handoff record all looking like work
+in progress. The `merged-unretired` signal reports the same thing at the next session start,
+from git alone, when nobody polled.
+
 1. Audit first. `sh scripts/audit.sh <workspace-root>` reports every worktree with the
    flags a decision needs. Do not walk the directories by hand, and do not decide from
    memory of what landed.
@@ -39,6 +50,10 @@ accumulated more than you can account for.
    git -C "$repo" worktree remove "$path"
    git -C "$repo" worktree prune
    ```
+
+   Change directory out of the worktree first. Removing the one you are standing in leaves the
+   shell with no working directory. Every command after it then fails on something unrelated
+   to what you were doing.
 
    `worktree remove` refuses on a dirty tree, which is a safety net rather than an
    obstacle. Reach for `--force` only after step 4, and say that you did.

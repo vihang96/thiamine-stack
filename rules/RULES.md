@@ -1,19 +1,15 @@
 # Engineering standards
 
-These apply to every change in this repo, whether written by a human or an agent.
-They are terse on purpose, one line per rule. A section with a rationale names it
-underneath, in `why/` beside this file. Read it when the rule seems wrong for the situation
-in front of you.
-
-Those paths are relative to this file, not to your project. If this reached you as
-`AGENTS.md`, `readlink -f` it to find the directory. If through a `CLAUDE.md` import, the
-import line names the path.
+These apply to every change, whether written by a human or an agent. They are terse on
+purpose, one line per rule. Where a section names a rationale in `why/`, read it when the
+rule seems wrong for the work in front of you. Those paths sit beside this file, not in your
+project: `readlink -f` this file, or read the `@` import line that pulled it in.
 
 ## Scope
 
 - Build what was asked. Nothing adjacent, nothing anticipatory.
 - A request that names a solution still has a problem behind it. State that first.
-- Out-of-scope work needs agreement first. Never fold a refactor into a feature diff.
+- Out-of-scope work needs agreement first.
 - Ambiguous scope takes the narrowest reading. Name the wider one you did not take.
 - Leave a discovered problem as a stated observation, not an unrequested fix.
 
@@ -24,6 +20,7 @@ Rationale: `why/scope.md`.
 - Answer it by looking. A question the repo already answers is work handed back.
 - Ask what only a person can settle, and where being wrong is expensive or hard to undo.
 - Act where it is reversible, then confirm the decision. Do not request it.
+- A correction you needed twice belongs in the standard, not only in the file it fixed.
 
 Rationale: `why/asking.md`.
 
@@ -34,13 +31,10 @@ Rationale: `why/asking.md`.
 - Prefer editing a file to adding one. A new module needs a reason said out loud.
 - A wrapper with one caller is a rename. Inline it, with any adapter or layer earning nothing.
 - Count both budgets: hops from question to answer, and state that can change the answer.
-
-Rationale: `why/reader-load.md`.
-
-## Reuse
-
 - Search before writing a helper. Most already exist under a different name.
 - Two copies of a thing is a signal. Three is a defect.
+
+Rationale: `why/reader-load.md`.
 
 ## Scaffolding
 
@@ -65,7 +59,6 @@ Rationale: `why/idempotence.md`.
 
 - Report that a secret is present, never its value. Test the variable and print your own words.
 - A secret that reached a log, a transcript, or a chat thread is leaked. Rotate it.
-- Never print a secret while debugging. The log outlives the session.
 
 Rationale: `why/secrets.md`.
 
@@ -81,7 +74,6 @@ Rationale: `why/root-causes.md`.
 - Comment why, never what, once, and in two lines. If the code needs narration, fix the code.
 - Describe what the code does now. A deleted mechanism and a history are not documentation.
 - No README, CHANGELOG entry, or summary doc unless it was requested.
-- No decorative headers, banner comments, or emoji.
 
 ## Tests
 
@@ -94,7 +86,6 @@ Rationale: `why/root-causes.md`.
 - Never say it works without having run it. Paste what you ran.
 - If it was not verified, say "not verified" and name what would verify it.
 - Report what happened, including the parts that failed.
-- Confirm a decision you made and were not asked to make. Someone else defends it in review.
 - Build the tool that does it or proves it. A rerunnable script outlives a claim.
 
 ## Diffs
