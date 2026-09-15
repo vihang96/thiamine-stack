@@ -41,6 +41,16 @@ export function hasTool(name) {
 	return tools.get(name)
 }
 
+/**
+ * Was this branch pushed and then deleted upstream, which is what merging does where the
+ * remote deletes the branch on merge. A branch that never had a remote is local by choice,
+ * not spent, so the configured remote is checked before the ref.
+ */
+export function upstreamGone(cwd, branch) {
+	if (!capture('git', ['config', '--get', `branch.${branch}.remote`], cwd)) return false
+	return capture('git', ['rev-parse', '--verify', '--quiet', `${branch}@{upstream}`], cwd) === null
+}
+
 /** One pass's bar, overridable with THIAMINE_<NAME>_<MEASURE>, hyphens as underscores. */
 const bar = (name, measure, fallback) => {
 	const key = `THIAMINE_${name.replaceAll('-', '_').toUpperCase()}_${measure}`

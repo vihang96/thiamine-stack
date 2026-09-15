@@ -25,7 +25,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { capture, hasTool, positiveInt } from './nudge-state.mjs'
+import { capture, hasTool, positiveInt, upstreamGone } from './nudge-state.mjs'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const WATCH_CHECKS = path.join(HERE, '..', 'skills', 'branch-to-pr', 'scripts', 'watch-checks.mjs')
@@ -84,6 +84,34 @@ export const SIGNALS = [
 			return {
 				key: `${branch}:${tag}`,
 				says: `${files} modified file(s) are sitting on ${branch}, ${because}`,
+			}
+		},
+	},
+	{
+		name: 'merged-unretired',
+		invoke: '/thiamine:branch-to-pr',
+		detect: ({ cwd }) => {
+			// Merging deletes the remote branch here, so a local branch with a configured remote
+			// and no upstream left has landed. Nothing else says so: the branch, its worktree and
+			// its handoff record all sit there looking like work in progress. This asks git rather
+			// than `gh`, so it costs nothing and answers offline.
+			const branches = (capture('git', ['branch', '--format=%(refname:short)'], cwd) ?? '')
+				.split('\n')
+				.filter(Boolean)
+			const spent = branches.filter((branch) => upstreamGone(cwd, branch))
+			if (spent.length === 0) return null
+
+			const trees = (capture('git', ['worktree', 'list', '--porcelain'], cwd) ?? '')
+				.split('\n')
+				.filter((line) => line.startsWith('branch '))
+				.map((line) => line.replace('branch refs/heads/', ''))
+			const held = spent.filter((branch) => trees.includes(branch))
+
+			const what = held.length > 0 ? `${held[0]}, which still holds a worktree` : spent[0]
+			const rest = spent.length > 1 ? ` and ${spent.length - 1} more` : ''
+			return {
+				key: spent.sort().join('|'),
+				says: `${what} has landed and is still here${rest}`,
 			}
 		},
 	},
