@@ -153,6 +153,10 @@ const REPO_DIRS = new Set(
 	fs
 		.readdirSync(ROOT, { withFileTypes: true })
 		.filter((e) => e.isDirectory())
+		// `tree/` holds worktrees and is gitignored, so it exists in a checkout that has one
+		// and not in a checkout that does not. Leaving it in makes a `tree/...` reference an
+		// error on one machine and invisible on the next.
+		.filter((e) => e.name !== 'tree')
 		.map((e) => e.name),
 )
 // Subdirectories an artifact may point into with a path relative to itself. A path whose
