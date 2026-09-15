@@ -518,11 +518,26 @@ test('merged-unretired finds a landed branch nobody retired, and a worktree stil
 
 	const hit = signal('merged-unretired').detect({ cwd: dir })
 	assert.equal(hit.key, 'feat/landed')
-	assert.match(hit.says, /feat\/landed has landed and is still here/)
+	assert.equal(hit.says, 'feat/landed has landed and is still here')
 
 	// A worktree is the expensive half to leave behind, so it is named first.
 	git(dir, 'worktree', 'add', '-q', path.join(dir, 'tree', 'landed'), 'feat/landed')
-	assert.match(signal('merged-unretired').detect({ cwd: dir }).says, /still holds a worktree/)
+	assert.equal(
+		signal('merged-unretired').detect({ cwd: dir }).says,
+		'feat/landed has landed and still holds a worktree',
+	)
+
+	// Two spent branches, and the sentence still parses as one.
+	git(dir, 'checkout', '-q', '-b', 'feat/second')
+	git(dir, 'commit', '-q', '--allow-empty', '-m', 'more')
+	git(dir, 'push', '-q', '-u', 'origin', 'feat/second')
+	git(dir, 'checkout', '-q', 'main')
+	git(dir, 'push', '-q', 'origin', '--delete', 'feat/second')
+	git(dir, 'fetch', '-q', '--prune', 'origin')
+	assert.equal(
+		signal('merged-unretired').detect({ cwd: dir }).says,
+		'feat/landed has landed and still holds a worktree, with 1 more landed and unretired',
+	)
 })
 
 test('merged-unretired says nothing about a branch that never had a remote', () => {

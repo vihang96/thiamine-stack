@@ -102,11 +102,13 @@ export const SIGNALS = [
 				.map((line) => line.replace('branch refs/heads/', ''))
 			const held = spent.filter((branch) => trees.includes(branch))
 
-			const what = held.length > 0 ? `${held[0]}, which still holds a worktree` : spent[0]
-			const rest = spent.length > 1 ? ` and ${spent.length - 1} more` : ''
+			// The worktree is the expensive half to leave behind, so name one of those first.
+			const [branch] = held.length > 0 ? held : spent
+			const what = held.length > 0 ? 'still holds a worktree' : 'is still here'
+			const rest = spent.length > 1 ? `, with ${spent.length - 1} more landed and unretired` : ''
 			return {
 				key: spent.sort().join('|'),
-				says: `${what} has landed and is still here${rest}`,
+				says: `${branch} has landed and ${what}${rest}`,
 			}
 		},
 	},
