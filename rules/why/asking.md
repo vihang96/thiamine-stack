@@ -57,7 +57,7 @@ the stack itself go through `reflect` or `thiamine-author`, and those wait.
 
 The same axis applies to what you build, not just to what you say. A check that reports a
 deviation with exactly one correct fix is a question handed to a person who has nothing to
-decide, and it costs them a read every time it fires.
+decide. It costs them a read every time it fires.
 
 - One correct fix, and applying it is cheap: apply it. Formatting is the clearest case, and
   a formatter that reports instead of writing is a worse formatter.
@@ -68,7 +68,8 @@ decide, and it costs them a read every time it fires.
 
 The warning nobody can act on is the failure mode. It appears in every status report, reads
 as background inside a day, and by the time it means something nobody sees it. One carried
-through a single session was narrated ninety-two times and fixed zero.
+through a single session appeared in every report that session produced, and was fixed in
+none of them.
 
 ## When to override
 

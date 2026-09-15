@@ -7,10 +7,9 @@ see_also: [maintain-skills, branch-to-pr]
 
 # Author a thiamine artifact
 
-Decide where the change lands before the first edit, not after the last one. This skill is
-the entry point for changing the stack, and it used to say nothing about that, so an
-authoring session would write nine files into the main checkout and reach the end with the
-decision unmade. `branch-to-pr` owns it, and it fires before the first edit for this reason.
+Decide where the change lands before the first edit, not after the last one. `branch-to-pr`
+owns that decision and fires before the first edit for this reason. Skip it and the work
+piles up in the main checkout with the decision still unmade.
 
 ## Changing one that exists
 
@@ -146,11 +145,10 @@ Then type one of the "should fire" prompts and confirm that the skill loads. Tha
 only check that the description works, and no static check replaces it.
 
 **It cannot be this session.** The harness reads the plugin once at session start, so the
-skill you just wrote is not in the list this session is choosing from. Report the description
-as unverified, name the prompt to type, and leave the check for the next session. A
-description reported as tested from the session that wrote it has not been tested, and one
-session's reword of a missed trigger failed again in the next session's opening turn because
-nobody could see that.
+skill you just wrote is not in the list this session chooses from. Report the description as
+unverified, name the prompt to type, and leave the check for the next session. A description
+reported as tested from the session that wrote it has not been tested, so a reworded trigger
+can fail again with nobody able to see it.
 
 ## Step 6. Register it
 
@@ -171,19 +169,20 @@ Errors must be zero. Read every warning, then either fix it or say why it is wro
 Never report finishing with warnings you have not read.
 
 A warning your own change introduced does not get deferred. Deferring one puts it in every
-status report from then on, where it reads as background and stops being a signal at all;
-one carried that way was narrated in ninety-two reports inside a single session. Fix it, cut
-what breaks it, or change the check. "Pre-existing" is the only honest reason to leave one.
+status report from then on, where it reads as background and stops being a signal at all.
+Fix it, cut what breaks it, or change the check. "Pre-existing" is the only honest reason to
+leave one.
 
 The validator reads artifacts, so it says nothing about a hook or a script you changed.
 Those have tests, and a hook that stops firing fails nothing else: it just stops working,
 quietly, which is the failure that took three pull requests to notice.
 
 The copy that runs is the one the harness loaded at session start, from the main checkout.
-Editing a hook in a worktree changes nothing for the session doing the editing, and the
-pre-fix copy keeps firing on your own commands until the change merges and a new session
-starts. So a hook is verified by feeding it the harness's own event JSON directly, in both
-checkouts if you want a before and after:
+Editing a hook in a worktree changes nothing for the session doing the editing. The pre-fix
+copy keeps firing on your own commands until the change merges and a new session starts.
+
+So verify a hook by feeding it the harness's own event JSON directly, in both checkouts when
+you want a before and after:
 
 ```sh
 echo '{"tool_name":"Bash","tool_input":{"command":"..."},"cwd":"'$PWD'"}' |

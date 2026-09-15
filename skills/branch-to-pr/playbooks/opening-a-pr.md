@@ -37,12 +37,12 @@ PR", and at the end of any change that is ready for review.
    `technical-writing` skills to the title and body, because both are prose a person reads
    under time pressure.
 
-   The body is not the only prose in the change. The commit messages and the comments the
-   diff adds are read by more people for longer, and they go out unrevised unless the same
-   pass covers them. A session that polished ten descriptions and no commit messages shipped
-   the same tell eleven times. They own word choice, punctuation, and structure. Apply them by
+   They own word choice, punctuation, and structure. Apply them by
    running them, not by having read them. Knowing the rules and having applied them feel
    identical from the inside, and only one of them changes the text.
+
+   The body is not the only prose in the change. The commit messages and the comments the
+   diff adds are read by more people for longer, so run the same pass over all three.
 
 5. Cut it to length, as the last edit before you open. This is its own pass. Neither writing
    skill shortens, and `technical-writing` adds words where a sentence needs an article or a
@@ -66,9 +66,8 @@ PR", and at the end of any change that is ready for review.
    it, and `THIAMINE_PR_BODY_MAX_WORDS` carries it to the hook.
 
    **Count the draft before you publish it.** The hook runs after `gh pr create`, so on its
-   own it tells you the number once the body is already public, and a first draft is over the
-   bar more often than under it. Write the body to a file, count it, then create from the
-   file:
+   own it gives you the number once the body is already public. A first draft is over the bar
+   more often than under it. Write the body to a file, count it, then create from the file:
 
    ```sh
    node -e 'const t=require("fs").readFileSync(process.argv[1],"utf8").replace(/```[\s\S]*?```/g,"");
@@ -77,11 +76,11 @@ PR", and at the end of any change that is ready for review.
    ```
 
    When it is over, cut a whole section, not words. The section to cut is usually the one the
-   commit messages already carry. Four rounds of word-level trimming does not close a
-   fifty-word gap, and each round costs a published edit.
+   commit messages already carry. Trimming word by word does not close a real gap, and every
+   round of it costs another published edit.
 
-   One trap in that edit: `gh pr edit` resolves reviewer fields over GraphQL even when you are
-   only changing a body, so a token scoped to `repo` alone fails the whole command on the
+   One trap in that edit. `gh pr edit` resolves reviewer fields over GraphQL even when you
+   change only the body, so a token scoped to `repo` alone fails the whole command on the
    `read:org` field. `gh api --method PATCH repos/<owner>/<repo>/pulls/<n> -f body=@body.md`
    does the same job over REST. The budget hook does not match that form, so a body edited
    that way is counted by you or by nobody.

@@ -77,10 +77,9 @@ This picks up `skills/`, `agents/`, and `commands/` on its own. It does not deli
 `rules/RULES.md`. Step 5 does that.
 
 A marketplace added from a local checkout loads the plugin live from that checkout, so an
-edit needs no reinstall. It does need a new session: the harness reads the plugin once at
-start, so an edit takes effect in the next session and not in the one that makes it. Saying
-"no update step" without that half is what made the trap invisible for a whole session of
-hook work, where the copy still firing was the one from before the fix.
+edit needs no reinstall. It does need a new session. The harness reads the plugin once at
+start, so an edit takes effect in the next session and not in the one that makes it. Leave
+that half out and a session reports a hook as fixed while the previous copy is still firing.
 
 Claude Code also snapshots the plugin into `~/.claude/plugins/cache/` and records that as
 `installPath`; it is not what runs. Never read or edit the cache copy, and never report it
