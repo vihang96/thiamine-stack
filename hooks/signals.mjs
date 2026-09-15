@@ -34,6 +34,7 @@ const WATCH_CHECKS = path.join(HERE, '..', 'skills', 'branch-to-pr', 'scripts', 
 export const DEFAULT_COOLDOWN_HOURS = 20
 
 const git = (cwd, ...args) => capture('git', args, cwd)
+const lines = (out) => (out ?? '').split('\n').filter(Boolean)
 
 /**
  * The pull request for the checked-out branch, or null. Each caller asks for its own fields
@@ -91,18 +92,13 @@ export const SIGNALS = [
 		name: 'merged-unretired',
 		invoke: '/thiamine:branch-to-pr',
 		detect: ({ cwd }) => {
-			// Merging deletes the remote branch here, so a local branch with a configured remote
-			// and no upstream left has landed. Nothing else says so: the branch, its worktree and
-			// its handoff record all sit there looking like work in progress. This asks git rather
-			// than `gh`, so it costs nothing and answers offline.
-			const branches = (capture('git', ['branch', '--format=%(refname:short)'], cwd) ?? '')
-				.split('\n')
-				.filter(Boolean)
+			// Nothing else says a branch has landed: the branch, its worktree, and its handoff
+			// record all sit there looking like work still in progress.
+			const branches = lines(git(cwd, 'branch', '--format=%(refname:short)'))
 			const spent = branches.filter((branch) => upstreamGone(cwd, branch))
 			if (spent.length === 0) return null
 
-			const trees = (capture('git', ['worktree', 'list', '--porcelain'], cwd) ?? '')
-				.split('\n')
+			const trees = lines(git(cwd, 'worktree', 'list', '--porcelain'))
 				.filter((line) => line.startsWith('branch '))
 				.map((line) => line.replace('branch refs/heads/', ''))
 			const held = spent.filter((branch) => trees.includes(branch))
@@ -121,7 +117,7 @@ export const SIGNALS = [
 		detect: ({ cwd }) => {
 			const root = git(cwd, 'rev-parse', '--show-toplevel')
 			if (!root) return null
-			const live = new Set((git(cwd, 'branch', '--format=%(refname:short)') ?? '').split('\n'))
+			const live = new Set(lines(git(cwd, 'branch', '--format=%(refname:short)')))
 
 			for (const file of fs.readdirSync(root).filter((f) => /^\.handoff-.*\.md$/.test(f))) {
 				const branch = branchOf(fs.readFileSync(path.join(root, file), 'utf8'))

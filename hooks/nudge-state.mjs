@@ -42,9 +42,9 @@ export function hasTool(name) {
 }
 
 /**
- * Was this branch pushed and then deleted upstream, which is what merging does where the
- * remote deletes the branch on merge. A branch that never had a remote is local by choice,
- * not spent, so the configured remote is checked before the ref.
+ * Pushed once and then deleted upstream, which is what a merge does where the remote deletes
+ * the branch. A branch that never had a remote is local by choice, so the remote is checked
+ * before the ref.
  */
 export function upstreamGone(cwd, branch) {
 	if (!capture('git', ['config', '--get', `branch.${branch}.remote`], cwd)) return false
