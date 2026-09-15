@@ -53,6 +53,23 @@ worked on reaches that repo, arrives in its diff, and gets reviewed there, so wr
 it, and say what you wrote. `maintain-skills` runs that pass in the working repo. Edits to
 the stack itself go through `reflect` or `thiamine-author`, and those wait.
 
+## A tool that reports is asking too
+
+The same axis applies to what you build, not just to what you say. A check that reports a
+deviation with exactly one correct fix is a question handed to a person who has nothing to
+decide, and it costs them a read every time it fires.
+
+- One correct fix, and applying it is cheap: apply it. Formatting is the clearest case, and
+  a formatter that reports instead of writing is a worse formatter.
+- One correct fix, and applying it is expensive: make it an error, so it is a blocking answer
+  rather than a standing note, or delete the check. A check paid for on every edit needs to
+  earn that.
+- No single correct fix, so a person genuinely decides: report it, and say what you would do.
+
+The warning nobody can act on is the failure mode. It appears in every status report, reads
+as background inside a day, and by the time it means something nobody sees it. One carried
+through a single session was narrated ninety-two times and fixed zero.
+
 ## When to override
 
 A person who says "just do it" has moved the line, and it stays moved for that class of
