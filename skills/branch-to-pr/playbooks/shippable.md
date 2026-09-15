@@ -25,6 +25,18 @@ on, and stops there.
    scaffolding and comment rules apply here, and this is the last point where applying
    them is cheap.
 
+   **For a code diff, delegate that read.** Hand the diff to `code-simplifier`, reproduce
+   whatever it reports without fixing, and treat that list as review findings rather than as
+   suggestions. Its non-edits are the valuable half.
+
+   Delegate it because your own eyes do not find the defects that matter here: a guard that
+   misses the case it was written for, a test that passes on a branch it never reaches, two
+   files that disagree about a word. A green suite hides all three, and so does the author's
+   own read.
+
+   Run `code-simplifier` first and `unslop-prose` second, over the prose that survived it. A
+   comment polished and then deleted costs two passes and buys nothing.
+
 4. Check the description still describes the diff. Several rounds of review move code, and
    a `## Verification` section listing what you ran three pushes ago is worse than none,
    because it looks like evidence.

@@ -209,11 +209,19 @@ Backlog items are filed rather than approved; they are not edits.
 
 ### 7. Land it
 
-Commit with `reflect` in the message, so the next pass can bound its window:
+Commit with a trailer, so the next pass can bound its window from it:
+
+```
+Reflect-Pass: 2026-09-03
+```
 
 ```sh
-git log --oneline -1 --grep=reflect
+git log -1 --format=%h --grep='^Reflect-Pass:'      # the last pass, or nothing
 ```
+
+A trailer and not a phrase, for the reason `maintain-skills` records about its own marker: a
+phrase matches every commit that mentions the skill, including the ones that changed it, so
+the window silently starts from a commit where no pass ran.
 
 Then clear the nudge, or the next session start suggests a pass that just happened:
 

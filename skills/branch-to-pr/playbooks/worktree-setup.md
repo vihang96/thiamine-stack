@@ -23,6 +23,13 @@ a change that spans services, and for adding a repo to a change already in progr
    If git refuses because the branch already exists, it names the worktree that holds it.
    Use that one. Do not create a second.
 
+   That start point leaves the new branch tracking the default branch. So a check for "does
+   this branch have an upstream" reads true on a branch that has never been pushed, and a bare
+   `git push` aims at the default branch. Push with `-u` at the first opportunity.
+
+   When you write a check about unlanded work, test three cases: no upstream, an upstream that
+   is gone, and an upstream that is the default branch.
+
 4. Copy in what the repo needs and does not track. A fresh worktree has no gitignored
    build output, no generated code, and no `.env`. A pre-push hook that runs a formatter
    over generated sources will fail in a worktree and pass in the main checkout, which
@@ -36,6 +43,13 @@ a change that spans services, and for adding a repo to a change already in progr
 
 6. Verify before starting work. Build or run the tests once in each new worktree, so a
    failure later belongs to your change rather than to the setup.
+
+   Run that command inside the worktree, and scope anything you run from the main checkout.
+   A worktree here is a directory inside the repo, so a recursive glob or a hand-rolled walk
+   rooted at the repo top also walks the other branches. A test run counted that way passes
+   partly on a branch nobody is working on. Gitignore-aware tools are safe, because `tree/`
+   is ignored. `node --test`, `find`, and anything you write are not. Anchor the pattern per
+   source directory, and check the count is the one you expect.
 
 **Reply:** the branch name, each repo and its worktree path, what you copied in, and the
 result of the verification in each. If a repo was considered and left out, say which and
