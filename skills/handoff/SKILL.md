@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: "Keeps a durable record of work in progress so a new session can continue it, reconstructs that record from transcripts and live state when none was kept, and prunes it once the work it describes has landed. Use when starting work that will span sessions, when recording a decision or a deviation mid-build, when context is about to be cleared or compacted, when a workspace has accumulated records or one has stopped being true, and for catch me up or where did I leave off."
+description: "Keeps a durable record of work in progress so a new session can continue it, reconstructs that record from transcripts and live state when none was kept, and prunes it once the work it describes has landed. Use when starting work that will span sessions, when recording a decision or a deviation mid-build, when something found along the way needs parking instead of doing, when context is about to be cleared or compacted, when a workspace has accumulated records or one has stopped being true, and for catch me up or where did I leave off."
 owns: "the record of work in progress, reconstructing it when none was kept, and retiring it when the work lands"
 see_also: [branch-to-pr, continual-learning, reflect, working-alongside, experimentation]
 ---
@@ -66,8 +66,9 @@ One file per change, at `<workspace>/.handoff-<branch>.md`. Beside the work, not
 directory that gets swept, and gitignored, since it is working state rather than a
 deliverable.
 
-Two parts. A header holding current state, rewritten as it changes. A log below it,
-appended as you go and edited only when its change lands.
+Three parts. A header holding current state, rewritten as it changes. A log below it,
+appended as you go and edited only when its change lands. And a list of what was found
+along the way but is not part of the goal.
 
 ```markdown
 # Add retention policies to workspaces
@@ -85,11 +86,21 @@ Assumed: existing rows count as unlimited until an admin sets a policy.
 - Deviated from the plan: the scheduler cannot read the policy directly, it runs
   before tenant context exists. Passing it in at enqueue time instead.
 - Tried a cascade delete. Reverted, it removed audit rows the compliance job needs.
+
+## Found, not started
+
+- Exception exports ignore the workspace's time zone. Unrelated to retention.
 ```
 
 The header answers where things stand. The log answers why they stand there, which is the
 part nobody can reconstruct and the part that stops the next session re-deciding what this
 one already settled.
+
+`Next` is always the next step toward the goal. Something found while doing it, a second
+bug, a better design for a neighbour, a check that would have caught this, goes under
+**Found, not started** as one line and waits for the goal to land. Offering it as the next
+step instead is how a session ends with every side issue explored and the goal unfinished.
+Raise the list when the goal lands, or sooner only when an item blocks the goal.
 
 A record on a default branch is the second shape, for work that keeps landing in one repo
 without a branch of its own. Same file, same two parts. It ends differently. A per-change

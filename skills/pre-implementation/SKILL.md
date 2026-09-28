@@ -1,6 +1,6 @@
 ---
 name: pre-implementation
-description: "Prepares work before any code is written: sorting unknowns into what to observe and what to ask, understanding the code that exists, sketching a prototype to settle a design or a domain question, choosing the metric a performance push is measured by, finding the blast radius of what breaks if you change it, and sequencing the steps across repos. Use when starting a feature, a bug fix, a performance push, or a migration, for plan this out or mock something up, and whenever a request names a solution rather than a problem."
+description: "Prepares work before any code is written: sorting unknowns into what to observe and what to ask, understanding the code that exists, sketching a prototype to settle a design or a domain question, choosing the metric a performance push is measured by, finding the blast radius of what breaks if you change it, and sequencing the steps across repos. Use when starting a feature, a bug fix, a performance push, or a migration, when reproducing a reported bug or ticket, including one that happens only in production or does not reproduce locally, when checking whether a test suite covers a ticket, for plan this out or mock something up, and whenever a request names a solution rather than a problem."
 owns: "the phase before the first commit: what to build, what is unknown, and in what order"
 see_also: [branch-to-pr, fan-out-work, working-alongside, experimentation]
 ---
@@ -31,6 +31,14 @@ sentence is the whole plan. A change nobody stated is one nobody can check.
 
 Two things never scale down. Reproduce a bug before you fix it. And a change spanning repos
 gets a blast radius and an order, because the order the pieces land in is the plan.
+
+A reproduction that passes has not reproduced anything. When a bug seen in production will
+not reproduce locally, assume the reproduction is built wrong before you assume the bug
+needs production. Compare it step by step with the real incident: what came just before
+the trigger, what started the conversation or request, whether the runtime was warm or
+cold, how old the account or data was, and which channel or client it came through. Only
+then consider the model, the build, or moving the test to another environment. A case
+that has never failed on the unfixed code is not a regression test yet.
 
 ## Two rules that outrank the rest
 

@@ -14,6 +14,7 @@ it out loud.** For the start of any change, and whenever you notice yourself abo
    | Kind | Test | Do |
    | --- | --- | --- |
    | Observable | running, reading, or measuring would answer it | go and find out |
+   | Held by someone else | only a person with access can see it: a production transcript, pod logs, a customer's screen | ask for exactly that, first, before forming theories |
    | Decidable | only a person can settle it, because it is a preference, a priority, or a promise to someone | ask |
    | Tolerable | the answer would not change what you build | write the assumption down and move |
 
@@ -21,6 +22,12 @@ it out loud.** For the start of any change, and whenever you notice yourself abo
    null in production, how a library behaves under retry, whether an approach is fast
    enough. Every one of those is observable. Going to look takes minutes and produces a
    fact. Asking takes hours and produces an opinion.
+
+   The exception is the record you cannot reach. When the answer sits in production data or
+   logs you have no access to, reading code does not substitute for it, and theories built
+   instead of it cost more than the question. Ask for the specific artifact: the
+   conversation around the failure, the log line by name, the time and the user or request
+   ID.
 
 3. Observe the observable ones. Read the code, run the thing, query the data, or build a
    throwaway sketch with `playbooks/prototype.md`. Cheap and specific beats thorough. You

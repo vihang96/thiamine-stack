@@ -8,6 +8,7 @@ Prompts that must load this skill, and near-misses that must not.
 - what was I working on last week
 - I am going to clear the context, write down where we are
 - we decided to pass the policy in at enqueue time instead, note that
+- log that as a follow-up and keep going on the goal
 - this is going to take a few days, keep track as we go
 - where did I leave off
 - clean up the handoff notes, most of them are from PRs that merged
