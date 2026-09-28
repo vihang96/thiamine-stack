@@ -36,6 +36,9 @@ check, and the most likely to be wrong in a way nobody notices.
      A lane's own report is evidence, not a verdict.
    - **Evidence from a different run.** Logs, screenshots, or timings that predate the last
      commit, or come from a different branch.
+   - **A claim about another repo.** "Not yet on main" or "only on the feature branch" was
+     true when it was written. Check it against that repo's current default branch before
+     you repeat it as a finding.
 
 6. Return it as a table. Prose about claims reads as agreement even when it is not, and a
    table makes the unresolved rows impossible to skim past.
