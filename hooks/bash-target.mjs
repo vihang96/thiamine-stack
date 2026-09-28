@@ -19,12 +19,6 @@
 /** `> f`, `>> f`. A digit or `&` in front is a descriptor dup (`2>&1`, `>&2`), not a file. */
 const REDIRECT = /(?<![0-9&])>>?\s*(?!&)(?:'([^']+)'|"([^"]+)"|([^\s'">|&;()]+))/y
 
-/**
- * The command with every quoted span blanked to the same length. A `>` inside quotes is an
- * argument, as in `awk 'NR>=10'` or `grep "a>b"`, and reading it as a redirect is how the
- * guard denied a read-only command. Offsets survive, so a `>` found here is read back from
- * the original, where a quoted target such as `> 'my file'` is still intact.
- */
 const blankQuoted = (cmd) =>
 	cmd.replace(/'[^']*'|"(?:[^"\\]|\\.)*"/g, (span) => ' '.repeat(span.length))
 
