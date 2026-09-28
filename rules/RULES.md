@@ -71,7 +71,8 @@ Rationale: `why/root-causes.md`.
 
 ## Comments and docs
 
-- Comment why, never what, once, and in two lines. If the code needs narration, fix the code.
+- No comment outside the five kinds in `why/comments.md`. Everything else is deleted.
+- A surprise in our own code is debt. Fix the code, or mark the symbol `MUST KILL` with the fix.
 - Describe what the code does now. A deleted mechanism and a history are not documentation.
 - No README, CHANGELOG entry, or summary doc unless it was requested.
 
