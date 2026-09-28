@@ -22,5 +22,5 @@ Prompts that must load this skill, and near-misses that must not.
 ## Fires alongside unslop-prose
 
 A TypeScript change carries comments, a commit message, and sometimes a doc. This skill
-owns the types. `unslop-prose` owns the sentences, including the safety comment on an
-assertion.
+owns the types. `unslop-prose` owns the sentences. Which comments may exist at all is set
+by `rules/RULES.md`.

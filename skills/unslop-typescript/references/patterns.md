@@ -87,14 +87,18 @@ const config = loadConfig() // returns a parsed Config
 const port = config.port // already number
 ```
 
-When an assertion genuinely has to stay, it documents the invariant that was checked:
+When the compiler can't see a check in our own code, fix the shape rather than explaining
+it. A type guard or a discriminated union narrows the value without an assertion:
 
 ```ts
-// Safety: verified above that node.kind === 'call', which narrows args to Expression[].
-const args = node.args as Expression[]
+if (node.kind === 'call') {
+	const args = node.args // Expression[], narrowed by the union
+}
 ```
 
-An assertion with no such comment is a claim with no evidence.
+An assertion stays only when an external library's types are wrong. Then its comment names
+that library and links the upstream issue. Anything else gets the guard or type that
+removes the assertion.
 
 ## No `unknown` in contracts
 
