@@ -48,12 +48,12 @@ except the five kinds it lists, and file each one you keep under its category:
 `license`, `external-constraint`, `suppression`, `public-api-doc`, `issue-link`.
 
 - A comment explaining our own code goes, whatever it says. If the code needed it, rename,
-  extract, add a type, or restructure, and say you did
-- If that fix is too large for this pass, replace the comment with `MUST KILL` on the exact
-  symbol, naming the fix
+  extract, add a type, or restructure
 - A kept doc comment states the contract and nothing else. Cut its narration
 - A lint suppression stays only when its rule is faulty, pedantic, or style-only. Otherwise
   fix the code and remove the suppression
+- Never add a comment, a marker, a TODO, or `MUST KILL`. This pass only simplifies code and
+  deletes or shortens comments
 
 The default is deletion. A comment you can't file under one of the five categories is one
 you kept because it was written, not because a reader needs it.
@@ -97,12 +97,11 @@ NOW       the technique applied
 ```
 
 Then the comment ledger, one line of counts over every comment the diff added or touched,
-one row per comment you kept, and one per `MUST KILL` you placed. Cut comments get no row:
+and one row per comment you kept. Cut comments get no row:
 
 ```
-COMMENTS  added n, kept n, cut n, marked n
+COMMENTS  added n, kept n, cut n
 KEPT      path:line   category   the reason, in a clause
-KILL      path:line   symbol     the fix that removes it
 ```
 
 Ledger rows do not count against the 200 words. A pass reporting no comments over a diff
