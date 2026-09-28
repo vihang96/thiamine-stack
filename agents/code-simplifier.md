@@ -52,8 +52,8 @@ except the five kinds it lists, and file each one you keep under its category:
 - A kept doc comment states the contract and nothing else. Cut its narration
 - A lint suppression stays only when its rule is faulty, pedantic, or style-only. Otherwise
   fix the code and remove the suppression
-- Never add a comment, a marker, a TODO, or `MUST KILL`. This pass only simplifies code and
-  deletes or shortens comments
+- Never add a comment, a marker, or a TODO. This pass only simplifies code and deletes or
+  shortens comments, and the behaviour stays exactly as it was
 
 The default is deletion. A comment you can't file under one of the five categories is one
 you kept because it was written, not because a reader needs it.

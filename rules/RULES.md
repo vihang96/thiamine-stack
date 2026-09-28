@@ -72,7 +72,7 @@ Rationale: `why/root-causes.md`.
 ## Comments and docs
 
 - No comment outside the five kinds in `why/comments.md`. Everything else is deleted.
-- A surprise in our own code is debt. Fix the code, or mark the symbol `MUST KILL` with the fix.
+- A surprise in our own code gets fixed, not explained or marked. No TODOs or markers.
 - Describe what the code does now. A deleted mechanism and a history are not documentation.
 - No README, CHANGELOG entry, or summary doc unless it was requested.
 

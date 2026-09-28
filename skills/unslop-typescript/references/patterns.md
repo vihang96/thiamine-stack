@@ -97,8 +97,8 @@ if (node.kind === 'call') {
 ```
 
 An assertion stays only when an external library's types are wrong. Then its comment names
-that library and links the upstream issue. Anything else is marked `MUST KILL`, naming the
-guard or type that removes it.
+that library and links the upstream issue. Anything else gets the guard or type that
+removes the assertion.
 
 ## No `unknown` in contracts
 

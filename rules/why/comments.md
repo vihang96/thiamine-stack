@@ -1,6 +1,6 @@
 ---
 id: comments
-summary: A comment is allowed only when the code cannot carry the fact. Five kinds qualify, and a surprise in our own code is fixed or marked MUST KILL, never explained.
+summary: A comment is allowed only when the code cannot carry the fact. Five kinds qualify, and a surprise in our own code is fixed, never explained or marked.
 enforced_by: review, and the code-simplifier agent's comment ledger.
 ---
 
@@ -29,15 +29,9 @@ comment stays correct until someone changes the code and not the comment. After 
 wrong, and nothing checks it.
 
 Make the behaviour obvious instead. Rename the symbol, extract the step, add a type that
-makes the wrong state unrepresentable, or restructure. When that is too large for the
-change in hand, mark the exact symbol:
-
-```ts
-// MUST KILL: extract the retry into its own function so the ordering is visible.
-```
-
-`MUST KILL` names the one fix that removes it. It is a task, not an explanation, and
-anybody can search for it.
+makes the wrong state unrepresentable, or restructure. Keep the behaviour correct while you
+do it. Leave no marker, TODO, or note in the code. A fix too large for the change is raised
+with the person who asked for it, not written into the file.
 
 ## The failure it prevents
 
