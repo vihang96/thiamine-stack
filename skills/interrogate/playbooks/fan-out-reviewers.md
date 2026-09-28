@@ -13,8 +13,11 @@ than a first pass somewhere else. `fan-out-work` owns the mechanics, and its
 `playbooks/read-fanout.md` is the general shape; this covers what is specific to reviewing.
 
 1. Package the grounding once. Intent, the diff, the base commit, where the code lives, and
-   how to run the tests. Every reviewer gets the identical grounding. The diversity comes
-   from the angle you assign, not from telling them different things.
+   how to run the tests. When the change depends on another repo, fetch that repo's default
+   branch and put its commit in the grounding. A reviewer left to find the dependency on its
+   own checks whatever is checked out, and its finding goes stale without anyone noticing.
+   Every reviewer gets the identical grounding. The diversity comes from the angle you
+   assign, not from telling them different things.
 
 2. Split by angle, never by directory. Lanes given a slice of the same question return
    overlapping halves of one answer. Angles that carry their weight:

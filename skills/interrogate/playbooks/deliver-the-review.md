@@ -48,6 +48,11 @@ one, or handing findings to the agent that wrote the code.
 
    Skip its "adding soul" section. A review wants to be dry and skimmable, not voiced.
 
+   Keep a posted comment to one screen. Give each finding one line and one link. Leave out
+   what checked out, and give what you did not check a single line. The full reasoning can
+   stay in your reply to the user. A long comment gets skimmed, and the blocking finding is
+   what gets missed.
+
 9. Do not fix it while reviewing. A reviewer who rewrites the change has taken it over and
    nobody is left to review it. If the author asks you to apply the findings, do it as a
    separate commit, say which findings it covers, and leave the ones you did not act on
@@ -59,6 +64,10 @@ one, or handing findings to the agent that wrote the code.
     top-level comment. `branch-to-pr` owns everything else about the pull request,
     and its `triage-review-comments` playbook is what the author runs when your review
     lands.
+
+11. Confirm the recipient before handing findings to another session. A guessed recipient
+    acts on work it does not own. A session that is not running cannot receive messages,
+    so write the findings to a file and give the user the command to resume that session.
 
 **Reply:** the verdict line, blocking findings, non-blocking findings, notes as one group,
 the dropped count, and what you did not check.
