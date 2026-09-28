@@ -17,6 +17,9 @@ Prompts that must load this skill, and near-misses that must not.
 - is this safe to change, it is called from everywhere
 - this page takes four seconds to load, fix it
 - reduce the memory this worker uses
+- how do we reproduce this ticket locally
+- it happens in prod but the test passes locally, figure out why
+- does the existing suite cover these two bugs
 
 ## Should not fire
 

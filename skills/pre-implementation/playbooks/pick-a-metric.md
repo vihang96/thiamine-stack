@@ -16,6 +16,12 @@ because the number agrees with you.
    worse. A change that improves three metrics and quietly ruins a fourth is how a
    performance push ships an outage.
 
+   One constraint is easy to miss: the default still works in the environment people
+   actually have. A speedup that needs something else changed, a raised pool, a higher
+   capacity, a limit elsewhere, ships as an opt-in setting, and the default keeps being
+   measured against the stock environment. Change one of those knobs at a time. Raising two
+   together leaves you unable to say which one mattered.
+
 3. Measure what people feel, not what is easy to measure. The available counter is rarely
    the experience. Time to first useful output beats total runtime when the user is
    watching, and a tail beats an average whenever anyone is waiting. An average hides the
