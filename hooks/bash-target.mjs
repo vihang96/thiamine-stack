@@ -17,7 +17,10 @@
  */
 
 /** `> f`, `>> f`. A digit or `&` in front is a descriptor dup (`2>&1`, `>&2`), not a file. */
-const REDIRECT = /(?<![0-9&])>>?\s*(?!&)(?:'([^']+)'|"([^"]+)"|([^\s'">|&;()]+))/g
+const REDIRECT = /(?<![0-9&])>>?\s*(?!&)(?:'([^']+)'|"([^"]+)"|([^\s'">|&;()]+))/y
+
+const blankQuoted = (cmd) =>
+	cmd.replace(/'[^']*'|"(?:[^"\\]|\\.)*"/g, (span) => ' '.repeat(span.length))
 
 /** `tee f`, `tee -a f`. Flags other than -a are rare enough to leave to the cwd fallback. */
 const TEE = /\btee\s+(?:-a\s+)?(?:'([^']+)'|"([^"]+)"|([^\s'"|&;()-][^\s'"|&;()]*))/g
@@ -63,7 +66,13 @@ export function bashWrites(cmd) {
 
 	const { code, bodies } = splitHeredocs(cmd)
 	const paths = []
-	for (const re of [REDIRECT, TEE, SED_IN_PLACE]) {
+	for (const m of blankQuoted(code).matchAll(/(?<![0-9&])>>?(?!&)/g)) {
+		REDIRECT.lastIndex = m.index
+		const hit = REDIRECT.exec(code)
+		const target = hit && (hit[1] ?? hit[2] ?? hit[3])
+		if (isRealTarget(target)) paths.push(target)
+	}
+	for (const re of [TEE, SED_IN_PLACE]) {
 		for (const m of code.matchAll(re)) {
 			const target = m[1] ?? m[2] ?? m[3]
 			if (isRealTarget(target)) paths.push(target)
