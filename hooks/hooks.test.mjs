@@ -57,12 +57,20 @@ test('bashWrites finds redirect, append, tee, and in-place targets', () => {
 	assert.deepEqual(bashWrites('echo hi >> notes.md').paths, ['notes.md'])
 	assert.deepEqual(bashWrites("tee -a log.txt <<'X'\ny\nX").paths, ['log.txt'])
 	assert.deepEqual(bashWrites("sed -i '' 's/a/b/' README.md").paths, ['README.md'])
+	assert.deepEqual(bashWrites("echo 'a>b' > 'my file.txt'").paths, ['my file.txt'])
+	assert.deepEqual(bashWrites('printf "%s" x >"out.txt"').paths, ['out.txt'])
 })
 
 test('bashWrites ignores descriptor dups, /dev, and read-only scripts', () => {
 	assert.equal(bashWrites('node scripts/validate.mjs 2>&1 | tail -3').writes, false)
 	assert.equal(bashWrites('grep foo bar.txt > /dev/null').writes, false)
 	assert.equal(bashWrites("python3 - <<'PY'\nprint('hi')\nPY").writes, false)
+})
+
+test('bashWrites reads no redirect out of a quoted argument', () => {
+	assert.equal(bashWrites("awk 'NR>=1260 && NR<=1280' /tmp/rc.ts").writes, false)
+	assert.equal(bashWrites('grep -n "a>b" src.ts | head').writes, false)
+	assert.equal(bashWrites('echo "use x > y here"').writes, false)
 })
 
 test('bashWrites reports a write it cannot name, and reads no paths out of a heredoc body', () => {
