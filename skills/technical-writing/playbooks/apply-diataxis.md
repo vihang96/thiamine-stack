@@ -24,12 +24,11 @@ the finished tree looks like.
 
 2. Label every chunk with the compass, paragraph by paragraph. Ask the two questions of each
    chunk: does it inform action or understanding, and does it serve learning or work?
-   Label down to the sentence where a paragraph mixes. Do not label by feel. The compass
-   exists because gut feel files most content wrong, and it files it wrong in the direction
-   of the page it already sits on.
+   Label down to the sentence where a paragraph mixes. Do not label by feel, because gut
+   feel is often wrong here.
 
 3. Settle the boundaries that blur. Adjacent modes share a trait, so their content drifts
-   across the line. Two pairs cause most mislabels.
+   across the line. Two pairs blur worst, and diataxis.fr gives each its own page.
 
    - **Tutorial or how-to.** Both are ordered steps. Difficulty does not decide it: a
      tutorial can teach something advanced, and a how-to can cover something basic. Ask
@@ -58,17 +57,10 @@ the finished tree looks like.
 
 5. Make the move so the docs are whole after it. Move the content to a page of its own mode,
    and leave one sentence and a link where it was. The page you took from must still read
-   as complete, and the page you added must be useful on its own. Docs are never finished,
-   but they are always in a usable state between moves.
+   as complete, and the page you added must be useful on its own.
 
-   Then fix what the move exposed in each page, by mode:
-
-   - A tutorial opens by naming what the reader will build and shows a result at every step.
-   - A how-to is titled by the task ("How to rotate the signing key") and starts from a
-     reader who already knows why.
-   - A reference page mirrors the structure of the code it describes, so a reader can hold
-     both side by side. Generate it from the code where you can.
-   - An explanation title tolerates an implicit "About" in front and stays inside one topic.
+   Then check both pages against their mode's rules in `SKILL.md`. A move usually exposes
+   a title that names a topic instead of a task, or a tutorial step with no visible result.
 
 6. Check functional quality before deep quality. Accuracy, completeness, consistency, and
    precision are testable: the command runs, the flag exists, the count is true at this
