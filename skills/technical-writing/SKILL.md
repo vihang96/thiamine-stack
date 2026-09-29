@@ -1,6 +1,6 @@
 ---
 name: technical-writing
-description: "Layered technical-writing standard: Diátaxis structure, Google developer style sentences, STE instruction rules, Global English syntax. Use when writing or reviewing docs, RFCs, readmes, PR descriptions, or commit messages, and when a page explains and instructs at the same time."
+description: "Layered technical-writing standard: Diátaxis structure, Google developer style sentences, STE instruction rules, Global English syntax. Use when writing or reviewing docs, RFCs, readmes, PR descriptions, or commit messages, when a page explains and instructs at the same time, and when restructuring a doc set or deciding where new content goes."
 owns: "document-level writing decisions: mode, structure, headings, and voice as a function of mode"
 requires: [unslop-prose]
 ---
@@ -64,6 +64,12 @@ Use the compass on a whole document or on one sentence. Reach for it whenever yo
 Don't mix modes: no reference tables inside a tutorial, no tutorial hand-holding inside reference, no arguing inside a how-to. Split and link instead.
 
 Source: diataxis.fr, fetched 2026-07-18.
+
+## Playbooks
+
+| Situation | Playbook |
+| --- | --- |
+| Restructuring a mixed page or a doc set, or deciding where new content goes | `playbooks/apply-diataxis.md` |
 
 ## Write sentences to the reader (Google developer style)
 
