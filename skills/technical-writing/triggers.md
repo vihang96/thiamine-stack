@@ -10,6 +10,9 @@ Prompts that must load this skill, and near-misses that must not.
 - draft a PR description for this branch
 - these docs feel like four documents fighting each other
 - split this page up, it explains and instructs at the same time
+- our docs folder is a mess, reorganize it
+- is this a tutorial or a how-to
+- where should this section on retry semantics live
 
 ## Should not fire
 
