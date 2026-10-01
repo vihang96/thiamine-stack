@@ -10,8 +10,11 @@ one, or handing findings to the agent that wrote the code.
 2. Give every finding three parts, in this order.
 
    - **What breaks.** The input or state, and the wrong result.
-   - **Where.** `file:line`. For a GitHub comment, a permalink with the full commit SHA,
-     since a line number moves on the next push.
+   - **Where.** For a diff, `file:line`. For a GitHub comment, a permalink with the full
+     commit SHA, since a line number moves on the next push. For a plan or a design doc, the
+     section or quoted text that the comment anchors to. Argue at the level the doc is
+     written, and keep the code you traced as your own evidence. A code link in a design
+     comment moves the discussion to an implementation the doc has not chosen yet.
    - **What would satisfy it.** The condition, not necessarily the patch. Include a concrete
      fix only when it is small and you are sure, because a wrong suggested fix costs the
      author more than no suggestion.
@@ -33,9 +36,12 @@ one, or handing findings to the agent that wrote the code.
 7. Address the code, not the author. Agents do not care, humans do, and the same review goes
    to both, so there is no version of this worth writing twice.
 
-8. Cut the tells before it goes out. A review comment is prose a person reads, so
-   `unslop-prose` applies to it. Three of its patterns do specific damage here, and they are
-   worth checking even when you skip the rest.
+8. Write it to the technical-writing standard, then cut the tells. A review comment is prose
+   a person reads, on a pull request, a plan, or a doc alike. `technical-writing` sets how
+   its sentences read: name who does what, give one thought per sentence, put the condition
+   before the request, and call each thing by its real name every time. `unslop-prose` then
+   cuts the tells. Three of its patterns do specific damage here, and they are worth
+   checking even when you skip the rest.
 
    - **Sycophancy.** "Great work on this!" ahead of a blocking finding reads as either
      insincere or as permission to merge. Open with the verdict.
@@ -47,6 +53,9 @@ one, or handing findings to the agent that wrote the code.
      it, buys nothing and pushes the findings below the fold.
 
    Skip its "adding soul" section. A review wants to be dry and skimmable, not voiced.
+
+   On a plan or a design doc, post each finding as its own comment, anchored to the section
+   it concerns.
 
    Keep a posted comment to one screen. Give each finding one line and one link. Leave out
    what checked out, and give what you did not check a single line. The full reasoning can
