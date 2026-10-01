@@ -13,6 +13,7 @@ Prompts that must load this skill, and near-misses that must not.
 - give me feedback on this RFC
 - spawn a few reviewers on this branch and tell me what is real
 - the subagent says it is done and tests pass, check that
+- before I send this design to the team, find what their review will catch
 
 ## Should not fire
 

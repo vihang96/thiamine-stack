@@ -14,7 +14,7 @@ import os from 'node:os'
 import path from 'node:path'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { bashWrites } from './bash-target.mjs'
+import { bashWrites, leadingDir } from './bash-target.mjs'
 import { hasTool, PASSES } from './nudge-state.mjs'
 import { firstSignal, SIGNALS } from './signals.mjs'
 
@@ -174,6 +174,57 @@ test('branch guard denies once per repo per session', () => {
 		'',
 		"the retry is the agent's call",
 	)
+})
+
+test('leadingDir reads the directory a command moves into first', () => {
+	assert.equal(leadingDir('cd /tmp/x && sed -i "" s/a/b/ f.txt'), '/tmp/x')
+	assert.equal(leadingDir("cd 'my dir'; cat > f <<'E'\nx\nE"), 'my dir')
+	assert.equal(leadingDir('sed -i "" s/a/b/ f.txt'), null)
+	assert.equal(leadingDir('cd $DIR && touch f'), null)
+})
+
+test('branch guard resolves a write after a leading cd against that directory', () => {
+	const onMain = repo()
+	const scratch = tmp('thiamine-scratch-')
+	const out = runHook('pre-edit-branch-guard.mjs', {
+		tool_name: 'Bash',
+		tool_input: { command: `cd ${scratch} && sed -i '' 's/a/b/' notes.html` },
+		cwd: onMain,
+		session_id: 'cd-to-scratch',
+	})
+	assert.equal(out, '', 'a scratch write is not an edit to the repo the session started in')
+
+	const fromScratch = runHook('pre-edit-branch-guard.mjs', {
+		tool_name: 'Bash',
+		tool_input: { command: `cd ${onMain} && ${HEREDOC_WRITE}` },
+		cwd: scratch,
+		session_id: 'cd-to-main',
+	})
+	assert.equal(decisionOf(fromScratch), 'deny', 'and a write after cd into a repo on main is caught')
+})
+
+test('branch guard denies once per repo per session, whatever directory the session is in', () => {
+	const dir = repo()
+	fs.mkdirSync(path.join(dir, 'sub'))
+	const home = tmp('thiamine-home-')
+	const event = (cwd) => ({
+		tool_name: 'Bash',
+		tool_input: { command: `cat > ${path.join(dir, 'f.txt')} <<'EOF'\nchanged\nEOF` },
+		cwd,
+		session_id: 'moving',
+	})
+	assert.equal(decisionOf(runHook('pre-edit-branch-guard.mjs', event(dir), home)), 'deny')
+	assert.equal(runHook('pre-edit-branch-guard.mjs', event(path.join(dir, 'sub')), home), '')
+})
+
+test('branch guard keeps commits, pushes and merges out of its retry escape', () => {
+	const out = runHook('pre-edit-branch-guard.mjs', {
+		tool_name: 'Bash',
+		tool_input: { command: HEREDOC_WRITE },
+		cwd: repo(),
+		session_id: 'message',
+	})
+	assert.match(reasonOf(out), /committing, pushing to a pull request branch, or merging/)
 })
 
 /** A stand-in thiamine checkout: the two markers findRoot looks for, and a validator that fails. */

@@ -8,6 +8,7 @@ Prompts that must load this skill, and near-misses that must not.
 - can I start this now or will it clash with what is already going on
 - what is everyone else working on in this workspace right now
 - start this once the schema PR merges, do not wait around for it
+- this design reuses the contracts another session is still reworking, can I follow them
 - two of us are in this repo today, how do we not step on each other
 - this needs the contract change to land first, set it up to begin then
 - is anything in flight that touches the retention code

@@ -1,6 +1,6 @@
 ---
 name: branch-to-pr
-description: "Decides where a change lands and carries it from there to a pull request ready for approval, in one repo or several. Use before the first edit of any change that will be committed, when work touches more than one service, when creating or cleaning up worktrees, when pausing or resuming a session, when opening or stacking pull requests, when checks are failing or a pull request needs to go green, or when addressing or triaging review comments."
+description: "Decides where a change lands and carries it from there to a pull request ready for approval, in one repo or several. Use before the first edit of any change that will be committed, when work touches more than one service, when creating or cleaning up worktrees, when pausing or resuming a session, when opening or stacking pull requests, before pushing to a branch whose pull request may already have merged, before any merge, when checks are failing or a pull request needs to go green, or when addressing or triaging review comments."
 owns: "where a change lands, the worktree lifecycle, and the git side of stopping and resuming, in one repo or many"
 see_also: [pre-implementation, handoff, fan-out-work, working-alongside, interrogate, post-implementation, signal-to-task]
 ---
