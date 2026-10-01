@@ -2,7 +2,7 @@
 name: interrogate
 description: "Reviews an artifact somebody else produced, a human or an agent, and returns feedback precise enough to act on: a plan, a design, a diff, a pull request, or an agent's report. Decides what earns a finding, ranks what is left, stops before the nits, and says plainly when there is nothing to report. Use when reviewing a PR or a diff before merging, when asked to critique or stress test a plan, when checking whether an agent's work is what it claims, and for review this, tear this apart, or find the blind spots."
 owns: "judging an artifact someone else produced, and the feedback that goes back to them"
-see_also: [fan-out-work, branch-to-pr, post-implementation, pre-implementation, unslop-prose, adversarial-reviewer]
+see_also: [fan-out-work, branch-to-pr, post-implementation, pre-implementation, unslop-prose, technical-writing, adversarial-reviewer]
 ---
 
 # Interrogate
@@ -76,8 +76,9 @@ feedback on it.
   it. That is a different question from whether the change is any good.
 - `rules/RULES.md` and the `unslop-*` skills are the standard a change is measured against.
   This skill does not restate them. It decides which violations are worth an author's time.
-- `unslop-prose` owns the words of the review once the findings are settled. A posted comment
-  is prose somebody reads, and the tells that matter most in a review are named in
+- `technical-writing` and `unslop-prose` own the words of the review once the findings are
+  settled. The first sets how the sentences read, and the second cuts the tells. A posted
+  comment is prose somebody reads, and the tells that matter most in a review are named in
   `playbooks/deliver-the-review.md`.
 - `pre-implementation` owns writing a plan. Reviewing one is here.
 - `fan-out-work` owns parallel subagents in general. Interrogation is one of its read-only

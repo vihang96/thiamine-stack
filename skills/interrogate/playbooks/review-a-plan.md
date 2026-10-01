@@ -34,6 +34,13 @@ preferences, which is what the observation step below exists to stop.
      step three can be run twice.
    - **A second answer.** The plan introduces a library, a store, a pattern, or an error
      shape the codebase already decided. `consistency` owns this and is worth loading.
+   - **Planned work.** Designs that are decided but not built yet: the owner's open design
+     docs, decision records, and handoff notes, and what memory records about them. The
+     codebase cannot show these, so read them before the first draft. Where the plan
+     overlaps one, compare who each one serves and how each one reaches them before you
+     propose that one depend on the other. A dependency inherits the other plan's audience
+     and rollout, so it narrows to wherever that plan has shipped. The shared part usually
+     belongs one layer down, where both plans consume it and neither owns it.
    - **Ungrounded conventions.** Read the `CLAUDE.md` that governs the code the plan
      touches, and the nearest existing feature of the same kind. A plan judged against
      remembered conventions rather than the ones in the repo produces confident, wrong
@@ -63,6 +70,11 @@ preferences, which is what the observation step below exists to stop.
 6. Rank by what the plan costs if that part is wrong, not by how sure you are. A missing
    rollback outranks a mis-ordered pair of independent steps, even when the ordering is the
    thing you are certain about.
+
+   Judge the architecture, the contracts, and the fit with existing and planned work first.
+   Limits, sizes, and the doc's own wording get settled during implementation, so raise
+   them only where they change a contract. A design review that asks for numbers spends
+   the author's attention on the part that is cheap to change later.
 
 7. End on one of three decisions, and name it: **approved**, **needs revision**, or
    **blocked**. Needs revision names each item to address. Blocked names the one thing that

@@ -30,6 +30,12 @@ than a first pass somewhere else. `fan-out-work` owns the mechanics, and its
    - The tests: what they assert, and which claimed behaviour nothing covers.
    - Data and migrations: what is already written in the old shape.
 
+   That list is for a diff. For a plan or a design, take one angle per concern the design
+   raises, and add two angles that its own sections do not suggest: fit with planned work
+   (`review-a-plan.md`, step 3), and who the design serves and how it reaches them. Angles
+   copied from the design's headings review the design on its own terms, and they cannot
+   find what it left out.
+
    Security is not on that list on purpose. Where the harness ships a security review, run
    it as its own pass, since it carries a threat model this list does not. Add the angle
    here only when nothing ships one, and give it the rule that keeps it useful: an untrusted
