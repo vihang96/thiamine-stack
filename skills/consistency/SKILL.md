@@ -111,6 +111,13 @@ shared question into every brief before its lanes start rather than letting each
 answer it. Where a unit in flight has already decided your question, take its answer or
 agree a different one with it, and do not decide independently and reconcile later.
 
+A design its owner is still changing is not a precedent. Its conventions can move under
+you, and its owner already knows where it differs from the codebase. Take the answer from
+what has landed, decide your own question from what your own work needs, and write your
+choice without describing it as a difference from the other work. Do not hand its owner a
+list of what to change. That is their work, and `working-alongside` decides whether yours
+can start beside it.
+
 ## A new service is the hard case
 
 A new service has no existing answers of its own and inherits every question at once. Do

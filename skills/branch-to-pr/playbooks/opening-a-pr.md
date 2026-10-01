@@ -3,6 +3,11 @@
 **One pull request per repo the change touches, opened in dependency order.** For "open a
 PR", and at the end of any change that is ready for review.
 
+0. Check the pull request is still open before pushing to its branch. A follow-up commit pushed
+   to the branch of a merged pull request lands nowhere, and reporting it as pushed is a false
+   completion. `gh pr view <branch> --json state,mergedAt` answers it. When it has merged, cut a
+   new branch from the default branch, carry the commit over, and open a new pull request.
+
 1. Check the diff is the change. Run the repo's own lint and tests in each worktree first.
    A pull request opened red spends a reviewer's attention on something you already knew.
 

@@ -61,6 +61,17 @@ function splitHeredocs(cmd) {
 	}
 }
 
+/**
+ * The directory a command moves into before it writes: `cd dir && ...` or `cd dir; ...`.
+ * Relative write targets resolve against it, not against the session's cwd, or a scratch
+ * write after `cd` is reported against whatever repo the session started in.
+ */
+export function leadingDir(cmd) {
+	const m = (cmd ?? '').match(/^\s*cd\s+(?:'([^']+)'|"([^"]+)"|([^\s;&|'"]+))\s*(?:&&|;)/)
+	const dir = m && (m[1] ?? m[2] ?? m[3])
+	return dir && !dir.startsWith('$') ? dir : null
+}
+
 export function bashWrites(cmd) {
 	if (!cmd) return { writes: false, paths: [] }
 

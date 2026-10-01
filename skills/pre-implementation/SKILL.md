@@ -107,7 +107,8 @@ You are ready when you can state all five without hedging:
 1. The problem, in terms that do not name the solution.
 2. What you do not know, and for each one whether you resolved it, are assuming it, or need
    an answer.
-3. What already exists that you are building on or replacing, named by file and symbol.
+3. What already exists that you are building on or replacing, named by file and symbol, read
+   at a freshly fetched remote head and cited by its commit.
 4. What the change touches, including the repos and the callers you do not own.
 5. The steps, in order, each ending in something you can check.
 

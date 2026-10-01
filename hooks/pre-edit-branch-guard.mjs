@@ -32,7 +32,7 @@ import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { bashWrites } from './bash-target.mjs'
+import { bashWrites, leadingDir } from './bash-target.mjs'
 import { goneBranches } from './nudge-state.mjs'
 
 /** A branch is "default" if the remote says so, else by the two conventional names. */
@@ -73,14 +73,17 @@ function defaultBranchOf(cwd) {
 	}
 }
 
-/** Claude Code names a project directory after its absolute path, with slashes as dashes. */
-const stateFile = (projectDir) =>
+/**
+ * One state file per session. Keying it by the cwd gave each directory the session visited
+ * its own "once", so a session that moved between directories was warned again and again.
+ */
+const stateFile = (sessionId) =>
 	path.join(
 		os.homedir(),
 		'.claude',
-		'projects',
-		projectDir.replaceAll('/', '-'),
-		'.thiamine-branch-guard.json',
+		'thiamine',
+		'branch-guard',
+		`${sessionId.replace(/[^\w-]/g, '_')}.json`,
 	)
 
 function alreadyWarned(file, sessionId, repo) {
@@ -116,9 +119,12 @@ function targetOf(event) {
 	if (named) return named
 	if (event.tool_name !== 'Bash') return null
 
-	const { writes, paths } = bashWrites(event.tool_input?.command ?? '')
+	const command = event.tool_input?.command ?? ''
+	const { writes, paths } = bashWrites(command)
 	if (!writes) return null
-	return paths.length > 0 ? path.resolve(event.cwd ?? '.', paths[0]) : (event.cwd ?? null)
+	const moved = leadingDir(command)
+	const dir = moved ? path.resolve(event.cwd ?? '.', moved.replace(/^~(?=\/|$)/, os.homedir())) : event.cwd
+	return paths.length > 0 ? path.resolve(dir ?? '.', paths[0]) : (dir ?? null)
 }
 
 const allow = () => process.exit(0)
@@ -150,9 +156,8 @@ try {
 	const onDefault = defaultBranch ? branch === defaultBranch : fallback
 	if (!onDefault && !goneBranches(dir).has(branch)) allow()
 
-	const projectDir = event.cwd || process.env.CLAUDE_PROJECT_DIR || repo
-	const file = stateFile(projectDir)
 	const sessionId = event.session_id || 'unknown'
+	const file = stateFile(sessionId)
 	if (alreadyWarned(file, sessionId, repo)) allow()
 	recordWarned(file, sessionId, repo)
 
@@ -170,8 +175,9 @@ try {
 					lands +
 					`Decide where the change goes before editing: load the thiamine:branch-to-pr skill, ` +
 					`which puts it on a branch in a worktree. If this branch is genuinely right for this ` +
-					`edit, say why and make it again. This fires once per repo per session and will not ` +
-					`stop the retry.`,
+					`edit, say why and make it again. That covers this edit only: committing, pushing to a ` +
+					`pull request branch, or merging still goes through branch-to-pr. This fires once ` +
+					`per repo per session and will not stop the retry.`,
 			},
 		})}\n`,
 	)

@@ -8,6 +8,8 @@ Prompts that must load this skill, and near-misses that must not.
 - start on the retry bug, this repo only
 - set up worktrees for a change that spans a service and its schema repo
 - clean up the worktrees, there are too many
+- push this follow-up commit to the PR branch
+- merge it once the reply is posted
 - what was I working on before the weekend
 - I need to stop here, leave things so I can pick them up tomorrow
 - add another repo to the branch I am already working on

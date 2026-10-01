@@ -23,6 +23,11 @@ grep will not show you.
      this one.
    - **The wire.** JSON an API returns, a column another service reads, a queue message, a
      cached payload written by the old code and read by the new.
+   - **Stored rows and today's writers.** For a schema change, every row already written in
+     the old shape, and every insert today's code makes, between each migration step and the
+     next deploy. A column made required before its writer ships breaks the writer. A stored
+     row read with today's stricter rules breaks every reader of it. Run the current writer's
+     real insert after each step, against the real migrations rather than hand-copied tables.
    - **Across languages.** A field renamed in a schema is a grep hit in one language and
      silence in the other three that read the same bytes.
    - **The library, not your call to it.** Read its source at the version actually pinned,
@@ -46,6 +51,9 @@ grep will not show you.
    | 3 | You walked the failure step by step and it does not reach. |
    | 4 | You ran it. A script that calls the real code and fails loudly if you are wrong. |
    | 5 | You reproduced it in the running system. |
+
+   A test that passes on any error is not level 4. Assert which constraint or which branch
+   failed, or a check that rejects for the wrong reason reads as proof.
 
    Anything you cannot get to level 4 is unproven, and you say so rather than writing it up
    as settled. Level 4 is usually one small script that imports the same library the service

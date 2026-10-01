@@ -7,6 +7,14 @@ did not write.
 Read-only. This produces an explanation, not a diff. If it turns into a change, stop and
 start the change deliberately.
 
+0. Read the code that is actually current. A local checkout can sit many commits behind its
+   remote, or on another branch, and `git status` reports "behind" only as of the last fetch.
+   Fetch first. When the checkout is behind or busy, extract the remote's default branch
+   into scratch space (`git archive origin/main | tar -x -C <scratch>`), read that, and name
+   its commit in what you produce. Give subagents that path and commit too. For a sibling
+   repo another session is changing, its current state is on that session's branch, not on
+   its default branch and not in anything you read earlier in the session.
+
 1. Find the real entry point rather than the first match. Search for the behavior, not the
    word. A grep for a feature name finds the label and the test. The code that does
    the work is often named for the mechanism instead. Follow a real call path from a caller you
