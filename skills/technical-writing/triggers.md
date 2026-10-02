@@ -13,6 +13,8 @@ Prompts that must load this skill, and near-misses that must not.
 - our docs folder is a mess, reorganize it
 - is this a tutorial or a how-to
 - where should this section on retry semantics live
+- record this decision as an ADR and move on to the next contract
+- add a testing plan doc for this feature to the repo
 
 ## Should not fire
 
