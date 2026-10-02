@@ -229,13 +229,6 @@ Then clear the nudge, or the next session start suggests a pass that just happen
 node scripts/mark-pass-run.mjs reflect     # from a thiamine checkout
 ```
 
-A pass is landed when sessions load it, not when it merges. On a machine that installed the
-stack from GitHub, sessions run a snapshot that stays at its install commit until the
-marketplace is updated, so a pass can merge and change nothing. After the merge, check that
-a loaded skill's base directory holds the new text, or follow `thiamine-install` to update
-and compare the installed commit with the remote. When mining, judge "already covered"
-against the copy the sessions loaded as well as the checkout, since the two can differ.
-
 ## Verify
 
 - `node scripts/validate.mjs` is clean for every artifact touched.

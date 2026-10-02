@@ -98,11 +98,6 @@ reading it is the easiest way to debug the wrong file. The path that runs is the
 marketplace install location, which the plugin's own hooks receive as
 `$CLAUDE_PLUGIN_ROOT`.
 
-A GitHub marketplace is the opposite case. There the snapshot is what runs, and it stays at
-the commit it was installed from until you run `/plugin marketplace update thiamine-stack`.
-A merged change does not reach the machine before that. The installed commit is
-`gitCommitSha` in `~/.claude/plugins/installed_plugins.json`.
-
 `claude plugin list` does not print either path, so check it directly:
 
 ```sh
