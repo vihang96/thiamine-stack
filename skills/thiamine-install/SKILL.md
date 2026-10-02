@@ -17,7 +17,8 @@ earlier install, replace them with symlinks and say so.
 Ask the user which they want, unless it is obvious:
 
 - **From GitHub** (`vihang96/thiamine-stack`), for a machine that only consumes the
-  standards. This needs no clone and nothing to keep in sync.
+  standards. This needs no clone, but a merged change does not reach it until the
+  marketplace is updated. See the end of Step 3.
 - **From a local checkout**, when the user edits the stack. Changes take effect without
   a push and a marketplace update.
 
@@ -82,8 +83,19 @@ start, so an edit takes effect in the next session and not in the one that makes
 that half out and a session reports a hook as fixed while the previous copy is still firing.
 
 Claude Code also snapshots the plugin into `~/.claude/plugins/cache/` and records that as
-`installPath`; it is not what runs. Never read or edit the cache copy, and never report it
-as the install location.
+`installPath`. For a local checkout it is not what runs. Never read or edit the cache copy
+of a local install, and never report it as the install location.
+
+For a GitHub install the snapshot is what runs: a loaded skill reports its base directory
+under `~/.claude/plugins/cache/`. It stays at the commit it was installed from until the
+user runs `/plugin marketplace update thiamine-stack`, so merging a pull request changes
+nothing on this machine. To confirm an update landed, compare the installed commit with
+the remote:
+
+```sh
+jq -r '.plugins."thiamine@thiamine-stack"[0].gitCommitSha' ~/.claude/plugins/installed_plugins.json
+git ls-remote https://github.com/vihang96/thiamine-stack HEAD
+```
 
 Under the plugin, a skill's typed name is namespaced: `/thiamine:reflect`, not `/reflect`.
 Symlinked installs use the bare name. Say which form applies to the harness you installed.
