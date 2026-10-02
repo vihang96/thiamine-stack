@@ -62,9 +62,12 @@ failed attempts are the best available input for deciding what should become a s
 
 ## The record
 
-One file per change, at `<workspace>/.handoff-<branch>.md`. Beside the work, not in a temp
-directory that gets swept, and gitignored, since it is working state rather than a
-deliverable.
+One file per change, at `<workspace>/.handoff-<branch>.md`. The workspace is the folder that
+holds the repos, the same directory `scripts/records.sh` takes, so the record sits outside
+every repo. A record written inside a repo in a multi-repo workspace is invisible to recall
+and prune. Only when the workspace is a single checkout does the record sit in a repo, and
+then gitignore it, since it is working state rather than a deliverable. Never put it in a
+temp directory that gets swept.
 
 Three parts. A header holding current state, rewritten as it changes. A log below it,
 appended as you go and edited only when its change lands. And a list of what was found
