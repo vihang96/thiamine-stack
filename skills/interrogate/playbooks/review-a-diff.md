@@ -47,6 +47,14 @@ Check the floor in `SKILL.md` first. A small, reversible, one-concern diff gets 
 
 8. Rank, cut, and deliver per `playbooks/deliver-the-review.md`.
 
+9. Remove any checkout you made for the review, and the local branch you fetched into it.
+   A `git worktree add` from a session's scratchpad is registered in the author's repo and
+   outlives the session, and a later cleanup reads it as somebody's work in review.
+
+   ```sh
+   git -C "$repo" worktree remove --force "$checkout" && git -C "$repo" branch -D "pr-$n"
+   ```
+
 **Reply:** the scope you reviewed, the intent and where it came from, the verdict with
 counts by severity, the findings in rank order, what you dismissed and why, and what you
 did not reach.

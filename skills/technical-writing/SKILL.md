@@ -1,6 +1,6 @@
 ---
 name: technical-writing
-description: "Layered technical-writing standard: Diátaxis structure, Google developer style sentences, STE instruction rules, Global English syntax. Use when writing or reviewing docs, RFCs, readmes, PR descriptions, or commit messages, when a page explains and instructs at the same time, and when restructuring a doc set or deciding where new content goes."
+description: "Layered technical-writing standard: Diátaxis structure, Google developer style sentences, STE instruction rules, Global English syntax. Use when writing or reviewing docs, RFCs, readmes, decision records, design docs, test plans, PR descriptions, or commit messages, including docs written along the way while building a feature, when a page explains and instructs at the same time, and when restructuring a doc set or deciding where new content goes."
 owns: "document-level writing decisions: mode, structure, headings, and voice as a function of mode"
 requires: [unslop-prose]
 ---

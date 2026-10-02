@@ -14,6 +14,8 @@ Prompts that must load this skill, and near-misses that must not.
 - I am adding a script that reports failing checks, does something here do that already
 - this new hook decides what counts as a failure, check nothing else already decides it
 - two agents are working on this at once, will they pick different error shapes
+- I need a tunnel so I can test this on my phone
+- port these proto contracts to zod
 
 ## Should not fire
 

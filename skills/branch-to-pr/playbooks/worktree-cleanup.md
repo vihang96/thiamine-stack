@@ -29,6 +29,7 @@ from git alone, when nobody polled.
    | `unpushed:N` | N commits the remote does not have | ask, and show the log |
    | `dirty` | uncommitted changes | ask, and show the status |
    | `missing-dir` | the directory is gone, the registration is not | prune |
+   | a `pr-N` branch under a session scratchpad | a review snapshot of another author's pull request | remove, whatever the pull request's state |
 
 3. Confirm the landed ones are actually landed. `gone` means the upstream branch was
    deleted, which is usually a merged and tidied pull request, but a force-deleted branch

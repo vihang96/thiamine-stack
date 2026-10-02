@@ -59,7 +59,9 @@ because that is the only thing separating a short review from a skipped one.
 - Generated files or a lockfile edited by hand.
 
 A one-line change to any of these is where the expensive defects live, and being small is
-why nobody looks. `fan-out-work` makes the same argument about its own floor in
+why nobody looks. A diff that touches one gets `playbooks/review-a-diff.md` in full,
+including its diff review and running the touched test. When a checkout exists, writing
+"I did not run the tests" in the review does not replace running them. `fan-out-work` makes the same argument about its own floor in
 `Serial first`, from the other side: below the floor the machinery loses to a plain pass.
 
 The floor is a starting guess, not a commitment. If the short path turns up anything you
