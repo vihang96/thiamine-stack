@@ -29,10 +29,22 @@ Ten minutes here saves a migration. The search is cheap and the fork is not.
    nobody uses the thing everybody uses. Exclude the worktree directories too, or every
    result appears once per open branch.
 
+   A dev or test tool rarely appears in a manifest. Search `.env.example` files, READMEs,
+   guides, and scripts as well, with no `--include` filter. Search the repo's decision
+   records too, since a decision already recorded there is the existing answer, and a
+   design file or a mockup is not one. What is installed on this machine is not evidence of
+   what the codebase uses: a tool missing locally can still be the one every `.env.example`
+   expects.
+
 3. Count the answers you find, and which is most recent and most used. Three call sites in
    the newest service beats forty in the oldest if the direction of travel is clear, so read
    the dates. Where the answers disagree, note it and go to `playbooks/converge.md` rather
    than picking silently.
+
+   For a convention, such as a naming case, a discriminator field, or a strictness setting,
+   count each form with `grep -c` over the directory the new code joins. Do not read a few
+   examples: a handful of files picks whichever form those files happen to use, and the
+   count can show the reverse.
 
 4. Take the existing answer by default, and say that you did. Using what is there is the
    outcome, not a compromise. The bar for departing is that the existing answer fails at
