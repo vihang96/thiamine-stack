@@ -61,6 +61,13 @@ Check the floor in `SKILL.md` first. A small, reversible, one-concern diff gets 
    callers, run the touched test. Dismissal needs the same evidence as a finding, since a
    confidently wrong dismissal is how a real defect gets closed.
 
+   Run the test in the review checkout with its own install, plus whatever build the repo's
+   workspace packages need: `npm ci` and the repo's build script, `uv sync`, `cargo build`.
+   A symlinked or borrowed `node_modules` resolves workspace packages to the main
+   checkout's source, so the run tests main's code against the PR's tests. Failures from
+   that run look like noise and get waved off, and passes prove nothing. "The checkout has
+   no dependencies" is a step to do, not a reason to fall back on CI.
+
 8. Rank, cut, and deliver per `playbooks/deliver-the-review.md`.
 
 9. Remove any checkout you made for the review, and the local branch you fetched into it.
