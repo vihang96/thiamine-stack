@@ -63,6 +63,8 @@ Use the compass on a whole document or on one sentence. Reach for it whenever yo
 
 Don't mix modes: no reference tables inside a tutorial, no tutorial hand-holding inside reference, no arguing inside a how-to. Split and link instead.
 
+Describe the subject in its own terms. A design doc or a decision record says what this system needs and why. Do not frame it as a diff against the reference system you researched, a sibling repo, or the previous iteration. The research dominates your context, so it leaks into the framing, and the reader has to know the other system to follow this one. "Rows are strict because a reader must reject an unknown shape" stands alone. "Unlike heartbeat, rows are strict" does not. A comparison is its own document, for whoever asked for it, so a private comparison and a proposal for the team do not share a page. A vision and its implementation detail do not share one either.
+
 Source: diataxis.fr, fetched 2026-07-18.
 
 ## Playbooks
