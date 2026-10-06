@@ -136,12 +136,19 @@ review and a verified fan-out are not the same evidence and should not read the 
 | `note` | true, cheap to say, costs nothing if ignored | one line, grouped with the others, no thread each |
 | `dropped` | everything else | the count, not the contents |
 
-Two calibrations. A blocking list should be fixable in one sitting; past roughly five items
-you are not filtering, or the change is too big and the useful review is to say that
-instead. And a diff that is unreviewable is a finding of its own: a refactor and a feature
-travelling together, a generated file mixed into hand-written code, a description that
-describes a different change. Report that first, because bug-hunting inside it is wasted
-work.
+Three calibrations. A blocking list should be fixable in one sitting; past roughly five items
+you are not filtering. And a diff that is unreviewable is a finding of its own: a refactor
+and a feature travelling together, a generated file mixed into hand-written code, a
+description that describes a different change. Report that first, because bug-hunting
+inside it is wasted work. Size alone is not unreviewability. A large change with its
+rollback and safety built in gets the full review, with the files you covered stated.
+
+A defect of the blocking kind stays blocking while it depends on a fact you have not
+checked: whether rows in that state exist in production, whether a deploy step is followed.
+Check the fact, or mark the finding blocking until someone does. An approval with "worth
+checking" attached ships the migration that rewrites the data of users who opted out. A
+validation step the repo's own instructions require, left unrun, means the change has not
+shown that it does what it says.
 
 ## The nit budget
 

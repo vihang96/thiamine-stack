@@ -47,6 +47,29 @@ git push --force-with-lease
 Use `--force-with-lease`, never `--force`. The lease is what stops you overwriting a commit
 someone pushed while you were rebasing.
 
+Rebasing rewrites the SHAs that approvals point at. Where the repo or the user forbids
+force-pushing open pull requests, merge the parent into the child instead, and do it after
+every push to the parent rather than when the child next conflicts.
+
+### When the parent was squash-merged
+
+A squash merge puts one new commit on the default branch. The child still carries the
+parent's original commits, so git sees two unrelated edits of the same lines and reports
+conflicts where both sides hold identical content. Resolving them by hand invents
+differences. Instead, confirm the squash carried exactly the parent's final tree, then
+record the default branch as merged without taking anything from it:
+
+```sh
+git merge <parent-final-sha>                                  # anything pushed to the parent late
+git diff --quiet <parent-final-sha> origin/main && git merge -s ours origin/main
+git push                                                      # no force needed
+```
+
+If `git diff --quiet` fails, the default branch holds something the parent did not, so do
+an ordinary merge and resolve what is real. Run the sync for every child each time a
+parent squashes, including children GitHub shows as clean, then merge each child into its
+own child up the stack. Verify with `gh pr view <n> --json mergeable,mergeStateStatus`.
+
 A pull request opened against the default branch by mistake shows every commit from every
 ancestor. An enormous diff on the third pull request in a chain is that mistake, not a
 large change.

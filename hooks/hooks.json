@@ -30,6 +30,11 @@
 						"type": "command",
 						"command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/pr-body-budget.mjs\"",
 						"timeout": 10
+					},
+					{
+						"type": "command",
+						"command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/post-bash-unmatched-glob.mjs\"",
+						"timeout": 5
 					}
 				]
 			}

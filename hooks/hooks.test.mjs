@@ -83,6 +83,49 @@ test('bashWrites reports a write it cannot name, and reads no paths out of a her
 	])
 })
 
+test('bashWrites reads a comparison in a script body as a comparison, not a redirect', () => {
+	assert.equal(bashWrites("python3 - <<'PY'\nif len(key)>20: print(key)\nPY").writes, false)
+	assert.equal(bashWrites("python3 - <<'PY'\nok = n >= 3\nPY").writes, false)
+	assert.equal(bashWrites("bash <<'SH'\necho x > out.txt\nSH").writes, true)
+})
+
+test('bashWrites names an absolute path written from a script body', () => {
+	assert.deepEqual(bashWrites("python3 - <<'PY'\nopen('/tmp/s/a.html','w').write(x)\nPY"), {
+		writes: true,
+		paths: ['/tmp/s/a.html'],
+	})
+	assert.deepEqual(bashWrites("node <<'JS'\nfs.writeFileSync(\"/tmp/s/b.json\", d)\nJS").paths, [
+		'/tmp/s/b.json',
+	])
+})
+
+test('branch guard allows a scratch write named only inside a script body', () => {
+	const dir = repo()
+	const scratch = tmp('thiamine-scratch-')
+	const out = runHook('pre-edit-branch-guard.mjs', {
+		tool_name: 'Bash',
+		tool_input: { command: `python3 - <<'PY'\nopen('${scratch}/r.html','w').write('x')\nPY` },
+		cwd: dir,
+		session_id: 'scratch-from-main',
+	})
+	assert.notEqual(decisionOf(out), 'deny')
+})
+
+test('unmatched glob hook names the glob zsh refused, and stays quiet otherwise', () => {
+	const out = runHook('post-bash-unmatched-glob.mjs', {
+		tool_name: 'Bash',
+		tool_input: { command: 'grep -rn foo src --include=*.ts; grep -rln bar lib' },
+		tool_response: { stdout: '(eval):1: no matches found: --include=*.ts\nlib/a.ts', stderr: '' },
+	})
+	assert.match(contextOf(out), /`--include=\*\.ts`.*never ran/)
+	const quiet = runHook('post-bash-unmatched-glob.mjs', {
+		tool_name: 'Bash',
+		tool_input: { command: "grep -rn foo src --include='*.ts'" },
+		tool_response: { stdout: 'src/a.ts:1: foo', stderr: '' },
+	})
+	assert.equal(quiet, '')
+})
+
 test('branch guard denies a Bash write on the default branch', () => {
 	const dir = repo()
 	const out = runHook('pre-edit-branch-guard.mjs', {
@@ -181,6 +224,9 @@ test('leadingDir reads the directory a command moves into first', () => {
 	assert.equal(leadingDir("cd 'my dir'; cat > f <<'E'\nx\nE"), 'my dir')
 	assert.equal(leadingDir('sed -i "" s/a/b/ f.txt'), null)
 	assert.equal(leadingDir('cd $DIR && touch f'), null)
+	assert.equal(leadingDir('SP=/tmp/scratch; cd $SP && cat > b.md <<E\nx\nE'), '/tmp/scratch')
+	assert.equal(leadingDir('export S="/tmp/s" && cd "${S}"; touch f'), '/tmp/s')
+	assert.equal(leadingDir('S=$(mktemp -d); cd $S && touch f'), null)
 })
 
 test('branch guard resolves a write after a leading cd against that directory', () => {

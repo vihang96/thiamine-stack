@@ -85,7 +85,7 @@ Rationale: `why/root-causes.md`.
 ## Claims
 
 - Never say it works without having run it. Paste what you ran.
-- If it was not verified, say "not verified" and name what would verify it.
+- Unverified: try the routes already open to you, then say "not verified" and what would.
 - Report what happened, including the parts that failed.
 - Build the tool that does it or proves it. A rerunnable script outlives a claim.
 
