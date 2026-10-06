@@ -111,6 +111,21 @@ test('branch guard allows a scratch write named only inside a script body', () =
 	assert.notEqual(decisionOf(out), 'deny')
 })
 
+test('unmatched glob hook names the glob zsh refused, and stays quiet otherwise', () => {
+	const out = runHook('post-bash-unmatched-glob.mjs', {
+		tool_name: 'Bash',
+		tool_input: { command: 'grep -rn foo src --include=*.ts; grep -rln bar lib' },
+		tool_response: { stdout: '(eval):1: no matches found: --include=*.ts\nlib/a.ts', stderr: '' },
+	})
+	assert.match(contextOf(out), /`--include=\*\.ts`.*never ran/)
+	const quiet = runHook('post-bash-unmatched-glob.mjs', {
+		tool_name: 'Bash',
+		tool_input: { command: "grep -rn foo src --include='*.ts'" },
+		tool_response: { stdout: 'src/a.ts:1: foo', stderr: '' },
+	})
+	assert.equal(quiet, '')
+})
+
 test('branch guard denies a Bash write on the default branch', () => {
 	const dir = repo()
 	const out = runHook('pre-edit-branch-guard.mjs', {
