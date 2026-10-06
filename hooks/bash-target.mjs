@@ -7,11 +7,14 @@
  *
  * Two answers, because the callers need different things. `writes` decides whether anything
  * was written at all. `paths` is best effort, for the caller that wants precision, and it is
- * legitimately empty for a heredoc into an interpreter, where the target only exists inside
- * the script text. A caller with no path falls back to the session's cwd.
+ * often empty for a heredoc into an interpreter, where the target only exists inside the
+ * script text: only an absolute path in a write call is read out of it. A caller with no path
+ * falls back to the session's cwd, or to the directory a leading `cd` moves into, including
+ * `cd $DIR` when the same command assigned `DIR` a literal first.
  *
- * What it does not catch, deliberately: a path built from a variable, a write inside a
- * process substitution, and anything an interpreter does that does not look like a write.
+ * What it does not catch, deliberately: a path built from a variable inside a script, a
+ * write inside a process substitution, and anything an interpreter does that does not look
+ * like a write.
  * The cost of a miss is one unguarded edit. The cost of over-reaching is a guard that denies
  * a read-only command, which is how a guard gets turned off.
  */
@@ -32,9 +35,21 @@ const SED_IN_PLACE = /\bsed\b[^|;&]*?\s-i[^|;&]*?\s(?:'([^']+)'|"([^"]+)"|([^\s'
 const INTERPRETER_HEREDOC =
 	/\b(?:python3?|node|ruby|perl|php|sh|bash|zsh)\b[^|;&\n]*<<-?\s*['"]?(\w+)/
 
-/** Without one of these in its body, a script is treated as read-only. */
+/**
+ * Without one of these in its body, a script is treated as read-only. The redirect arm needs
+ * a space or a separator before `>` and a name after it, so `len(key)>20` in Python is a
+ * comparison and `>=` is not a write.
+ */
 const BODY_WRITES =
-	/\bopen\s*\([^)]*['"][wax]|writeFileSync|appendFileSync|\.write\(|Path\([^)]*\)\.write|>\s*['"]?[\w./-]+/
+	/\bopen\s*\([^)]*['"][wax]|writeFileSync|appendFileSync|\.write\(|Path\([^)]*\)\.write|(?:^|[\s;&|])>>?\s*['"]?[A-Za-z_~./][\w./-]*/m
+
+/**
+ * A write call in a script body that names an absolute path. Only absolute ones: a relative
+ * path in a body resolves against wherever the interpreter runs, which the command does not
+ * say, and a guard that guesses wrong denies a scratch write against the session's repo.
+ */
+const BODY_ABSOLUTE_TARGET =
+	/\bopen\s*\(\s*['"](\/[^'"]+)['"]\s*,\s*['"][wax]|\b(?:writeFileSync|appendFileSync)\s*\(\s*['"](\/[^'"]+)['"]|\bPath\(\s*['"](\/[^'"]+)['"]\s*\)\.write/g
 
 /** /dev/null and an unexpanded variable are not files a guard has anything to say about. */
 const isRealTarget = (p) => Boolean(p) && !p.startsWith('/dev/') && !p.startsWith('$')
@@ -67,9 +82,22 @@ function splitHeredocs(cmd) {
  * write after `cd` is reported against whatever repo the session started in.
  */
 export function leadingDir(cmd) {
-	const m = (cmd ?? '').match(/^\s*cd\s+(?:'([^']+)'|"([^"]+)"|([^\s;&|'"]+))\s*(?:&&|;)/)
+	let rest = cmd ?? ''
+	const vars = new Map()
+	for (;;) {
+		const a = rest.match(
+			/^\s*(?:export\s+)?([A-Za-z_]\w*)=(?:'([^']*)'|"([^"$`]*)"|([^\s;&|'"$`]+))\s*(?:&&|;)/,
+		)
+		if (!a) break
+		vars.set(a[1], a[2] ?? a[3] ?? a[4])
+		rest = rest.slice(a[0].length)
+	}
+	const m = rest.match(/^\s*cd\s+(?:'([^']+)'|"([^"]+)"|([^\s;&|'"]+))\s*(?:&&|;)/)
 	const dir = m && (m[1] ?? m[2] ?? m[3])
-	return dir && !dir.startsWith('$') ? dir : null
+	if (!dir) return null
+	if (!dir.startsWith('$')) return dir
+	const named = dir.match(/^\$(?:\{(\w+)\}|(\w+))$/)
+	return (named && vars.get(named[1] ?? named[2])) || null
 }
 
 export function bashWrites(cmd) {
@@ -91,7 +119,9 @@ export function bashWrites(cmd) {
 	}
 
 	const heredoc = code.match(INTERPRETER_HEREDOC)
-	const scriptWrites = heredoc ? BODY_WRITES.test(bodies.get(heredoc[1]) ?? '') : false
+	const body = heredoc ? (bodies.get(heredoc[1]) ?? '') : ''
+	const scriptWrites = heredoc ? BODY_WRITES.test(body) : false
+	for (const m of body.matchAll(BODY_ABSOLUTE_TARGET)) paths.push(m[1] ?? m[2] ?? m[3])
 
 	return { writes: paths.length > 0 || scriptWrites, paths: [...new Set(paths)] }
 }
