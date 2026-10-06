@@ -137,11 +137,11 @@ review and a verified fan-out are not the same evidence and should not read the 
 | `dropped` | everything else | the count, not the contents |
 
 Two calibrations. A blocking list should be fixable in one sitting; past roughly five items
-you are not filtering, or the change is too big and the useful review is to say that
-instead. And a diff that is unreviewable is a finding of its own: a refactor and a feature
-travelling together, a generated file mixed into hand-written code, a description that
-describes a different change. Report that first, because bug-hunting inside it is wasted
-work.
+you are not filtering. And a diff that is unreviewable is a finding of its own: a refactor
+and a feature travelling together, a generated file mixed into hand-written code, a
+description that describes a different change. Report that first, because bug-hunting
+inside it is wasted work. Size alone is not unreviewability. A large change with its
+rollback and safety built in gets the full review, with the files you covered stated.
 
 ## The nit budget
 
