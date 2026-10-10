@@ -17,6 +17,9 @@ Prompts that must load this skill, and near-misses that must not.
 - is this safe to change, it is called from everywhere
 - this page takes four seconds to load, fix it
 - reduce the memory this worker uses
+- why is lint taking this long and so much memory
+- the test harness is too slow and takes too much compute, how do we fix this
+- tests used to be fast, why is CI taking this long
 - how do we reproduce this ticket locally
 - it happens in prod but the test passes locally, figure out why
 - does the existing suite cover these two bugs
