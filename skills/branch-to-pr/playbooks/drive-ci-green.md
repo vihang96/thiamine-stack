@@ -35,8 +35,12 @@ Merging is the human's, after approval. This playbook ends at green, not at land
    force push invalidates what a reviewer has already read, and rereading a whole diff to
    find your one fix is the most expensive thing you can ask of them.
 
-4. Wait rather than poll hard. Checks take minutes. Re-run the status script on a sensible
-   interval rather than in a loop, and say what you are waiting on.
+4. Wait rather than poll hard, and stop waiting at the first failure. Checks take minutes.
+   Re-run the status script on a sensible interval rather than in a loop, and say what you
+   are waiting on. A lint failure at minute three is actionable while the test shards still
+   run, so a wait that ends only when nothing is pending reports red after the user has
+   already seen it. `gh pr checks <n> --watch --fail-fast` exits on the first failing check,
+   and `watch-checks.mjs` reports failures whatever else is still in flight.
 
 5. Stop when every repo reads green, and say so. Do not enable auto-merge, do not merge,
    and do not approve your own pull request. Green means ready for a human to look at.

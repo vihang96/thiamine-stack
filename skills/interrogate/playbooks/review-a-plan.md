@@ -36,7 +36,10 @@ preferences, which is what the observation step below exists to stop.
      shape the codebase already decided. `consistency` owns this and is worth loading.
    - **Planned work.** Designs that are decided but not built yet: the owner's open design
      docs, decision records, and handoff notes, and what memory records about them. The
-     codebase cannot show these, so read them before the first draft. Where the plan
+     default branch cannot show these, so read them before the first draft. Open pull
+     requests are planned work too: list the ones that touch the paths, tables, or ticket the
+     plan does (`gh pr list --search`, then `gh pr diff <n> --name-only`), rather than
+     waiting for the author to name them. Where the plan
      overlaps one, compare who each one serves and how each one reaches them before you
      propose that one depend on the other. A dependency inherits the other plan's audience
      and rollout, so it narrows to wherever that plan has shipped. The shared part usually
