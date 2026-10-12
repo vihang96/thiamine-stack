@@ -14,6 +14,8 @@ Prompts that must load this skill, and near-misses that must not.
 - spawn a few reviewers on this branch and tell me what is real
 - the subagent says it is done and tests pass, check that
 - before I send this design to the team, find what their review will catch
+- sweep the PRs in the review channel and interrogate the ones without a review
+- find the open PRs nobody on the team has reviewed yet and review them
 
 ## Should not fire
 
