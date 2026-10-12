@@ -3,16 +3,22 @@
 **Nothing merges, so parallelise freely.** For investigating, searching, reviewing, or
 sizing a change across many files or several repos.
 
-This is the cheapest parallelism available and the most underused. There is no isolation to
-arrange, no conflict to resolve, and no coherence pass, because no lane writes anything.
-Reach for it before reaching for the write case.
+This is the cheapest parallelism available and the most underused. There is no conflict to
+resolve and no coherence pass, because no lane writes anything that lands. Reach for it
+before reaching for the write case.
+
+A read-only lane still writes scratch files: cached command output, install logs, a test
+written to reproduce a finding. Every subagent of a session sees the same scratchpad path,
+so two lanes that each write `pr.json` there overwrite each other, and the lane that reads
+the other's file reports it as a bug in the tool.
 
 1. Split by angle, not by directory. Lanes that each take a slice of the same question
    return overlapping halves of one answer. Give each a distinct question: the data model,
    the request path, the configuration, the tests. For a repo sweep, one lane per repo is
    usually the right cut because the repo boundary is where knowledge actually divides.
 
-2. Send each lane the same grounding and its own question. They cannot see each other, so
+2. Send each lane the same grounding, its own question, and its own scratch directory,
+   named in the brief, such as `scratchpad/<lane>/`. They cannot see each other, so
    overlap is normal and better than a gap. Ask for file and symbol pointers rather than
    explanations, and forbid pasting file contents back.
 
