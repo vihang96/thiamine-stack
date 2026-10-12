@@ -11,6 +11,12 @@ because the number agrees with you.
    actually runs. If nothing reproduces it, fix that before going further. Optimising
    against a case you cannot reproduce improves a number nobody was complaining about.
 
+   Take the baseline where the complaint was seen. A slow CI job is measured from that
+   job's step timings (`gh run view <run> --json jobs`), and a teammate's memory spike is
+   measured from a checkout shaped like theirs. A warm laptop with one worktree
+   measures a different machine, and a speedup there can leave the reported number where
+   it was.
+
 2. Pick one number, and say which direction is better. One, not a dashboard. Where several
    matter, name the one you are moving and the others as constraints that must not get
    worse. A change that improves three metrics and quietly ruins a fourth is how a
