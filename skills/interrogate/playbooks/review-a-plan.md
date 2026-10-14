@@ -36,9 +36,11 @@ preferences, which is what the observation step below exists to stop.
      shape the codebase already decided. `consistency` owns this and is worth loading.
    - **Planned work.** Designs that are decided but not built yet: the owner's open design
      docs, decision records, and handoff notes, and what memory records about them. The
-     codebase cannot show these, so read them before the first draft. Where the plan
-     overlaps one, compare who each one serves and how each one reaches them before you
-     propose that one depend on the other. A dependency inherits the other plan's audience
+     codebase cannot show these, so read them before the first draft. Search open and
+     recently merged pull requests too, by the design's title terms and its ticket id,
+     since a design is often already partly built on a branch the doc does not link.
+     Where the plan overlaps one, compare who each one serves and how each one reaches
+     them before you propose that one depend on the other. A dependency inherits the other plan's audience
      and rollout, so it narrows to wherever that plan has shipped. The shared part usually
      belongs one layer down, where both plans consume it and neither owns it.
    - **Ungrounded conventions.** Read the `CLAUDE.md` that governs the code the plan
