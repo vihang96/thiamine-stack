@@ -32,7 +32,7 @@ import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { bashWrites, leadingDir } from './bash-target.mjs'
+import { bashWrites, writeDir } from './bash-target.mjs'
 import { goneBranches } from './nudge-state.mjs'
 
 /** A branch is "default" if the remote says so, else by the two conventional names. */
@@ -122,7 +122,7 @@ function targetOf(event) {
 	const command = event.tool_input?.command ?? ''
 	const { writes, paths } = bashWrites(command)
 	if (!writes) return null
-	const moved = leadingDir(command)
+	const moved = writeDir(command)
 	const dir = moved ? path.resolve(event.cwd ?? '.', moved.replace(/^~(?=\/|$)/, os.homedir())) : event.cwd
 	return paths.length > 0 ? path.resolve(dir ?? '.', paths[0]) : (dir ?? null)
 }
