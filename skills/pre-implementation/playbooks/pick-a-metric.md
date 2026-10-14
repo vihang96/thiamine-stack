@@ -11,6 +11,11 @@ because the number agrees with you.
    actually runs. If nothing reproduces it, fix that before going further. Optimising
    against a case you cannot reproduce improves a number nobody was complaining about.
 
+   When the complaint is about CI, the workload is the CI run, not your laptop. Take the
+   timings from CI's own reports, and check whether the runner is oversubscribed before
+   optimising code: a job that starts more workers than the CPUs it is guaranteed runs every
+   file slower, and a speedup measured locally never reaches it.
+
 2. Pick one number, and say which direction is better. One, not a dashboard. Where several
    matter, name the one you are moving and the others as constraints that must not get
    worse. A change that improves three metrics and quietly ruins a fourth is how a

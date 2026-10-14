@@ -12,6 +12,8 @@ Prompts that must load this skill, and near-misses that must not.
 - I want stability sorted before we touch accuracy, set that up properly
 - we have thirty ideas for improving this score, work through them and tell me what worked
 - the accuracy went up on our test set but it is worse in production, what happened
+- the agent skips reading the skill in a third of the eval trials, make it reliable
+- pass rates on these agent evals dropped since last week, fix it without bloating the prompt
 
 ## Should not fire
 
