@@ -1,0 +1,19 @@
+{
+	"repo": "owner/repository",
+	"actor": "your-login",
+	"excludeAuthor": "your-login",
+	"days": 7,
+	"maxReviewsPerRun": 12,
+	"maxAttempts": 3,
+	"reviewTimeoutMinutes": 40,
+	"blockingEvent": "COMMENT",
+	"timezone": "America/Los_Angeles",
+	"botLogins": ["coderabbitai", "chatgpt-codex-connector", "dependabot"],
+	"automatedReviewMarkers": [],
+	"repositoryPath": "/absolute/path/to/repository",
+	"stateDirectory": "/absolute/path/to/workspace/.thiamine/pr-review-sweep",
+	"ghPath": "/opt/homebrew/bin/gh",
+	"gitPath": "/usr/bin/git",
+	"codexPath": "/absolute/path/to/codex",
+	"ioregPath": "/usr/sbin/ioreg"
+}
