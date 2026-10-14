@@ -1,0 +1,4 @@
+interface:
+  display_name: 'PR review sweep'
+  short_description: 'Review unreviewed PRs and follow their fixes'
+  default_prompt: 'Use $pr-review-sweep to review eligible PRs and re-review fixes from earlier sweeps.'

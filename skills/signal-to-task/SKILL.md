@@ -2,7 +2,7 @@
 name: signal-to-task
 description: "Carries a signal from a running system to a disposition: an alert, a crash group, a trace or a profile, a slow endpoint, a failed run, a complaint in a channel, a ticket nobody has read. Reduces it to one claim with evidence, diagnoses it from a capture or a live process, decides whether it earns work, and files the task or drops it on the record. Use when triaging an error queue or an inbox of feedback, when asked why production is slow or leaking, when a trace or heap snapshot needs reading, when an infra error nobody sees needs a home, and for what should we do about this."
 owns: "an unsolicited signal from a running system, from arrival to disposition"
-see_also: [pre-implementation, interrogate, branch-to-pr, experimentation, handoff, fan-out-work, curator, unslop-prose]
+see_also: [pre-implementation, interrogate, branch-to-pr, experimentation, handoff, fan-out-work, curator, unslop-prose, pr-review-sweep]
 ---
 
 # Signal to task
@@ -19,6 +19,9 @@ back to whoever picks it up.
 This skill owns arrival to disposition. It ends when every signal you looked at has a
 verdict on a record, and the ones that earned work are tasks a stranger to the system can
 act on.
+
+PR review queues belong to `pr-review-sweep`, which discovers unreviewed changes and
+follows their fixes. This skill owns operational signals and their disposition.
 
 ## If it is on fire, this is the wrong skill
 

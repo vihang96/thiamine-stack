@@ -125,6 +125,7 @@ thiamine agent do the same job, keep one, and if you keep yours, say in the inst
 | --- | --- |
 | `post-implementation` | An agent can produce a change nobody understands. Makes sure the person who owns it can explain it and agrees with it. |
 | `interrogate` | Somebody else's plan or pull request, from a human or an agent. What earns a finding, how to rank them, and when to stop picking nits. |
+| `pr-review-sweep` | Finds unreviewed PRs, keeps earlier findings across commits, and follows fixes through merge readiness. Includes a daily watcher that waits for an open laptop lid. |
 
 ### Keeping the stack current
 
@@ -167,6 +168,6 @@ Seven skills and three rules derive from `pstack` in
 
 ## Status
 
-Early, and in use. 21 skills, 12 always-on rule sections, and a lint layer for
+Early, and in use. 22 skills, 12 always-on rule sections, and a lint layer for
 TypeScript, Rust, and Python. The rule corpus stays small on purpose, since every line is
 paid on every request.
