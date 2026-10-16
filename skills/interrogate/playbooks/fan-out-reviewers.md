@@ -36,6 +36,12 @@ than a first pass somewhere else. `fan-out-work` owns the mechanics, and its
    copied from the design's headings review the design on its own terms, and they cannot
    find what it left out.
 
+   Run those in order, not side by side. First, one reviewer that gets only the doc and the
+   default branch, and no summary of the doc and no planned work. Report its findings on
+   their own, then run the fit pass over them. When every angle carries the planned-work
+   context, the review becomes about fit, and the design's internal defects go unfound.
+   That holds even when the request asks for the broader context.
+
    Security is not on that list on purpose. Where the harness ships a security review, run
    it as its own pass, since it carries a threat model this list does not. Add the angle
    here only when nothing ships one, and give it the rule that keeps it useful: an untrusted
@@ -43,6 +49,7 @@ than a first pass somewhere else. `fan-out-work` owns the mechanics, and its
 
 3. Spawn read-only, one angle per agent, all in one message. Use the
    `adversarial-reviewer` agent, whose disposition and return contract are already written.
+   A forked agent, or any lane that inherits this session's context, is not fresh context.
    Where the harness lets you choose models, put different families on different angles;
    model diversity is a second independent source of blind spots for free.
 

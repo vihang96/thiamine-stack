@@ -46,6 +46,12 @@ on, and stops there.
    was already tested. They do not say the change works, and no reviewer can tell the
    difference from the outside.
 
+   Exercise it with at least one input the design or the fixture was not drawn from. The
+   example a feature was designed around is the one case it was tuned to, so a check on it
+   proves the demo. For a screen, that means different content shapes and the smallest
+   width it supports. A phone-sized desktop browser is not a phone either: it has no
+   native share sheet and no touch, so name what it could not show.
+
 6. Say what you are not sure about. A reviewer who knows where you are uncertain reviews
    that part properly. One who is told everything is fine reviews nothing properly.
 

@@ -18,6 +18,14 @@ PR", and at the end of any change that is ready for review.
    Within one repo, a change too large to review in one piece is a stack rather than a
    sequence of independent pull requests. See `playbooks/stacked-prs.md`.
 
+   Cut the pull requests by rollback boundary, not by how the work was split. Lanes and
+   steps are units of building. Opening one pull request per lane gives reviewers dozens
+   of pull requests where later ones rewrite what earlier ones added. Before opening,
+   regroup into the fewest pieces that can each be reverted alone, and rebuild each piece
+   from the final code. Nothing one pull request adds should be removed or renamed by a
+   later one, and work that has not shipped carries one migration per piece, not the
+   history of how it got there.
+
 3. Title each one in the repo's commit convention, since squash-merge turns the title into
    the commit message and release tooling reads it. `rules/why/commit-messages.md` covers the
    format and how the type maps to a version bump. Name a real symbol in the subject when

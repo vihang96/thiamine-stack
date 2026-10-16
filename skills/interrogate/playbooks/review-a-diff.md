@@ -51,6 +51,12 @@ Check the floor in `SKILL.md` first. A small, reversible, one-concern diff gets 
    A `git worktree add` from a session's scratchpad is registered in the author's repo and
    outlives the session, and a later cleanup reads it as somebody's work in review.
 
+   Save the evidence first, and remove it last. Copy each reproduction out of the checkout as
+   a patch with the exact command that ran it. Then remove the checkout only once the verdict
+   is delivered and the follow-up questions are answered. The next question is usually "is
+   that reliably reproducible?", and answering it from a deleted checkout means a fresh
+   fetch, a fresh install, and rebuilding every reproduction.
+
    ```sh
    git -C "$repo" worktree remove --force "$checkout" && git -C "$repo" branch -D "pr-$n"
    ```

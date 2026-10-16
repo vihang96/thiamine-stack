@@ -10,6 +10,10 @@ Prompts that must load this skill, and near-misses that must not.
 - we are adding a new service, the team needs to know
 - draft something for the channel about this
 - what decisions did you make that I should look at
+- explain and give me context so I can make the decisions
+- explain what was done so far, simply
+- any decisions you need from me?
+- get all the PRs from this build review ready
 
 ## Should not fire
 

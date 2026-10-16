@@ -33,6 +33,11 @@ in production it costs an incident.
    during the build, stated plainly. An assumption on the record gets corrected in seconds.
    The same assumption unstated becomes a bug that looks deliberate.
 
+   Check the premise each decision rests on before you state it. A cost, a saving, or a
+   safety claim the user is about to approve names the file or the measurement behind it,
+   or says "not verified". A premise asserted from memory gets approved, and undoing it
+   later costs a round of the user's questions and a round of rework.
+
 6. Ask nothing you could have answered. A question about how the code behaves is yours to
    check. These are questions about what was wanted, which is theirs.
 

@@ -20,6 +20,7 @@ required code change, and to stop treating any of them as optional.
    | `fix` | a plausible correctness, security, data loss, auth, migration, race, or shipped-behavior problem | fix it in the repo that owns it, reply with the commit SHA, resolve the thread |
    | `dismiss` | the current code already answers it, or it asks for something the change deliberately does not do | reply with the specific reason, resolve the thread |
    | `ask` | novel, high severity, or ambiguous, and guessing would be a coin flip | ask the reviewer or the user, and leave it open |
+   | `ask` | the fix would change a behavior, a contract, or model-facing text the owner already decided, or add compatibility for something not yet shipped | quote the decision to the reviewer, and leave it open for the owner |
 
    When in doubt, ask. Skipping a style nit is cheap. Skipping a real data or auth bug is
    not, and the two do not look different at a glance.
@@ -27,6 +28,15 @@ required code change, and to stop treating any of them as optional.
 3. Verify before dismissing. A claim that a test does not cover something is cheap to
    check by running the test. A claim about behavior is cheap to check by exercising it.
    Dismissing on reasoning alone is how a real finding gets closed with a confident reply.
+
+   Verify before fixing, too. A finding that reproduces says the code does what the reviewer
+   described, not that the owner wants it changed. Check it against the decisions on record
+   (the plan, the design docs, the repo's `CLAUDE.md`, and what the owner said) and against
+   the last version that worked. A fix made to satisfy a reviewer, against a decision, gets
+   reverted in the next round, and the reviewer who approved it has to review the reversal.
+
+   When the triage is delegated, the brief carries those decisions and the subagent returns
+   verdicts, not commits. A subagent told to "fix what reproduces" fixes everything that does.
 
 4. Reply to every thread you resolve, with the reason or the SHA. A thread resolved in
    silence reads as ignored, and the reviewer has to diff the branch to find out what

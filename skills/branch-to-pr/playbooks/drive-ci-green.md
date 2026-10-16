@@ -31,6 +31,11 @@ Merging is the human's, after approval. This playbook ends at green, not at land
    or a missing secret, is still worth naming, but it is not yours to paper over with a
    retry.
 
+   `gh api .../actions/jobs/<id>/logs` refuses to print a log that contains terminal
+   escape codes, so with stderr discarded it writes an empty file, and a grep over it
+   reports nothing found. Use `gh run view --job <id> --log`, or download the run's test
+   result artifacts with `gh run download`, which are structured where the log is noise.
+
 3. Push a fix as its own commit rather than amending, while the PR is under review. A
    force push invalidates what a reviewer has already read, and rereading a whole diff to
    find your one fix is the most expensive thing you can ask of them.
