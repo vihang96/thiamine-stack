@@ -36,7 +36,8 @@ preferences, which is what the observation step below exists to stop.
      shape the codebase already decided. `consistency` owns this and is worth loading.
    - **Planned work.** Designs that are decided but not built yet: the owner's open design
      docs, decision records, and handoff notes, and what memory records about them. The
-     codebase cannot show these, so read them before the first draft.
+     codebase cannot show these, so read them before the first draft, but after a pass
+     that judged the plan alone (`fan-out-reviewers.md`, step 2).
 
      That includes the open pull requests already implementing this plan. Search for them
      (`gh pr list --search` on the plan's title, its ticket, and the tables and tools it
