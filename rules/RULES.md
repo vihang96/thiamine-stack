@@ -84,7 +84,7 @@ Rationale: `why/root-causes.md`.
 
 ## Claims
 
-- Never say it works without having run it. Paste what you ran.
+- Never say it works without having run it. Paste what you ran. Empty output is not a pass.
 - If it was not verified, say "not verified" and name what would verify it.
 - Report what happened, including the parts that failed.
 - Build the tool that does it or proves it. A rerunnable script outlives a claim.
