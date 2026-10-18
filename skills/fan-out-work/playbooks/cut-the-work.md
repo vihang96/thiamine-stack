@@ -48,6 +48,11 @@ produces five diffs that each work and a codebase that reads like five people.
    many results you can converge and the user can accept. Three that converge cleanly beats
    eight that arrive as eight review surfaces, which is a queue rather than a factory.
 
+   A lane is not a pull request. Decide the pull request grouping here, by rollback
+   boundary per `branch-to-pr`'s `playbooks/stacked-prs.md`, and brief lanes to land on it.
+   A brief that says "build this ticket as one PR" is the brief that ends in a pull request
+   per ticket.
+
 7. Say what you are not parallelizing and why. The unit you left sequential is the decision
    most likely to be wrong, and it is invisible in the result.
 

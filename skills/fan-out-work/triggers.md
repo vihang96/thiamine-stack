@@ -12,6 +12,7 @@ Prompts that must load this skill, and near-misses that must not.
 - fan out an investigation across the workspace and give me one answer
 - I want five lanes on this, what does each one get told
 - check the parallel work adds up before we open any pull requests
+- lets pick up the work from the handoff, parallelize as much as possible and complete the implementation
 
 ## Should not fire
 
