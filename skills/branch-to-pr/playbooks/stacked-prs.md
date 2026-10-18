@@ -57,6 +57,13 @@ large change.
    is above it unfinished, so it cannot depend on a later piece to be correct. If the bottom
    only makes sense once the top exists, the change is split at the wrong seam.
 
+   Split by rollback boundary: each piece is something that could be reverted on its own.
+   One per lane, per ticket, or per milestone is a different cut, and it produces upper
+   pull requests that rewrite the lower ones, migrations repeated across the stack, and
+   more review surfaces than the reviewers have. A reviewer reads the churn between pieces
+   as well as the pieces, so a stack where later pull requests undo earlier lines is a
+   stack to fold before it is opened.
+
 2. **Say what the stack is, in every description.** Number them and link the parent. A
    reviewer looking at the third pull request cannot tell what is already reviewed below it.
 

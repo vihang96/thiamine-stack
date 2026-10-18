@@ -11,6 +11,14 @@ branches this session opened, and retire what has merged without being asked to:
 gh pr view <branch> --json state,mergeCommit
 ```
 
+Merged is not deployed. Where the default branch builds or deploys on push, find the run for
+the merge commit and confirm it finished, not only that checks passed. A workflow in a
+GitHub `concurrency` group keeps one pending run, so any later push to that branch, or a
+pull request closed against it, cancels the merge's waiting run and the environment ships
+whatever came next. A cancelled run there was dropped, not skipped; say so and offer the
+re-run. Then repoint anything that linked to the merged branch, such as tickets or docs, at
+the default branch.
+
 A merged pull request leaves a branch, a worktree, and a handoff record all looking like work
 in progress. The `merged-unretired` signal reports the same thing at the next session start,
 from git alone, when nobody polled.
@@ -29,7 +37,7 @@ from git alone, when nobody polled.
    | `unpushed:N` | N commits the remote does not have | ask, and show the log |
    | `dirty` | uncommitted changes | ask, and show the status |
    | `missing-dir` | the directory is gone, the registration is not | prune |
-   | a `pr-N` branch under a session scratchpad | a review snapshot of another author's pull request | remove, whatever the pull request's state |
+   | a `pr-N` branch under a session scratchpad | a review snapshot of another author's pull request | remove, whatever the pull request's state, unless it holds a reproduction a posted comment cites; then ask |
 
 3. Confirm the landed ones are actually landed. `gone` means the upstream branch was
    deleted, which is usually a merged and tidied pull request, but a force-deleted branch

@@ -54,6 +54,12 @@ than a first pass somewhere else. `fan-out-work` owns the mechanics, and its
    did not raise it, returning confirmed, plausible, or refuted with the line that proves
    it. Keep confirmed and plausible. Refuted needs a quote, not a feeling.
 
+   Before a blocking or worth-fixing finding is posted on someone else's pull request,
+   reproduce it: a test on the real path, failing on repeated runs. A reproduction that
+   passes once, mocks the path in question, or rests on a hand-set fixture value proves
+   nothing yet. Each of those has turned a posted finding into a retraction. A finding you
+   could not reproduce goes out labelled as code-reading only, or it does not go out.
+
    Three states rather than a confidence score. A score invites a threshold, and a reviewer
    who knows the threshold writes findings that clear it, so the number ends up measuring
    the writing. Each of the three states names what would settle it instead.

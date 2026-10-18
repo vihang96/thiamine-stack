@@ -1,6 +1,6 @@
 ---
 name: fan-out-work
-description: "Runs several subagents in parallel from one session and converges what they return into one coherent change. Use when work splits into units that can run at once, when spawning subagents to investigate or write code in parallel, when a change spans several repos that can be parallelised and worked simultaneously, and when parallel results need checking for conflicts, duplication, and contradiction before they land."
+description: "Runs several subagents in parallel from one session and converges what they return into one coherent change. Use when work splits into units that can run at once, when spawning subagents to investigate or write code in parallel, when asked to parallelize as much as possible or complete an entire implementation, when resuming a lane plan from a handoff, when a change spans several repos that can be parallelised and worked simultaneously, and when parallel results need checking for conflicts, duplication, and contradiction before they land."
 owns: "parallelism inside one session: the cut, the brief, the drain, and converging the results"
 see_also: [working-alongside, branch-to-pr, pre-implementation, consistency, coherence-reviewer, interrogate]
 ---
@@ -59,6 +59,10 @@ concurrency control.
 - Per-lane ports, database names, container names, and build cache directories. A worktree
   isolates files and nothing else, and a collision here fails intermittently in a way that
   reads as a bug in the change.
+- One lane owning each sequential counter: migration numbers, schema versions, anything
+  numbered next-after-the-last. Lanes that each take the next number collide every time a
+  sibling or the default branch moves, and each renumber resets someone's local database.
+  Give one lane the migrations, or number them at convergence.
 
 ## How a fan-out runs
 

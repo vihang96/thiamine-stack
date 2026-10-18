@@ -16,7 +16,10 @@ PR", and at the end of any change that is ready for review.
    who cannot tell which lands first has to work it out from the diff.
 
    Within one repo, a change too large to review in one piece is a stack rather than a
-   sequence of independent pull requests. See `playbooks/stacked-prs.md`.
+   sequence of independent pull requests. See `playbooks/stacked-prs.md`. The reverse
+   mistake costs as much: a build that opens one pull request per lane or per ticket hands
+   reviewers a queue they cannot clear. Count what is already open and awaiting review
+   before opening more, and fold pieces that share a rollback boundary.
 
 3. Title each one in the repo's commit convention, since squash-merge turns the title into
    the commit message and release tooling reads it. `rules/why/commit-messages.md` covers the
