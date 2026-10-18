@@ -11,6 +11,14 @@ branches this session opened, and retire what has merged without being asked to:
 gh pr view <branch> --json state,mergeCommit
 ```
 
+Merged is not deployed. Where the default branch builds or deploys on push, find the run for
+the merge commit and confirm it finished, not only that checks passed. A workflow in a
+GitHub `concurrency` group keeps one pending run, so any later push to that branch, or a
+pull request closed against it, cancels the merge's waiting run and the environment ships
+whatever came next. A cancelled run there was dropped, not skipped; say so and offer the
+re-run. Then repoint anything that linked to the merged branch, such as tickets or docs, at
+the default branch.
+
 A merged pull request leaves a branch, a worktree, and a handoff record all looking like work
 in progress. The `merged-unretired` signal reports the same thing at the next session start,
 from git alone, when nobody polled.
