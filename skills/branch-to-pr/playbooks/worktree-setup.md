@@ -36,6 +36,13 @@ a change that spans services, and for adding a repo to a change already in progr
    reads as a problem with your change. Check the repo's own notes before assuming the
    worktree is ready.
 
+   Install dependencies in the worktree; do not link or copy another checkout's. A package
+   manager's workspace links are relative, so a borrowed `node_modules` resolves the repo's
+   own packages to the other checkout's code, and nested installs are missing. A worktree
+   with no install at all fails just as quietly: module lookup walks up out of `tree/` into
+   the main checkout and finds its stale build. Both pass a type check against the wrong
+   code. If the install needs credentials you do not have, say so rather than borrowing.
+
 5. Check that the pieces will agree. A change spanning repos has to answer any shared
    question the same way on both sides, such as how an error is shaped or what a field is
    called. Use the `consistency` skill before writing either half, because a disagreement
@@ -47,9 +54,13 @@ a change that spans services, and for adding a repo to a change already in progr
    Run that command inside the worktree, and scope anything you run from the main checkout.
    A worktree here is a directory inside the repo, so a recursive glob or a hand-rolled walk
    rooted at the repo top also walks the other branches. A test run counted that way passes
-   partly on a branch nobody is working on. Gitignore-aware tools are safe, because `tree/`
-   is ignored. `node --test`, `find`, and anything you write are not. Anchor the pattern per
-   source directory, and check the count is the one you expect.
+   partly on a branch nobody is working on. Do not assume `tree/` is ignored: confirm it is
+   in `.gitignore`, and that each linter, formatter, and test runner excludes it, using the
+   tool's own ignore query, since several read their own config rather than `.gitignore`.
+   A linter run from the main checkout that walks every worktree runs out of memory, and
+   nobody measuring inside a worktree sees it. `node --test`, `find`, and anything you write
+   ignore nothing. Anchor the pattern per source directory, and check the count is the one
+   you expect.
 
 **Reply:** the branch name, each repo and its worktree path, what you copied in, and the
 result of the verification in each. If a repo was considered and left out, say which and

@@ -14,7 +14,7 @@ import os from 'node:os'
 import path from 'node:path'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { bashWrites, leadingDir } from './bash-target.mjs'
+import { bashWrites, writeDir } from './bash-target.mjs'
 import { hasTool, PASSES } from './nudge-state.mjs'
 import { firstSignal, SIGNALS } from './signals.mjs'
 
@@ -176,11 +176,15 @@ test('branch guard denies once per repo per session', () => {
 	)
 })
 
-test('leadingDir reads the directory a command moves into first', () => {
-	assert.equal(leadingDir('cd /tmp/x && sed -i "" s/a/b/ f.txt'), '/tmp/x')
-	assert.equal(leadingDir("cd 'my dir'; cat > f <<'E'\nx\nE"), 'my dir')
-	assert.equal(leadingDir('sed -i "" s/a/b/ f.txt'), null)
-	assert.equal(leadingDir('cd $DIR && touch f'), null)
+test('writeDir reads the directory a command has moved into', () => {
+	assert.equal(writeDir('cd /tmp/x && sed -i "" s/a/b/ f.txt'), '/tmp/x')
+	assert.equal(writeDir("cd 'my dir'; cat > f <<'E'\nx\nE"), 'my dir')
+	assert.equal(writeDir('sed -i "" s/a/b/ f.txt'), null)
+	assert.equal(writeDir('cd $DIR && touch f'), null)
+	assert.equal(writeDir("git worktree add tree/x -b x && cd tree/x && python3 - <<'E'\nx\nE"), 'tree/x')
+	assert.equal(writeDir('mkdir -p /tmp/z && cd /tmp/z && cat > t.mjs'), '/tmp/z')
+	assert.equal(writeDir('cd /tmp && cd z && touch f'), '/tmp/z')
+	assert.equal(writeDir('S=/tmp/s; cd $S && touch f'), '/tmp/s')
 })
 
 test('branch guard resolves a write after a leading cd against that directory', () => {
@@ -607,4 +611,15 @@ test('merged-unretired says nothing about a branch that never had a remote', () 
 		null,
 		'local by choice is not the same as spent',
 	)
+})
+
+test('bashWrites expands a variable the command set itself', () => {
+	assert.deepEqual(bashWrites("S=/tmp/s; cat > $S/check.sh <<'E'\necho hi > out.txt\nE").paths, ['/tmp/s/check.sh'])
+	assert.deepEqual(bashWrites('cat > $UNSET/f').paths, [])
+	assert.equal(bashWrites('FOO=1 cat > ${FOO}/f').paths.length, 0)
+})
+
+test('a heredoc into a file named .sh is not a heredoc into sh', () => {
+	assert.equal(bashWrites("wc -l check.sh <<'E'\necho hi > out.txt\nE").writes, false)
+	assert.equal(bashWrites("/bin/sh <<'E'\necho hi > out.txt\nE").writes, true)
 })

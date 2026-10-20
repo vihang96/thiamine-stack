@@ -24,6 +24,18 @@ required code change, and to stop treating any of them as optional.
    When in doubt, ask. Skipping a style nit is cheap. Skipping a real data or auth bug is
    not, and the two do not look different at a glance.
 
+   A finding that reproduces proves the behavior happens, not that it is wrong. Before
+   choosing `fix`, check the comment against what the owner already decided: the plan, the
+   handoff record, decision records, and their own words earlier in the work. A comment that
+   would reverse one is `dismiss`, citing the decision, or `ask`. A request for compatibility
+   with data or callers of a feature that has not shipped is `dismiss`: there is nothing old
+   to stay compatible with.
+
+   For each `fix`, ask whether the line is one instance of a class: a date boundary, an
+   escape, a normalization, a rule list someone wrote by hand. If so, find every site
+   first, and fix the shared cause once, with a library where one exists. Fixing the
+   reported line alone hands the reviewer the next instance for the following round.
+
 3. Verify before dismissing. A claim that a test does not cover something is cheap to
    check by running the test. A claim about behavior is cheap to check by exercising it.
    Dismissing on reasoning alone is how a real finding gets closed with a confident reply.
