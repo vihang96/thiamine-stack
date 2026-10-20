@@ -16,6 +16,7 @@ Prompts that must load this skill, and near-misses that must not.
 - which worktrees have uncommitted work
 - get this PR green, the checks are failing
 - address the review comments on my PR
+- my colleague reviewed the design doc, address their comments
 - is this ready for approval
 - split this into a stack, it is too big to review at once
 - what is blocking the stack

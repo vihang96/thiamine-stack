@@ -12,8 +12,9 @@ whole reason to spawn one, and the reason a second pass in the same session is w
 than a first pass somewhere else. `fan-out-work` owns the mechanics, and its
 `playbooks/read-fanout.md` is the general shape; this covers what is specific to reviewing.
 
-1. Package the grounding once. Intent, the diff, the base commit, where the code lives, and
-   how to run the tests. When the change depends on another repo, fetch that repo's default
+1. Package the grounding once. Intent, the diff, the base commit, where the code lives, how
+   to run the tests, and the pull request's existing discussion with what it already
+   settled. When the change depends on another repo, fetch that repo's default
    branch and put its commit in the grounding. A reviewer left to find the dependency on its
    own checks whatever is checked out, and its finding goes stale without anyone noticing.
    Every reviewer gets the identical grounding. The diversity comes from the angle you
