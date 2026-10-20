@@ -17,7 +17,9 @@ than a first pass somewhere else. `fan-out-work` owns the mechanics, and its
    branch and put its commit in the grounding. A reviewer left to find the dependency on its
    own checks whatever is checked out, and its finding goes stale without anyone noticing.
    Every reviewer gets the identical grounding. The diversity comes from the angle you
-   assign, not from telling them different things.
+   assign, not from telling them different things. The one thing that differs is a scratch
+   directory per reviewer, because reviewers fetch and reproduce, and a shared scratchpad
+   lets one read another's pull request as its own.
 
 2. Split by angle, never by directory. Lanes given a slice of the same question return
    overlapping halves of one answer. Angles that carry their weight:

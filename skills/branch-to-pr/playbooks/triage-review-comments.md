@@ -19,7 +19,16 @@ required code change, and to stop treating any of them as optional.
    | --- | --- | --- |
    | `fix` | a plausible correctness, security, data loss, auth, migration, race, or shipped-behavior problem | fix it in the repo that owns it, reply with the commit SHA, resolve the thread |
    | `dismiss` | the current code already answers it, or it asks for something the change deliberately does not do | reply with the specific reason, resolve the thread |
-   | `ask` | novel, high severity, or ambiguous, and guessing would be a coin flip | ask the reviewer or the user, and leave it open |
+   | `ask` | novel, high severity, or ambiguous, and guessing would be a coin flip; or the fix would change behaviour, a contract, or an instruction the user already decided | ask the reviewer or the user, and leave it open |
+
+   A comment that reproduces has earned a look, not a change. Before giving any thread
+   `fix`, check it against what the user decided: the plan, the decision records, the
+   handoff, and the conversation. A real finding against a deliberate decision is the
+   user's call, and fixing it quietly reverses their decision to satisfy someone else.
+
+   When a comment is the second instance of a bug class, such as another date comparison,
+   find every site of that class before fixing any. Fixing one site per review round is
+   how the same comment arrives three times.
 
    When in doubt, ask. Skipping a style nit is cheap. Skipping a real data or auth bug is
    not, and the two do not look different at a glance.

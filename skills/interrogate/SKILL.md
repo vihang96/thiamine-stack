@@ -1,6 +1,6 @@
 ---
 name: interrogate
-description: "Reviews an artifact somebody else produced, a human or an agent, and returns feedback precise enough to act on: a plan, a design, a diff, a pull request, or an agent's report. Decides what earns a finding, ranks what is left, stops before the nits, and says plainly when there is nothing to report. Use when reviewing a PR or a diff before merging, when asked to critique or stress test a plan, before handing your own design, plan or contract to reviewers, when checking whether an agent's work is what it claims, and for review this, tear this apart, or find the blind spots."
+description: "Reviews an artifact somebody else produced, a human or an agent, and returns feedback precise enough to act on: a plan, a design, a diff, a pull request, or an agent's report. Decides what earns a finding, ranks what is left, stops before the nits, and says plainly when there is nothing to report. Use when reviewing a PR or a diff before merging, when asked to critique or stress test a plan, before handing your own design, plan or contract to reviewers, when sweeping a review channel or a queue for the pull requests nobody has reviewed, when checking whether an agent's work is what it claims, and for review this, tear this apart, or find the blind spots."
 owns: "judging an artifact, someone else's or your own before it goes to reviewers, and the feedback that goes back"
 see_also: [fan-out-work, branch-to-pr, post-implementation, pre-implementation, unslop-prose, technical-writing, adversarial-reviewer, pr-review-sweep]
 ---
@@ -196,6 +196,7 @@ Load the one that matches the diff rather than re-deriving its criteria here.
 | The stakes justify more than one pass, or the harness has no diff review | `playbooks/fan-out-reviewers.md` |
 | The artifact asserts things: a PR description, an agent's report, a test plan | `playbooks/audit-the-claims.md` |
 | Findings exist and have to reach the author | `playbooks/deliver-the-review.md` |
+| A queue of pull requests to choose from, such as a review channel or "the ones nobody reviewed" | `playbooks/sweep-a-review-queue.md` |
 
 ## Worked example
 

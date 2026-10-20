@@ -45,6 +45,12 @@ Check the floor in `SKILL.md` first. A small, reversible, one-concern diff gets 
    callers, run the touched test. Dismissal needs the same evidence as a finding, since a
    confidently wrong dismissal is how a real defect gets closed.
 
+   Reading at a ref without a checkout, quote the argument: `git show "${ref}:path"`. In
+   zsh, which runs the shell tool on macOS, `$ref:a` and `$ref:w` are history modifiers,
+   so an unquoted `git show $ref:agent/x` resolves to an absolute path and fails as an
+   ambiguous argument. Put `git grep` options before the pattern, because anything after
+   it is read as a revision.
+
 8. Rank, cut, and deliver per `playbooks/deliver-the-review.md`.
 
 9. Remove any checkout you made for the review, and the local branch you fetched into it.

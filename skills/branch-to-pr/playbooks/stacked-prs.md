@@ -51,11 +51,37 @@ A pull request opened against the default branch by mistake shows every commit f
 ancestor. An enormous diff on the third pull request in a chain is that mistake, not a
 large change.
 
+## When a parent is squash-merged
+
+A squash merge puts the parent's content on the default branch as one new commit that
+shares no history with the parent's commits. Every child still carries those commits, so
+GitHub reports the child as conflicting even where the content is identical, and the next
+parent to land does it again one level up. "All mergeable" holds only until the next
+squash.
+
+Re-sync each child after every parent lands, without a force push:
+
+```sh
+git merge <parent-tip>                         # the child must hold the parent's final commits
+git diff --quiet <parent-tip> <squash-commit>  # the squash added nothing the parent tip lacked
+git merge -s ours <squash-commit>              # record it as merged; the child already has it
+git merge origin/<default>                     # then whatever landed after it
+```
+
+If the `git diff` reports a difference, the parent changed during merge, so merge the squash
+commit normally and resolve the conflicts by hand.
+
 ## Rules that hold either way
 
 1. **Keep each piece landable on its own.** The bottom merges first and lives with whatever
    is above it unfinished, so it cannot depend on a later piece to be correct. If the bottom
    only makes sense once the top exists, the change is split at the wrong seam.
+
+   Split at rollback boundaries, not in build order. A stack cut in build order makes the
+   reviewer read code that a later piece deletes. When a large share of one piece is gone by
+   the top of the stack, rebuild the stack from the final code, and cut it into as few
+   pieces as there are things you would roll back separately. Every extra piece adds
+   another review setup, another merge gate, and another squash re-sync.
 
 2. **Say what the stack is, in every description.** Number them and link the parent. A
    reviewer looking at the third pull request cannot tell what is already reviewed below it.
