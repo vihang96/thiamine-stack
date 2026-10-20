@@ -47,9 +47,13 @@ a change that spans services, and for adding a repo to a change already in progr
    Run that command inside the worktree, and scope anything you run from the main checkout.
    A worktree here is a directory inside the repo, so a recursive glob or a hand-rolled walk
    rooted at the repo top also walks the other branches. A test run counted that way passes
-   partly on a branch nobody is working on. Gitignore-aware tools are safe, because `tree/`
-   is ignored. `node --test`, `find`, and anything you write are not. Anchor the pattern per
-   source directory, and check the count is the one you expect.
+   partly on a branch nobody is working on. Gitignore-aware tools are safe only once
+   `git check-ignore -q tree/x` succeeds. Run it before the first worktree, and add `tree/`
+   to `.gitignore` if it fails. Even then, `node --test`, `find`, ESLint's flat config, and
+   anything you write do not read `.gitignore`. ESLint needs `tree/**` in its own `ignores`.
+   Without it, `eslint .` from the main checkout lints every worktree, and its memory grows
+   with the number of open branches. Anchor the pattern per source directory, and check the
+   count is the one you expect.
 
 **Reply:** the branch name, each repo and its worktree path, what you copied in, and the
 result of the verification in each. If a repo was considered and left out, say which and

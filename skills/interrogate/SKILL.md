@@ -1,6 +1,6 @@
 ---
 name: interrogate
-description: "Reviews an artifact somebody else produced, a human or an agent, and returns feedback precise enough to act on: a plan, a design, a diff, a pull request, or an agent's report. Decides what earns a finding, ranks what is left, stops before the nits, and says plainly when there is nothing to report. Use when reviewing a PR or a diff before merging, when asked to critique or stress test a plan, before handing your own design, plan or contract to reviewers, when checking whether an agent's work is what it claims, and for review this, tear this apart, or find the blind spots."
+description: "Reviews an artifact somebody else produced, a human or an agent, and returns feedback precise enough to act on: a plan, a design, a diff, a pull request, or an agent's report. Decides what earns a finding, ranks what is left, stops before the nits, and says plainly when there is nothing to report. Use when reviewing a PR or a diff before merging, when sweeping a channel or a queue for pull requests nobody has reviewed, when asked to critique or stress test a plan, before handing your own design, plan or contract to reviewers, when checking whether an agent's work is what it claims, and for review this, tear this apart, or find the blind spots."
 owns: "judging an artifact, someone else's or your own before it goes to reviewers, and the feedback that goes back"
 see_also: [fan-out-work, branch-to-pr, post-implementation, pre-implementation, unslop-prose, technical-writing, adversarial-reviewer, pr-review-sweep]
 ---
@@ -186,6 +186,24 @@ something plausible. Look for the ones that survive a casual read.
 
 The language-level ones belong to `unslop-python`, `unslop-typescript`, and `unslop-rust`.
 Load the one that matches the diff rather than re-deriving its criteria here.
+
+## Reviewing a queue
+
+"Review the PRs in this channel that have no review yet" is a selection problem before it
+is a review. `reviewDecision` does not answer it. Teams that review with plain comments, or
+that write "Approve" in the body of a COMMENTED review, leave it at `REVIEW_REQUIRED` on
+pull requests that already have a verdict.
+
+1. Select on what reviewers actually left. Count a pull request as reviewed when a human
+   other than the author has left a review or a substantive comment at the current head.
+   Do not count bots, even ones posting from a person's account.
+2. Show the user the list and the rule that produced it, and get a yes before spawning
+   reviewers. A rule settled after ten reviews have run throws most of them away.
+3. Re-check each pull request just before you post. Heads move and other reviewers land
+   while yours run.
+4. A blocking verdict posted under the user's name needs its blocking finding verified, as
+   in `playbooks/fan-out-reviewers.md` step 5. A subagent's single-pass report is a
+   candidate, not a verdict.
 
 ## Playbooks
 

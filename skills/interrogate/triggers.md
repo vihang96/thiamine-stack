@@ -6,6 +6,7 @@ Prompts that must load this skill, and near-misses that must not.
 
 - review this PR
 - quick look at this one-liner before I merge it
+- sweep the code-review channel and review the PRs nobody has looked at yet
 - can you look over what the agent just wrote before I merge it
 - here is the plan, tear it apart
 - stress test this design and find the blind spots
