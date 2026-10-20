@@ -47,6 +47,31 @@ git push --force-with-lease
 Use `--force-with-lease`, never `--force`. The lease is what stops you overwriting a commit
 someone pushed while you were rebasing.
 
+### When the parent was squash-merged
+
+A squash lands the parent's content on the default branch under a new commit, so the
+child's history and the default branch disagree about lines they agree on. Merging the
+default branch into the child then reports conflicts in files the child never changed.
+Those conflicts are not real, and resolving them by hand is how a fix gets dropped.
+
+Sync by merging, which needs no force-push. A harness in auto mode refuses to rewrite a
+pushed branch, and a rebase invalidates every approval above it (rule 3):
+
+```sh
+git fetch origin
+git merge <parent-final-tip>                                  # clean: the child already sat on it
+git diff --quiet <parent-final-tip> origin/main && echo same  # main's tree is the parent's tip
+git merge -s ours origin/main                                 # record the squash as included
+git push
+```
+
+Run the `-s ours` step only when the `diff --quiet` printed `same`. If it did not, other
+work landed on the default branch too, and that needs an ordinary merge.
+
+This recurs at every level. Each parent that lands makes its own child need the same sync,
+so a child reported as mergeable before its parent landed can still conflict afterwards.
+Run the sync after each parent merges, before saying the next one is ready.
+
 A pull request opened against the default branch by mistake shows every commit from every
 ancestor. An enormous diff on the third pull request in a chain is that mistake, not a
 large change.
@@ -71,6 +96,8 @@ large change.
 
 5. **Land bottom first, one at a time.** GitHub retargets a child's base when its parent
    merges. Confirm the retarget landed before touching the child rather than assuming it.
+   In a repo that squash-merges, sync the child as in "When the parent was squash-merged"
+   before calling it ready.
 
 **Reply:** the stack bottom first, from `gh stack view --short` or
 `sh scripts/pr-status.sh --stack <top-branch>`, whichever the repo supports. Name the
