@@ -17,6 +17,9 @@ Prompts that must load this skill, and near-misses that must not.
 - get this PR green, the checks are failing
 - address the review comments on my PR
 - is this ready for approval
+- help me get this PR ready, it has been a while since anyone touched it
+- make it green
+- fold the follow-up into the parent PR and take it out of draft
 - split this into a stack, it is too big to review at once
 - what is blocking the stack
 

@@ -4,6 +4,13 @@
 change too large to review in one piece, and for a follow-up that depends on work still in
 review.
 
+**Name what the split buys before making it.** A separate rollback boundary or deploy window
+is worth a second pull request only if it is real: check that the pieces actually deploy
+apart, and how the migration runner applies pending migrations, rather than assuming either.
+A small follow-up whose risk the repo has already accepted elsewhere belongs in the parent.
+Generated files repeat per piece, such as a migration's schema snapshot, so price them in
+review noise. When the case is close, propose one pull request and offer the split.
+
 Check for the tool before doing this by hand:
 
 ```sh
@@ -71,6 +78,12 @@ large change.
 
 5. **Land bottom first, one at a time.** GitHub retargets a child's base when its parent
    merges. Confirm the retarget landed before touching the child rather than assuming it.
+
+6. **Close a child before folding it into its parent.** Pushing the child's commits onto the
+   parent's branch makes GitHub mark the child merged, not closed, and its branch may be
+   deleted with it. `gh pr close` then fails, and the list shows a merge that never reached
+   the default branch on its own. Close it with a comment pointing at the parent, then
+   fast-forward or cherry-pick.
 
 **Reply:** the stack bottom first, from `gh stack view --short` or
 `sh scripts/pr-status.sh --stack <top-branch>`, whichever the repo supports. Name the

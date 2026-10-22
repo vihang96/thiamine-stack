@@ -7,6 +7,8 @@ Prompts that must load this skill, and near-misses that must not.
 - add a retention policy to workspaces
 - this endpoint is slow, make it faster
 - how does the guide approval flow work
+- can the feature flag be rolled out to a percentage of users
+- are uploaded videos shareable the same way records are
 - we need to migrate off the old exception schema
 - plan this out, it touches three repos
 - users are reporting duplicate notifications, figure out why
