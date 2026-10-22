@@ -31,6 +31,16 @@ Merging is the human's, after approval. This playbook ends at green, not at land
    or a missing secret, is still worth naming, but it is not yours to paper over with a
    retry.
 
+   `gh run view --log` returns nothing useful while other jobs in the run are still going.
+   Read the failed job's log directly instead:
+
+   ```sh
+   gh api repos/<owner>/<repo>/actions/jobs/<job-id>/logs --allow-escape-sequences |
+     sed 's/\x1b\[[0-9;]*m//g'
+   ```
+
+   Without the flag, `gh` refuses output that contains terminal escape sequences.
+
    Infrastructure is the exception, such as a registry rate limit (`429` pulling an image)
    or a runner that never started. Search open pull requests and tickets for that cause
    first, since another change often already carries the fix: link it. Check the same
