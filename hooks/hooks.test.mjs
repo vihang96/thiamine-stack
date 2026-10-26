@@ -181,6 +181,10 @@ test('leadingDir reads the directory a command moves into first', () => {
 	assert.equal(leadingDir("cd 'my dir'; cat > f <<'E'\nx\nE"), 'my dir')
 	assert.equal(leadingDir('sed -i "" s/a/b/ f.txt'), null)
 	assert.equal(leadingDir('cd $DIR && touch f'), null)
+	assert.equal(leadingDir('D=/tmp/x; mkdir -p $D && cd $D && cat > f <<E\nx\nE'), '/tmp/x')
+	assert.equal(leadingDir('D="/tmp/a b" && cd "${D}/sub"; touch f'), '/tmp/a b/sub')
+	assert.equal(leadingDir('D=$HOME/x; cd $D && touch f'), null)
+	assert.equal(leadingDir('D=/tmp/x; cd $E && touch f'), null)
 })
 
 test('branch guard resolves a write after a leading cd against that directory', () => {
@@ -201,6 +205,14 @@ test('branch guard resolves a write after a leading cd against that directory', 
 		session_id: 'cd-to-main',
 	})
 	assert.equal(decisionOf(fromScratch), 'deny', 'and a write after cd into a repo on main is caught')
+
+	const viaVariable = runHook('pre-edit-branch-guard.mjs', {
+		tool_name: 'Bash',
+		tool_input: { command: `D=${scratch}/out; mkdir -p $D && cd $D && ${HEREDOC_WRITE}` },
+		cwd: onMain,
+		session_id: 'cd-via-variable',
+	})
+	assert.equal(viaVariable, '', 'a scratch directory named through a variable is resolved too')
 })
 
 test('branch guard denies once per repo per session, whatever directory the session is in', () => {
