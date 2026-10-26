@@ -189,6 +189,10 @@ Load the one that matches the diff rather than re-deriving its criteria here.
 
 ## Playbooks
 
+On the long path, open the playbook before the first finding rather than after. The steps
+skipped when only this file is read are the ones the author sees: running the diff review,
+asking instead of posting a conditional, and removing the review checkout.
+
 | Situation | Playbook |
 | --- | --- |
 | A plan, design, spec, or RFC, before any code exists | `playbooks/review-a-plan.md` |
@@ -245,3 +249,6 @@ Run this against your own review, before it goes out.
 7. If everything you found is a nit, did you say the artifact is fine?
 8. Was the review proportionate? A small, reversible change should have cost the author two
    sentences, not a verdict block.
+9. Does anything read "if X, this is fine"? Trace X to a yes or a no in the code, or ask it
+   as a question. A conditional you could have resolved is neither.
+10. Did you remove any checkout and local branch you made for the review?

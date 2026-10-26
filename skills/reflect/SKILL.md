@@ -57,7 +57,7 @@ artifacts rather than from a transcript. Knowledge in, versus claims out.
 The build log is pre-digested and small. Read it before touching a transcript:
 
 ```sh
-ls "$(git rev-parse --show-toplevel)"/.handoff-*.md 2>/dev/null
+find "$(git rev-parse --show-toplevel)" -maxdepth 1 -name '.handoff-*.md'
 ```
 
 Its four entry types are already the signals worth mining: a decision with a rejected

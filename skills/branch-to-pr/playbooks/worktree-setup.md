@@ -36,6 +36,12 @@ a change that spans services, and for adding a repo to a change already in progr
    reads as a problem with your change. Check the repo's own notes before assuming the
    worktree is ready.
 
+   Install dependencies; do not link them. A symlink to the main checkout's
+   `node_modules` resolves workspace packages by relative path, points at their unbuilt
+   output, and carries the main checkout's older lockfile, so it fails one missing package
+   at a time. Run the lockfile install (`npm ci`, `pnpm install --frozen-lockfile`) inside
+   the worktree, then build the workspace packages its tests import.
+
 5. Check that the pieces will agree. A change spanning repos has to answer any shared
    question the same way on both sides, such as how an error is shaped or what a field is
    called. Use the `consistency` skill before writing either half, because a disagreement

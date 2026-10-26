@@ -63,7 +63,7 @@ getting updated.
 ### 2. Find the existing file
 
 ```sh
-ls skills/*-mode/SKILL.md ~/.claude/skills/*-mode/SKILL.md 2>/dev/null
+find -L skills ~/.claude/skills -maxdepth 2 -path '*-mode/SKILL.md' 2>/dev/null
 ```
 
 If one exists, update it rather than starting over, and mine only what happened since:

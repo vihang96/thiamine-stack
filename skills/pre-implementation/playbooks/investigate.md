@@ -14,6 +14,9 @@ start the change deliberately.
    its commit in what you produce. Give subagents that path and commit too. For a sibling
    repo another session is changing, its current state is on that session's branch, not on
    its default branch and not in anything you read earlier in the session.
+   Docs, memory notes, and a feature's README record what someone believed shipped. For what
+   a feature can do today, the remote head and its recently merged pull requests are the
+   answer, and a doc that disagrees is a follow-up to file, not a source.
 
 1. Find the real entry point rather than the first match. Search for the behavior, not the
    word. A grep for a feature name finds the label and the test. The code that does

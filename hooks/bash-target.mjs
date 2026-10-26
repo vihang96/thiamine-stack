@@ -65,11 +65,28 @@ function splitHeredocs(cmd) {
  * The directory a command moves into before it writes: `cd dir && ...` or `cd dir; ...`.
  * Relative write targets resolve against it, not against the session's cwd, or a scratch
  * write after `cd` is reported against whatever repo the session started in.
+ *
+ * Leading `NAME=value` assignments and a `mkdir` are stepped over, so the common
+ * `D=/tmp/x; mkdir -p $D && cd $D` resolves to `/tmp/x`. A variable the command did not
+ * assign stays unknown, and the caller falls back to the session's cwd.
  */
 export function leadingDir(cmd) {
-	const m = (cmd ?? '').match(/^\s*cd\s+(?:'([^']+)'|"([^"]+)"|([^\s;&|'"]+))\s*(?:&&|;)/)
+	const vars = new Map()
+	let rest = cmd ?? ''
+	for (;;) {
+		const assign = rest.match(/^\s*([A-Za-z_]\w*)=(?:'([^']*)'|"([^"$`]*)"|([^\s;&|'"$`]+))\s*(?:&&|;)/)
+		if (!assign) break
+		vars.set(assign[1], assign[2] ?? assign[3] ?? assign[4])
+		rest = rest.slice(assign[0].length)
+	}
+	rest = rest.replace(/^\s*mkdir\s+(?:-p\s+)?[^\s;&|]+\s*(?:&&|;)/, '')
+	const m = rest.match(/^\s*cd\s+(?:'([^']+)'|"([^"]+)"|([^\s;&|'"]+))\s*(?:&&|;)/)
 	const dir = m && (m[1] ?? m[2] ?? m[3])
-	return dir && !dir.startsWith('$') ? dir : null
+	if (!dir) return null
+	if (!dir.includes('$')) return dir
+	const ref = dir.match(/^\$(?:\{(\w+)\}|(\w+))(\/[^$]*)?$/)
+	const value = ref && vars.get(ref[1] ?? ref[2])
+	return value ? value + (ref[3] ?? '') : null
 }
 
 export function bashWrites(cmd) {
