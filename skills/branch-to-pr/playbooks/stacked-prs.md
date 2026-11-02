@@ -78,6 +78,14 @@ large change.
 5. **Land bottom first, one at a time.** GitHub retargets a child's base when its parent
    merges. Confirm the retarget landed before touching the child rather than assuming it.
 
+6. **Account for checks the parent base excludes.** Compare reported checks with workflow
+   triggers and job conditions, including branch and path filters. A workflow restricted
+   to the default branch can be absent from a green child PR. For each head, run the omitted
+   validation commands that apply when it targets the default branch, and record the
+   command, commit, and result. If a check needs CI infrastructure you cannot reproduce,
+   report it as unverified. After retargeting, confirm the expected jobs ran on the current
+   head before reporting it ready.
+
 **Reply:** the stack bottom first, from `gh stack view --short` or
 `sh scripts/pr-status.sh --stack <top-branch>`, whichever the repo supports. Name the
 lowest pull request that is not ready, because that one blocks everything above it. Say
