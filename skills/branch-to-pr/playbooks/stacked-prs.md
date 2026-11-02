@@ -57,6 +57,12 @@ large change.
    is above it unfinished, so it cannot depend on a later piece to be correct. If the bottom
    only makes sense once the top exists, the change is split at the wrong seam.
 
+   When splitting completed work, cut from the final implementation rather than replaying
+   development history. Read each child diff against its parent and compare it with the
+   final tree. If a child immediately replaces or deletes code just added below it, move
+   the final version into the owning PR or combine the pieces. Keep an intermediate form
+   only when it has an independent purpose, and state that purpose in its description.
+
 2. **Say what the stack is, in every description.** Number them and link the parent. A
    reviewer looking at the third pull request cannot tell what is already reviewed below it.
 
