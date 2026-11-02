@@ -14,6 +14,9 @@ Merging is the human's, after approval. This playbook ends at green, not at land
    It names each failing check. A change spanning repos is as green as its worst repo, so
    never report one repo green while another is red.
 
+   For a stack, account for jobs excluded by the parent base, per `stacked-prs.md`.
+   Passing reported checks does not establish that omitted checks passed.
+
    For every open pull request at once, rather than one branch, and for the default branch,
    which has no pull request of its own:
 

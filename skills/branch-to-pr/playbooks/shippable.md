@@ -14,7 +14,7 @@ on, and stops there.
 
    Green in one repo and red in another is not green. Neither is a stale run from before
    the last push, so confirm the checks describe the current head rather than an earlier
-   commit.
+   commit. For a stack, include the omitted-check verification from `stacked-prs.md`.
 
 2. Confirm nothing is outstanding. No unresolved review threads, no thread resolved
    without a reply, and no comment you deferred without saying so.

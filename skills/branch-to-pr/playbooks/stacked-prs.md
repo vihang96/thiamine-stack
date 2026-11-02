@@ -57,6 +57,12 @@ large change.
    is above it unfinished, so it cannot depend on a later piece to be correct. If the bottom
    only makes sense once the top exists, the change is split at the wrong seam.
 
+   When splitting completed work, cut from the final implementation rather than replaying
+   development history. Read each child diff against its parent and compare it with the
+   final tree. If a child immediately replaces or deletes code just added below it, move
+   the final version into the owning PR or combine the pieces. Keep an intermediate form
+   only when it has an independent purpose, and state that purpose in its description.
+
 2. **Say what the stack is, in every description.** Number them and link the parent. A
    reviewer looking at the third pull request cannot tell what is already reviewed below it.
 
@@ -71,6 +77,14 @@ large change.
 
 5. **Land bottom first, one at a time.** GitHub retargets a child's base when its parent
    merges. Confirm the retarget landed before touching the child rather than assuming it.
+
+6. **Account for checks the parent base excludes.** Compare reported checks with workflow
+   triggers and job conditions, including branch and path filters. A workflow restricted
+   to the default branch can be absent from a green child PR. For each head, run the omitted
+   validation commands that apply when it targets the default branch, and record the
+   command, commit, and result. If a check needs CI infrastructure you cannot reproduce,
+   report it as unverified. After retargeting, confirm the expected jobs ran on the current
+   head before reporting it ready.
 
 **Reply:** the stack bottom first, from `gh stack view --short` or
 `sh scripts/pr-status.sh --stack <top-branch>`, whichever the repo supports. Name the
