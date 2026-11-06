@@ -1,6 +1,6 @@
 ---
 name: pr-review-sweep
-description: Sweeps recent open GitHub pull requests for missing independent reviews, verifies actionable findings, and follows reviewed PRs through fixes and merge confidence. Use for a PR review sweep, a daily review watcher, or re-reviewing fixes from an earlier sweep.
+description: Sweeps recent open GitHub pull requests for missing independent reviews, verifies actionable findings, and follows reviewed PRs through fixes and merge confidence. Use for a PR review sweep, a daily review watcher, watcher cleanup and retention, or re-reviewing fixes from an earlier sweep.
 owns: "PR discovery, durable review tracking, scheduled sweeps, and follow-up through merge readiness"
 see_also: [interrogate, signal-to-task, branch-to-pr, technical-writing, unslop-prose]
 ---
@@ -109,6 +109,13 @@ code or earlier findings remain unreviewed. List actual test results, skipped
 checks, and limitations. Do not post reviews or change watcher state from the
 reviewer job. The runner validates the result and rechecks eligibility before posting.
 
+Use the runner's scratch directory for dependencies, caches, downloads, database
+snapshots, and temporary diagnostics. Scratch is deleted after success, failure,
+or timeout. Save small reproduction scripts and supporting text logs in the supplied
+evidence directory, and cite those retained paths in the result. The runner expires
+unreferenced runs after `retentionDays`, which defaults to seven days. Runs needed by
+active PRs, pending publication, or failed reviews remain protected.
+
 ## Verify and report
 
 For a manual sweep, confirm every published review URL and reviewed SHA. Summarize
@@ -119,6 +126,6 @@ result and leave publication checks and cleanup to the runner.
 
 ## Configure or operate the watcher
 
-Read `playbooks/configure-watcher.md` when installing, inspecting, retrying, or
-stopping the daily watcher. Setup commands belong to the operator, not a reviewer
+Read `playbooks/configure-watcher.md` when installing, inspecting, cleaning up,
+retrying, or stopping the daily watcher. Setup commands belong to the operator, not a reviewer
 job.

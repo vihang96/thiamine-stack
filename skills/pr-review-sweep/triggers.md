@@ -11,5 +11,6 @@
 - "Sweep open Ari PRs from the last week that nobody has reviewed."
 - "Run the daily PR watcher and follow up on addressed comments."
 - "Re-review the PRs tracked by the last review sweep."
+- "Clean up the daily PR watcher's caches and set its retention window."
 
 Automatic discovery must be checked in a new Codex session after installation.

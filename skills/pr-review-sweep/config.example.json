@@ -6,6 +6,7 @@
 	"maxReviewsPerRun": 12,
 	"maxAttempts": 3,
 	"reviewTimeoutMinutes": 40,
+	"retentionDays": 7,
 	"blockingEvent": "COMMENT",
 	"timezone": "America/Los_Angeles",
 	"botLogins": ["coderabbitai", "chatgpt-codex-connector", "dependabot"],
