@@ -570,9 +570,12 @@ test('CI gates remain separate from a clean code verdict and a ready transition 
 test('dry-run and scans never publish or mark a head as reviewed', async () => {
 	const f = await fixture()
 	await f.run({ scan: true })
+	await assert.rejects(readFile(join(f.dir, 'state.json')), { code: 'ENOENT' })
 	await f.run({ dryRun: true })
 	assert.equal(f.remote.posts.length, 0)
-	await assert.rejects(readFile(join(f.dir, 'state.json')), { code: 'ENOENT' })
+	assert.deepEqual(JSON.parse(await readFile(join(f.dir, 'state.json'), 'utf8')), emptyState())
+	await f.run()
+	assert.equal(f.remote.posts.length, 1)
 })
 
 test('daily boundary follows Pacific time and launchd coalesces wake checks', () => {

@@ -41,7 +41,8 @@ review history.
    ```
 
    Inspect the returned `runDir` paths. Draft mode invokes Codex but does not post
-   or mark a commit reviewed.
+   or mark a commit reviewed. A new watcher initializes empty state before writing
+   draft artifacts, so a later missing state file can be distinguished from first use.
 6. Enable the daily watcher:
 
    ```sh
@@ -67,6 +68,37 @@ Confirm that the agent uses the expected script and configuration paths. An idle
 agent can be waiting for its next check. Inspect `lastRun`, `lastScheduledDate`,
 `tracked`, `pending`, and `failures` in the queue output. Evidence and logs remain
 under `stateDirectory`.
+
+## Clean up review artifacts
+
+The runner deletes each job's `scratch/` directory after success, failure, or
+timeout. Each scheduled check also recovers abandoned scratch and expires old runs,
+even when the daily sweep is not due. Cleanup shares the sweep lock and skips runs
+with a live reviewer process group.
+
+Set `retentionDays` in the existing configuration to choose the retention window.
+The default is seven days. The window starts at the timestamp in the run directory's
+name. Runs referenced by active PRs, pending publication, or failed reviews remain
+protected. Configuration, watcher state, and service logs are outside run retention.
+
+Preview cleanup without running reviews:
+
+```sh
+node scripts/watcher.mjs cleanup --config "$PR_SWEEP_CONFIG" --dry-run
+```
+
+Expect `status: cleanup`, `dryRun: true`, and the paths proposed for removal in
+`removed`. Inspect `skipped` for live reviewer processes. To apply the cleanup:
+
+```sh
+node scripts/watcher.mjs cleanup --config "$PR_SWEEP_CONFIG"
+```
+
+For runs created before scratch isolation, add `--legacy` to both commands.
+Legacy cleanup removes known cache and dependency directories, including symlinks
+without following their targets. It preserves diagnostic scripts, logs, and unknown
+directories within retained runs. An entire expired, unprotected run is removed.
+Check the preview before applying it.
 
 ## Retry a failed PR
 
