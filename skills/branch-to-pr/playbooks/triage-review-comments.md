@@ -13,6 +13,19 @@ required code change, and to stop treating any of them as optional.
    repo often explains one on the service repo, and answering them separately produces two
    half answers.
 
+   On GitHub, conversation comments, inline review comments, and review bodies are separate
+   sources. Fetch all three with pagination before classifying feedback:
+
+   ```sh
+   gh api --paginate repos/<owner>/<repo>/issues/<n>/comments
+   gh api --paginate repos/<owner>/<repo>/pulls/<n>/comments
+   gh api --paginate repos/<owner>/<repo>/pulls/<n>/reviews
+   ```
+
+   Read the full bodies and thread context. A truncated result is incomplete evidence.
+   Refresh these sources before replying after a round of fixes, and classify any new
+   feedback before claiming the review is addressed.
+
 2. Classify each thread before touching code:
 
    | Verdict | When | Then |
