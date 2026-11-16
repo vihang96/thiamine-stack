@@ -16,6 +16,11 @@ on, and stops there.
    the last push, so confirm the checks describe the current head rather than an earlier
    commit.
 
+   For checks relevant to the change, verify execution as well as status. A skipped job,
+   or a passing command with skipped tests, proves nothing about those paths. Inspect event
+   conditions and missing prerequisites, then run the missing check with those prerequisites
+   or trigger a run that executes it. Name deliberate skips and why they do not apply.
+
 2. Confirm nothing is outstanding. No unresolved review threads, no thread resolved
    without a reply, and no comment you deferred without saying so.
 
